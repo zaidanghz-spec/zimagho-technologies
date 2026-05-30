@@ -5,27 +5,26 @@
 
 /* --- CORE CUSTOM VARIABLES --- */
 :root {
-    --primary: #0A0F2C;          /* Sovereign Midnight Navy with Deep Purple/Blue Tint */
-    --secondary: #0066FF;        /* Vibrant Technology Blue (Matches Logo right side) */
-    --accent: #C026D3;           /* High-Tech Purple-Magenta Accent (Matches Logo left side) */
-    --accent-purple: #B500E5;    /* Exact rich purple from the logo core */
+    --primary: #071B34;          /* Deep Navy (Authority, Enterprise, Government) */
+    --secondary: #0052CC;        /* Authoritative Enterprise Blue (Trust, Modernity) */
+    --accent: #00C896;           /* Emerald Green (Growth, Healthcare, Success) */
     --bg-light: #F8FAFC;         /* Clean Slate Background */
     --text-dark: #111827;        /* Strong Dark Charcoal */
     --text-muted: #64748B;       /* Subdued Slate Gray */
-    --bg-dark: #050A18;          /* Sovereign Deep Midnight (Matches new logo deep tone) */
+    --bg-dark: #030D1B;          /* Deep Sovereign Midnight Navy */
     --white: #FFFFFF;
     
     /* Brand Gradients (delivering high-status digital canopy presence) */
-    --gradient-brand: linear-gradient(135deg, #B500E5 0%, #0066FF 100%);
-    --gradient-glowing: linear-gradient(135deg, rgba(181, 0, 229, 0.15) 0%, rgba(0, 102, 255, 0.15) 100%);
+    --gradient-brand: linear-gradient(135deg, #0052CC 0%, #00C896 100%);
+    --gradient-glowing: linear-gradient(135deg, rgba(0, 82, 204, 0.15) 0%, rgba(0, 200, 150, 0.15) 100%);
     
     /* Layout Tokens */
     --header-height: 90px;
     --header-shrink-height: 70px;
     --container-width: 1240px;
     --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    --border-glow: rgba(0, 102, 255, 0.18);
-    --card-shadow: 0 16px 40px rgba(5, 10, 24, 0.06);
+    --border-glow: rgba(0, 82, 204, 0.15);
+    --card-shadow: 0 16px 40px rgba(3, 13, 27, 0.05);
 }
 
 /* --- RESET & FOUNDATION --- */
@@ -143,9 +142,9 @@ p {
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #9C00C7 0%, #0052CC 100%);
+    background: linear-gradient(135deg, #003B75 0%, #00AA7F 100%);
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(181, 0, 229, 0.25);
+    box-shadow: 0 10px 20px rgba(0, 82, 204, 0.25);
 }
 
 .btn-secondary {
@@ -161,22 +160,22 @@ p {
 
 .btn-accent {
     background-color: var(--accent);
-    color: var(--white);
+    color: var(--primary);
 }
 
 .btn-accent:hover {
-    background-color: #A21CAF;
+    background-color: #00AA7F;
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(192, 38, 211, 0.35);
+    box-shadow: 0 10px 20px rgba(0, 200, 150, 0.25);
 }
 
 .w-full { width: 100%; }
 
 .badge-accent {
     display: inline-block;
-    background: rgba(192, 38, 211, 0.08);
+    background: rgba(0, 200, 150, 0.08);
     color: var(--accent);
-    border: 1px solid rgba(192, 38, 211, 0.25);
+    border: 1px solid rgba(0, 200, 150, 0.25);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.12em;
@@ -243,20 +242,20 @@ p {
     gap: 14px;
 }
 
-.logo-img {
-    height: 48px;
-    width: auto;
-    object-fit: contain;
-    border-radius: 8px;
-    border: 1.5px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.logo-svg {
+    width: 42px;
+    height: 42px;
     transition: var(--transition-smooth);
 }
 
-.logo-area:hover .logo-img {
-    transform: scale(1.08);
-    box-shadow: 0 0 18px rgba(181, 0, 229, 0.45);
-    border-color: rgba(255, 255, 255, 0.25);
+.logo-svg.footer-logo {
+    width: 36px;
+    height: 36px;
+}
+
+.logo-area:hover .logo-svg {
+    transform: scale(1.1) rotate(4deg);
+    filter: drop-shadow(0 0 10px rgba(0, 200, 150, 0.65));
 }
 
 .logo-main {
@@ -804,12 +803,12 @@ p {
 }
 
 .sector-row-label.health {
-    background-color: rgba(192, 38, 211, 0.08);
+    background-color: rgba(0, 200, 150, 0.08);
     color: var(--accent);
 }
 
 .sector-row-label.gov {
-    background-color: rgba(0, 102, 255, 0.08);
+    background-color: rgba(0, 82, 204, 0.08);
     color: var(--secondary);
 }
 
@@ -913,7 +912,7 @@ p {
 
 .chart-bar {
     flex: 1;
-    background-color: rgba(192, 38, 211, 0.2);
+    background-color: rgba(0, 200, 150, 0.2);
     border: 1.5px solid var(--accent);
     border-radius: 2px 2px 0 0;
     animation: breathing-bar 6s ease-in-out infinite alternate;
@@ -939,18 +938,18 @@ p {
 .grid-radar {
     width: 110px;
     height: 110px;
-    border: 1px solid rgba(0, 102, 255, 0.25);
+    border: 1px solid rgba(0, 82, 204, 0.25);
     border-radius: 50%;
     position: relative;
     overflow: hidden;
-    background: radial-gradient(circle, rgba(0, 102, 255, 0.06) 0%, rgba(3, 13, 27, 0) 80%);
+    background: radial-gradient(circle, rgba(0, 82, 204, 0.06) 0%, rgba(3, 13, 27, 0) 80%);
 }
 
 .radar-line {
     position: absolute;
     width: 50%;
     height: 2px;
-    background: linear-gradient(to right, rgba(0, 102, 255, 0), var(--secondary));
+    background: linear-gradient(to right, rgba(0, 82, 204, 0), var(--secondary));
     top: 50%;
     left: 50%;
     transform-origin: left center;
@@ -1044,7 +1043,7 @@ p {
 .cloud-link {
     flex: 1;
     height: 1px;
-    background: linear-gradient(to right, rgba(0, 102, 255, 0.1), var(--secondary), rgba(0, 102, 255, 0.1));
+    background: linear-gradient(to right, rgba(0, 82, 204, 0.1), var(--secondary), rgba(0, 82, 204, 0.1));
     margin: 0 10px;
 }
 
@@ -1184,7 +1183,7 @@ p {
 .tree-node.child.clickable:hover {
     border-color: var(--secondary);
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 102, 255, 0.15);
+    box-shadow: 0 8px 20px rgba(0, 82, 204, 0.15);
 }
 
 .tree-node.child.clickable.active {
@@ -1221,8 +1220,8 @@ p {
     font-size: 0.7rem;
     font-weight: 800;
     color: var(--accent);
-    background-color: rgba(192, 38, 211, 0.08);
-    border: 1px solid rgba(192, 38, 211, 0.15);
+    background-color: rgba(0, 200, 150, 0.08);
+    border: 1px solid rgba(0, 200, 150, 0.15);
     padding: 4px 10px;
     border-radius: 4px;
 }
@@ -1427,7 +1426,7 @@ p {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(0, 102, 255, 0.05) 0%, transparent 60%);
+    background: radial-gradient(circle, rgba(0, 82, 204, 0.05) 0%, transparent 60%);
     pointer-events: none;
 }
 
@@ -1524,8 +1523,8 @@ p {
     font-size: 1.2rem;
     font-weight: 800;
     color: var(--accent);
-    background-color: rgba(192, 38, 211, 0.06);
-    border: 1px solid rgba(192, 38, 211, 0.15);
+    background-color: rgba(0, 200, 150, 0.06);
+    border: 1px solid rgba(0, 200, 150, 0.15);
     width: 44px;
     height: 44px;
     border-radius: 50%;
@@ -1831,7 +1830,7 @@ p {
     font-size: 0.65rem;
     font-weight: 800;
     color: var(--secondary);
-    background-color: rgba(0, 102, 255, 0.08);
+    background-color: rgba(0, 82, 204, 0.08);
     padding: 4px 10px;
     border-radius: 4px;
     margin: 24px 24px 0;
@@ -1839,7 +1838,7 @@ p {
 
 .article-card:nth-child(even) .art-badge {
     color: var(--accent);
-    background-color: rgba(192, 38, 211, 0.08);
+    background-color: rgba(0, 200, 150, 0.08);
 }
 
 .art-body {
@@ -1904,7 +1903,7 @@ p {
 .method-icon {
     width: 44px;
     height: 44px;
-    background-color: rgba(0, 102, 255, 0.06);
+    background-color: rgba(0, 82, 204, 0.06);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -2504,7 +2503,7 @@ form {
 
 .founder-rank {
     display: inline-block;
-    background-color: rgba(0, 102, 255, 0.08);
+    background-color: rgba(0, 82, 204, 0.08);
     color: var(--secondary);
     font-size: 0.75rem;
     font-weight: 700;
@@ -2612,12 +2611,12 @@ form {
 }
 
 .track-badge.blue {
-    background-color: rgba(0, 102, 255, 0.06);
+    background-color: rgba(0, 82, 204, 0.06);
     color: var(--secondary);
 }
 
 .track-badge.emerald {
-    background-color: rgba(192, 38, 211, 0.06);
+    background-color: rgba(0, 200, 150, 0.06);
     color: var(--accent);
 }
 
@@ -2627,7 +2626,7 @@ form {
 }
 
 .track-badge.accent {
-    background-color: rgba(192, 38, 211, 0.06);
+    background-color: rgba(0, 200, 150, 0.06);
     color: var(--accent);
 }
 
