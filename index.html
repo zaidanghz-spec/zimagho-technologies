@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zimagho Technologies | Building Mission-Critical Digital Infrastructure</title>
+    <meta name="description" content="Zimagho Technologies designs and deploys secure, scalable, and intelligent technology ecosystems powering healthcare, government, and critical public infrastructure.">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Glassmorphic Header (Deloitte Public Sector Style) -->
+    <header id="site-header">
+        <div class="header-container">
+            <a href="#/" class="logo-area" id="nav-logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 100 100" width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 5L90 28.1V71.9L50 95L10 71.9V28.1L50 5Z" stroke="url(#logo-grad)" stroke-width="8" stroke-linejoin="round"/>
+                        <path d="M50 22L75 36.4V63.6L50 78L25 63.6V36.4L50 22Z" fill="url(#logo-grad-inner)"/>
+                        <circle cx="50" cy="50" r="8" fill="#00C896"/>
+                        <defs>
+                            <linearGradient id="logo-grad" x1="10" y1="5" x2="90" y2="95" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#0052CC"/>
+                                <stop offset="1" stop-color="#00C896"/>
+                            </linearGradient>
+                            <linearGradient id="logo-grad-inner" x1="25" y1="22" x2="75" y2="78" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#071B34"/>
+                                <stop offset="1" stop-color="#0052CC"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-main">ZIMAGHO</span>
+                    <span class="logo-sub">TECHNOLOGIES</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="desktop-nav" aria-label="Main Navigation">
+                <a href="#/" class="nav-link active" data-view="home">Home</a>
+                <a href="#/about" class="nav-link" data-view="about">About Us</a>
+                <div class="nav-dropdown-trigger">
+                    <span class="nav-link-dropdown">Solutions</span>
+                    <div class="nav-dropdown-menu">
+                        <a href="#/healthcare" class="dropdown-item">
+                            <span class="dropdown-title">Healthcare Tech</span>
+                            <span class="dropdown-desc">Clinical Systems & Interoperability</span>
+                        </a>
+                        <a href="#/government" class="dropdown-item">
+                            <span class="dropdown-title">Government & SPBE</span>
+                            <span class="dropdown-desc">Smart Cities & Digital Governance</span>
+                        </a>
+                    </div>
+                </div>
+                <a href="#/technology" class="nav-link" data-view="technology">Technology</a>
+                <a href="#/portfolio" class="nav-link" data-view="portfolio">Portfolio</a>
+                <a href="#/insights" class="nav-link" data-view="insights">Insights</a>
+                <a href="#/contact" class="nav-btn-outline" data-view="contact">Contact Us</a>
+            </nav>
+
+            <button class="mobile-menu-toggle" id="menu-btn" aria-label="Toggle Navigation Menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobile-drawer" class="mobile-drawer">
+        <div class="drawer-header">
+            <div class="logo-area">
+                <span class="logo-main">ZIMAGHO</span>
+                <span class="logo-sub">TECHNOLOGIES</span>
+            </div>
+            <button class="drawer-close" id="drawer-close-btn">&times;</button>
+        </div>
+        <nav class="mobile-nav-links">
+            <a href="#/" class="mobile-nav-link active" data-view="home">Home</a>
+            <a href="#/about" class="mobile-nav-link" data-view="about">About Us</a>
+            <a href="#/healthcare" class="mobile-nav-link" data-view="healthcare">Healthcare Technology</a>
+            <a href="#/government" class="mobile-nav-link" data-view="government">Government & SPBE</a>
+            <a href="#/technology" class="mobile-nav-link" data-view="technology">Technology & Innovation</a>
+            <a href="#/portfolio" class="mobile-nav-link" data-view="portfolio">Our Portfolio</a>
+            <a href="#/insights" class="mobile-nav-link" data-view="insights">Insights & Publications</a>
+            <a href="#/contact" class="mobile-nav-btn" data-view="contact">Schedule Consultation</a>
+        </nav>
+    </div>
+    <div id="drawer-overlay" class="drawer-overlay"></div>
+
+    <!-- MAIN SPA WRAPPER -->
+    <main id="app-container">
+
+        <!-- ================= PAGE 1: HOMEPAGE ================= -->
+        <section class="view-panel active" id="view-home">
+            
+            <!-- SECTION 1: HERO (Indonesia Map Visualizer) -->
+            <div class="hero-section dark-theme national-hero">
+                <canvas id="hero-canvas"></canvas>
+                <div class="hero-overlay"></div>
+                <div class="container hero-split-container">
+                    <!-- Left: Strategic Narrative -->
+                    <div class="hero-left">
+                        <div class="badge-accent">DIGITAL INFRASTRUCTURE • AI • AUTOMATION</div>
+                        <h1 class="hero-title animate-title">Building the Digital Backbone of Critical Institutions</h1>
+                        <p class="hero-subtitle">Zimagho Technologies designs and deploys mission-critical technology ecosystems powering healthcare, government, and public infrastructure across Indonesia.</p>
+                        <div class="hero-ctas">
+                            <a href="#/portfolio" class="btn btn-primary">Explore Solutions</a>
+                            <a href="#/contact" class="btn btn-secondary">Contact Us</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Animated National Map Visualizer -->
+                    <div class="hero-right">
+                        <div class="map-visual-wrapper">
+                            <!-- Abstract Stylized Indonesia SVG Map with Connected Pulsing Nodes -->
+                            <svg class="indonesia-map-svg" viewBox="0 0 800 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Grid Lines Background -->
+                                <defs>
+                                    <pattern id="map-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255, 255, 255, 0.02)" stroke-width="1"/>
+                                    </pattern>
+                                    <!-- Node glow filters -->
+                                    <filter id="glow-blue" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feGaussianBlur stdDeviation="6" result="blur" />
+                                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                    </filter>
+                                    <filter id="glow-emerald" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feGaussianBlur stdDeviation="6" result="blur" />
+                                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                    </filter>
+                                </defs>
+                                <rect width="100%" height="100%" fill="url(#map-grid)" />
+
+                                <!-- Abstract representation of Sumatra -->
+                                <path d="M50,120 L120,60 L230,160 L130,220 Z" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
+                                <!-- Abstract representation of Java -->
+                                <path d="M190,250 L340,250 L350,265 L200,265 Z" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
+                                <!-- Abstract representation of Kalimantan -->
+                                <path d="M260,110 L370,80 L400,160 L270,180 Z" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
+                                <!-- Abstract representation of Sulawesi -->
+                                <path d="M430,120 L480,100 L490,160 L440,190 Z" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
+                                <!-- Abstract representation of Irian Jaya -->
+                                <path d="M650,140 L760,140 L740,220 L660,200 Z" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
+
+                                <!-- Animated Connection Paths showing National Integration -->
+                                <path class="map-connection-path" d="M110,110 Q210,180 210,250" stroke="#0052CC" stroke-width="1.5" stroke-dasharray="8 6" />
+                                <path class="map-connection-path" d="M210,250 Q310,250 350,260" stroke="#0052CC" stroke-width="1.5" stroke-dasharray="8 6" />
+                                <path class="map-connection-path" d="M210,250 Q300,160 360,135" stroke="#00C896" stroke-width="1.5" stroke-dasharray="8 6" />
+                                <path class="map-connection-path" d="M360,135 Q410,150 460,150" stroke="#0052CC" stroke-width="1.5" stroke-dasharray="8 6" />
+                                <path class="map-connection-path" d="M460,150 Q560,180 700,180" stroke="#00C896" stroke-width="1.5" stroke-dasharray="8 6" />
+
+                                <!-- Pulse animations are triggered in CSS via keyframes -->
+                                <!-- Medan Node -->
+                                <circle class="map-pulse-circle blue" cx="110" cy="110" r="12" fill="none" stroke="#0052CC" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="110" cy="110" r="5" fill="#0052CC" filter="url(#glow-blue)" />
+                                <text x="90" y="95" fill="rgba(255, 255, 255, 0.6)" font-size="9" font-family="monospace">MEDAN: ACTIVE</text>
+
+                                <!-- Jakarta Node -->
+                                <circle class="map-pulse-circle emerald" cx="210" cy="250" r="16" fill="none" stroke="#00C896" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="210" cy="250" r="6" fill="#00C896" filter="url(#glow-emerald)" />
+                                <text x="170" y="235" fill="rgba(255, 255, 255, 0.9)" font-weight="bold" font-size="10" font-family="monospace">JKT HUB: SECURE</text>
+
+                                <!-- Surabaya Node -->
+                                <circle class="map-pulse-circle blue" cx="350" cy="260" r="12" fill="none" stroke="#0052CC" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="350" cy="260" r="5" fill="#0052CC" filter="url(#glow-blue)" />
+                                <text x="330" y="280" fill="rgba(255, 255, 255, 0.6)" font-size="9" font-family="monospace">SUB: 99.9% SYNC</text>
+
+                                <!-- IKN (Nusantara) Node -->
+                                <circle class="map-pulse-circle emerald" cx="360" cy="135" r="16" fill="none" stroke="#00C896" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="360" cy="135" r="6" fill="#00C896" filter="url(#glow-emerald)" />
+                                <text x="330" y="115" fill="rgba(255, 255, 255, 0.9)" font-weight="bold" font-size="10" font-family="monospace">IKN CENTRAL</text>
+
+                                <!-- Makassar Node -->
+                                <circle class="map-pulse-circle blue" cx="460" cy="150" r="12" fill="none" stroke="#0052CC" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="460" cy="150" r="5" fill="#0052CC" filter="url(#glow-blue)" />
+                                <text x="440" y="135" fill="rgba(255, 255, 255, 0.6)" font-size="9" font-family="monospace">MKS: RECONCILED</text>
+                            </svg>
+                            
+                            <!-- Telemetry Overlay Log (Simulating Live National Infrastructure Feeds) -->
+                            <div class="national-telemetry-hud">
+                                <div class="hud-header">
+                                    <span class="hud-dot pulsing"></span>
+                                    <span>NATIONAL PLATFORM INTEGRATION MONITOR</span>
+                                </div>
+                                <div class="telemetry-log">
+                                    <div class="log-entry"><span class="time">[08:11:09]</span> <span class="msg">Establishing national data exchange...</span></div>
+                                    <div class="log-entry"><span class="time">[08:11:05]</span> <span class="msg text-success">SatuSehat HL7 FHIR link validated.</span></div>
+                                    <div class="log-entry"><span class="time">[08:11:02]</span> <span class="msg">SPBE provincial core node online.</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trust Bar Section -->
+            <div class="trust-bar">
+                <div class="container trust-bar-container">
+                    <span class="trust-bar-title">Trusted Across Critical Sectors</span>
+                    <div class="trust-sectors">
+                        <span>Healthcare Technology</span>
+                        <span class="separator">•</span>
+                        <span>Government Transformation</span>
+                        <span class="separator">•</span>
+                        <span>Cybersecurity Operations</span>
+                        <span class="separator">•</span>
+                        <span>Enterprise Infrastructures</span>
+                        <span class="separator">•</span>
+                        <span>Sovereign Cloud Networks</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: CRITICAL SECTORS WE ENABLE (Immersive Fullscreen Split showcases) -->
+            <div class="section-container sectors-section bg-slate">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <span class="section-label">Strategic Capabilities</span>
+                        <h2 class="section-title">Critical Sectors We Enable</h2>
+                        <p class="section-desc max-w-700">We replace standard software cards with unified, mission-critical systems designed to operate at institutional scale.</p>
+                    </div>
+
+                    <!-- Alternate Row 1: Healthcare -->
+                    <div class="sector-showcase-row">
+                        <div class="sector-text-block">
+                            <span class="sector-row-label health">HEALTHCARE TECHNOLOGY</span>
+                            <h3>Improving healthcare delivery through automation, interoperability, and data intelligence.</h3>
+                            <p class="text-large">Connecting clinicians and institutional systems. Our healthcare solutions bridge clinical operational gaps, giving administrators visual control and doctor-led automation tools.</p>
+                            <a href="#/healthcare" class="btn btn-primary m-t-20">Learn More</a>
+                        </div>
+                        <div class="sector-visual-block">
+                            <!-- CLINICAL DASHBOARD (As shown in screenshot, fully preserved & animated) -->
+                            <div class="dashboard-mockup">
+                                <div class="mockup-header">
+                                    <span class="mockup-dot"></span>
+                                    <span class="mockup-dot"></span>
+                                    <span class="mockup-dot"></span>
+                                    <span class="mockup-title">Zimagho Clinical Intelligence Dashboard</span>
+                                </div>
+                                <div class="mockup-body">
+                                    <div class="mockup-stats">
+                                        <div class="stat-box">
+                                            <span class="stat-val">87%</span>
+                                            <span class="stat-lbl">Bed Occupancy</span>
+                                        </div>
+                                        <div class="stat-box">
+                                            <span class="stat-val">12s</span>
+                                            <span class="stat-lbl">EMR Sync Latency</span>
+                                        </div>
+                                        <div class="stat-box">
+                                            <span class="stat-val text-accent">Active</span>
+                                            <span class="stat-lbl">SatuSehat HL7</span>
+                                        </div>
+                                    </div>
+                                    <div class="mockup-chart" id="hims-bar-chart">
+                                        <div class="chart-bar" style="height: 40%"></div>
+                                        <div class="chart-bar" style="height: 60%"></div>
+                                        <div class="chart-bar" style="height: 85%"></div>
+                                        <div class="chart-bar" style="height: 70%"></div>
+                                        <div class="chart-bar" style="height: 95%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alternate Row 2: Government -->
+                    <div class="sector-showcase-row reverse">
+                        <div class="sector-visual-block">
+                            <!-- GOVERNMENT RADAR (As shown in screenshot, fully preserved & animated) -->
+                            <div class="dashboard-mockup">
+                                <div class="mockup-header">
+                                    <span class="mockup-dot"></span>
+                                    <span class="mockup-dot"></span>
+                                    <span class="mockup-dot"></span>
+                                    <span class="mockup-title">Zimagho Smart City Control Center</span>
+                                </div>
+                                <div class="mockup-body cmd-center">
+                                    <div class="grid-radar">
+                                        <div class="radar-line"></div>
+                                        <div class="radar-ping" style="top: 30%; left: 40%;"></div>
+                                        <div class="radar-ping" style="top: 60%; left: 70%;"></div>
+                                    </div>
+                                    <div class="radar-data">
+                                        <div class="data-row"><span class="lbl">Traffic Hub:</span> <span class="val text-success">Optimized</span></div>
+                                        <div class="data-row"><span class="lbl">Public Security:</span> <span class="val text-success">Secure</span></div>
+                                        <div class="data-row"><span class="lbl">System Load:</span> <span class="val">14.2 TFLOPS</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sector-text-block">
+                            <span class="sector-row-label gov">GOVERNMENT TECHNOLOGY</span>
+                            <h3>Modernizing public services through digital transformation and secure infrastructure.</h3>
+                            <p class="text-large">Empowering ministries and local governments (Pemda) to implement complete SPBE protocols. Consolidate public channels, automate workflows, and deploy resilient databases.</p>
+                            <a href="#/government" class="btn btn-primary m-t-20">Learn More</a>
+                        </div>
+                    </div>
+
+                    <!-- Alternate Row 3: Infrastructure -->
+                    <div class="sector-showcase-row">
+                        <div class="sector-text-block">
+                            <span class="sector-row-label infra">CRITICAL INFRASTRUCTURE</span>
+                            <h3>Deploying secure, high-availability hybrid clouds isolated within sovereign state lines.</h3>
+                            <p class="text-large">Securing regional databases and transaction nodes. We build local containerized failover environments, zero-trust cryptographic identities, and metropolitan cloud servers certified to national SLA guidelines.</p>
+                            <a href="#/technology" class="btn btn-primary m-t-20">Learn More</a>
+                        </div>
+                        <div class="sector-visual-block">
+                            <!-- Cloud Topology Visualization -->
+                            <div class="dashboard-mockup">
+                                <div class="mockup-header">
+                                    <span class="mockup-dot"></span>
+                                    <span class="mockup-dot"></span>
+                                    <span class="mockup-dot"></span>
+                                    <span class="mockup-title">Zimagho SOVCLOUD Core Architecture</span>
+                                </div>
+                                <div class="mockup-body cloud-vis">
+                                    <div class="cloud-grid">
+                                        <div class="cloud-node host">
+                                            <span>SOVCLOUD SERVER 1</span>
+                                            <div class="pulse-light green"></div>
+                                        </div>
+                                        <div class="cloud-link"></div>
+                                        <div class="cloud-node host">
+                                            <span>SOVCLOUD SERVER 2</span>
+                                            <div class="pulse-light green"></div>
+                                        </div>
+                                    </div>
+                                    <div class="cloud-db-status">
+                                        <span>REPLICATION LAG: <strong class="text-accent">1.2ms</strong></span>
+                                        <span>ENCRYPTION KEY: <strong class="text-blue">AES-GCM-256</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: OPERATING MODEL -->
+            <div class="section-container operating-model-section">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <span class="section-label">Strategic Corporate Division</span>
+                        <h2 class="section-title">Zimagho Operating Model</h2>
+                        <p class="section-desc max-w-700">A structured holding matrix directing dedicated subsidiaries to execute specialized national digital solutions.</p>
+                    </div>
+
+                    <!-- Interactive Tree diagram -->
+                    <div class="org-tree-container">
+                        <div class="tree-root">
+                            <div class="tree-node parent">
+                                <strong>ZIMAGHO TECHNOLOGIES</strong>
+                                <span>Digital Infrastructure, AI & Automation Group</span>
+                            </div>
+                        </div>
+
+                        <div class="tree-branches">
+                            <!-- Branch 1 -->
+                            <div class="tree-branch" data-sub="healthtech">
+                                <div class="tree-node child clickable active" id="node-healthtech">
+                                    <strong>HealthTech</strong>
+                                    <span>Solutions</span>
+                                </div>
+                            </div>
+                            <!-- Branch 2 -->
+                            <div class="tree-branch" data-sub="govtech">
+                                <div class="tree-node child clickable" id="node-govtech">
+                                    <strong>GovTech</strong>
+                                    <span>Platforms</span>
+                                </div>
+                            </div>
+                            <!-- Branch 3 -->
+                            <div class="tree-branch" data-sub="ailabs">
+                                <div class="tree-node child clickable" id="node-ailabs">
+                                    <strong>AI Labs</strong>
+                                    <span>Research</span>
+                                </div>
+                            </div>
+                            <!-- Branch 4 (Implicit parent node representation) -->
+                            <div class="tree-branch" data-sub="infra">
+                                <div class="tree-node child clickable" id="node-infra">
+                                    <strong>Digital Infrastructure</strong>
+                                    <span>Engineering</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subsidiary Dynamic Information Drawer -->
+                    <div class="subsidiary-info-card" id="subsidiary-drawer">
+                        <div class="drawer-header-info">
+                            <h3 id="sub-drawer-title">Zimagho HealthTech</h3>
+                            <span class="sub-drawer-tag" id="sub-drawer-tag">HEALTHCARE SECTOR SPECIALIST</span>
+                        </div>
+                        <div class="drawer-body-info">
+                            <p id="sub-drawer-desc">Empowering healthcare networks and regional hospitals through clinical intelligence, patient management, and SatuSehat interoperability modules. Zimagho HealthTech acts as the primary developer for modern electronic medical records systems across the archipelago.</p>
+                            
+                            <div class="drawer-core-solutions">
+                                <strong>Core Focus Areas:</strong>
+                                <ul id="sub-drawer-focus">
+                                    <li>Hospital Information Management Systems (HIMS)</li>
+                                    <li>Clinical Decision Support Systems (CDSS)</li>
+                                    <li>National Health Data Integration (SatuSehat HL7 FHIR)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: STRATEGIC PRIORITIES (2026–2030 Roadmap) -->
+            <div class="section-container bg-slate priorities-section">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <span class="section-label">ROADMAP 2026–2030</span>
+                        <h2 class="section-title">Strategic Priorities</h2>
+                        <p class="section-desc max-w-700">Detailed milestones cementing Zimagho's corporate direction and readiness to support national transformations.</p>
+                    </div>
+
+                    <div class="grid-4-col priorities-grid">
+                        <div class="priority-card-wide">
+                            <span class="pri-num">01</span>
+                            <h4>Healthcare Digitalization</h4>
+                            <span class="pri-tag text-accent">National Health Data Exchange</span>
+                            <p>Integrating 200+ healthcare networks into the secure HL7 FHIR Kemenkes SatuSehat platform, consolidating patient diagnostic pools.</p>
+                        </div>
+                        <div class="priority-card-wide">
+                            <span class="pri-num">02</span>
+                            <h4>Government Transformation</h4>
+                            <span class="pri-tag text-blue">SPBE Excellence</span>
+                            <p>Modernizing regional public channels (Pemda) and ministries, replacing paper workflows with secure consolidated portals.</p>
+                        </div>
+                        <div class="priority-card-wide">
+                            <span class="pri-num">03</span>
+                            <h4>AI Sovereignty</h4>
+                            <span class="pri-tag text-accent">Localized AI Infrastructure</span>
+                            <p>Deploying specialized Large Language Models running completely offline inside local BUMN databases to maintain extreme privacy.</p>
+                        </div>
+                        <div class="priority-card-wide">
+                            <span class="pri-num">04</span>
+                            <h4>Critical Infrastructure</h4>
+                            <span class="pri-tag text-blue">Resilient Cloud Systems</span>
+                            <p>Building high-availability multi-region SOVCLOUD server topologies certified to strict SLA and cybersecurity compliance rules.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: LEADERSHIP MESSAGE (Chairman Statement with profile visual) -->
+            <div class="section-container leadership-section">
+                <div class="container">
+                    <div class="grid-2-col leadership-grid align-center">
+                        <!-- McKinsey style profile visual box -->
+                        <div class="leader-image-box">
+                            <div class="leader-avatar-visual">
+                                <svg viewBox="0 0 100 100" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- McKinsey Partner visual motif -->
+                                    <rect width="100%" height="100%" fill="#071B34" />
+                                    <path d="M50,30 C62,30 72,40 72,52 C72,60 68,68 62,75 L38,75 C32,68 28,60 28,52 C28,40 38,30 50,30 Z" fill="#0052CC" opacity="0.6"/>
+                                    <circle cx="50" cy="48" r="10" fill="#00C896" opacity="0.8"/>
+                                    <path d="M20,90 C20,75 35,75 50,75 C65,75 80,75 80,90 Z" fill="#0052CC" />
+                                    <!-- Framing box lines -->
+                                    <rect x="5" y="5" width="90" height="90" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1" />
+                                </svg>
+                            </div>
+                            <div class="leader-meta">
+                                <strong>Khakim Ghozali</strong>
+                                <span>Founder, Zimagho Technologies</span>
+                            </div>
+                        </div>
+                        
+                        <div class="leader-text-box">
+                            <span class="section-label">MESSAGE FROM LEADERSHIP</span>
+                            <h2>Chairman's Message</h2>
+                            <blockquote class="leader-quote">
+                                "Technology should not merely digitize existing processes. It should strengthen institutions, improve public services, and create measurable societal impact. Zimagho was established to build secure, intelligent, and scalable technology ecosystems that support long-term national development."
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6: WHY INSTITUTIONS CHOOSE ZIMAGHO (Spacious strategic columns) -->
+            <div class="section-container why-zimagho-section bg-slate">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <span class="section-label">Institutional Anchors</span>
+                        <h2 class="section-title">Why Institutions Choose Zimagho</h2>
+                    </div>
+
+                    <div class="grid-4-col strategic-trust-grid">
+                        <div class="trust-col">
+                            <span class="trust-index">I</span>
+                            <h4>Regulatory Understanding</h4>
+                            <p>Deep experience aligned with SPBE regulations, Ministry procedures, clinical data standards (UU PDP), and secure state procurement procedures.</p>
+                        </div>
+                        <div class="trust-col">
+                            <span class="trust-index">II</span>
+                            <h4>Long-Term Partnership</h4>
+                            <p>Comprehensive system lifecycle support. We partner with ministries and hospitals for sustainable upgrades, scaling alongside state mandates.</p>
+                        </div>
+                        <div class="trust-col">
+                            <span class="trust-index">III</span>
+                            <h4>Mission-Critical Reliability</h4>
+                            <p>Engineered for high-availability operational environments. Zero-trust databases, active-active cloud failover layers, and 24/7 SOC NOC defense protocols.</p>
+                        </div>
+                        <div class="trust-col">
+                            <span class="trust-index">IV</span>
+                            <h4>National-Scale Readiness</h4>
+                            <p>System architectures engineered to easily host regional, provincial, and national workloads with low latency and total database integrity.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 7: PALANTIR STYLE FULLSCREEN BANNER -->
+            <div class="fullscreen-banner-section dark-theme">
+                <div class="container text-center">
+                    <span class="banner-badge">NATIONAL DIGITAL RESILIENCE</span>
+                    <h2>Building Systems That Matter</h2>
+                    
+                    <div class="banner-sectors-grid">
+                        <span>Healthcare Systems</span>
+                        <span>Government Services</span>
+                        <span>Critical Infrastructure</span>
+                        <span>Data Intelligence</span>
+                        <span>Artificial Intelligence</span>
+                        <span>Cybersecurity</span>
+                        <span>Digital Sovereignty</span>
+                    </div>
+                    
+                    <p class="banner-tagline">We build the technology ecosystems institutions depend on every day.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 2: ABOUT US ================= -->
+        <section class="view-panel" id="view-about">
+            <div class="subpage-hero dark-theme">
+                <div class="container">
+                    <span class="section-label text-accent">HOLDING PROFILE</span>
+                    <h1 class="subpage-title">About Zimagho Technologies</h1>
+                    <p class="subpage-desc">Southeast Asia's premium digital infrastructure, AI, and automation group operating critical-sector technology giants.</p>
+                </div>
+            </div>
+
+            <div class="section-container">
+                <div class="container">
+                    <div class="grid-2-col align-center">
+                        <div>
+                            <span class="section-label">WHO WE ARE</span>
+                            <h2 class="section-title">Building Resilient Digital Systems for Modern Civilizations</h2>
+                            <p class="m-b-20 text-large">Zimagho Technologies is a technology-driven investment and operations holding group focused on creating innovative, state-of-the-art solutions for healthcare, government, and enterprise sectors.</p>
+                            <p class="text-muted">We combine strategic funding, advanced system architectures, and deep compliance expertise. Our purpose is to help major institutions modernize operations, secure national data assets, and unlock the full economic value of modern automation.</p>
+                        </div>
+                        <div class="about-vision-card dark-theme">
+                            <div class="vision-icon">
+                                <svg viewBox="0 0 24 24" width="48" height="48" stroke="#00C896" stroke-width="1.5" fill="none"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+                            </div>
+                            <h3>Our Vision</h3>
+                            <p class="vision-text">To become Southeast Asia's leading digital infrastructure and automation group, driving institutional modernization and safeguarding critical sector technologies.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mission & Values -->
+            <div class="section-container bg-slate">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <span class="section-label">FOUNDATIONAL PRINCIPLES</span>
+                        <h2 class="section-title">Mission & Core Values</h2>
+                    </div>
+
+                    <div class="grid-2-col">
+                        <!-- Mission -->
+                        <div class="mission-block">
+                            <h3>Our Mission</h3>
+                            <ul class="mission-list">
+                                <li>
+                                    <span class="num">01</span>
+                                    <div class="txt"><strong>Drive Innovation:</strong> Pioneer resilient AI models, secure databases, and intelligent workflow technologies that solve grand challenges.</div>
+                                </li>
+                                <li>
+                                    <span class="num">02</span>
+                                    <div class="txt"><strong>Enable Transformation:</strong> Deliver modular, scalable software integrations that adapt smoothly to institutional constraints.</div>
+                                </li>
+                                <li>
+                                    <span class="num">03</span>
+                                    <div class="txt"><strong>Strengthen Institutions:</strong> Secure public sector infrastructure and hospital networks against cyber emergencies.</div>
+                                </li>
+                                <li>
+                                    <span class="num">04</span>
+                                    <div class="txt"><strong>Create Sustainable Impact:</strong> Build high-grade software products designed to remain operational for decades.</div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Values Grid -->
+                        <div class="values-block">
+                            <h3>Corporate Values</h3>
+                            <div class="grid-2-col m-t-20">
+                                <div class="value-item">
+                                    <div class="val-header">
+                                        <span class="val-dot"></span>
+                                        <strong>Integrity</strong>
+                                    </div>
+                                    <p>We maintain absolute ethical transparency in public procurement, audits, and sovereign partnerships.</p>
+                                </div>
+                                <div class="value-item">
+                                    <div class="val-header">
+                                        <span class="val-dot text-accent"></span>
+                                        <strong>Excellence</strong>
+                                    </div>
+                                    <p>We craft high-performance code, resilient databases, and world-class system architectures.</p>
+                                </div>
+                                <div class="value-item">
+                                    <div class="val-header">
+                                        <span class="val-dot text-blue"></span>
+                                        <strong>Innovation</strong>
+                                    </div>
+                                    <p>We continuously expand state capabilities through practical applications of AI and RPA.</p>
+                                </div>
+                                <div class="value-item">
+                                    <div class="val-header">
+                                        <span class="val-dot"></span>
+                                        <strong>Collaboration</strong>
+                                    </div>
+                                    <p>We align closely with ministries, BUMN bodies, clinical boards, and sovereign investors.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Corporate Governance -->
+            <div class="section-container governance-section">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <span class="section-label">SOVEREIGN SUITABILITY</span>
+                        <h2 class="section-title">Institutional Governance & Compliance</h2>
+                        <p class="section-desc max-w-700">Zimagho Technologies operates under strict corporate oversight, financial auditing protocols, and international cybersecurity frameworks to remain fully aligned with tender requirements.</p>
+                    </div>
+
+                    <div class="grid-3-col">
+                        <div class="gov-card">
+                            <h4>Regulatory Auditing</h4>
+                            <p>We undergo strict quarterly third-party financial audits and regulatory evaluations to satisfy BUMN, Ministry, and institutional stakeholder guidelines.</p>
+                        </div>
+                        <div class="gov-card">
+                            <h4>Data Protection & GDPR</h4>
+                            <p>Our solutions conform directly to global data sovereignty standards and national cyber governance rules (UU PDP), maintaining strict patient and citizen privacy.</p>
+                        </div>
+                        <div class="gov-card">
+                            <h4>ISO/IEC 27001 Certified</h4>
+                            <p>Our digital infrastructure and engineering nodes operate within formal ISO/IEC 27001 Information Security Management frameworks, securing critical networks against complex leaks.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 3: HEALTHCARE ================= -->
+        <section class="view-panel" id="view-healthcare">
+            <div class="subpage-hero dark-theme health-accent">
+                <div class="container">
+                    <span class="section-label text-accent">SECTOR SOLUTIONS</span>
+                    <h1 class="subpage-title">Healthcare Technology</h1>
+                    <p class="subpage-desc">Empowering healthcare providers and hospital networks through clinical AI, automated patient workflows, and SatuSehat interoperability.</p>
+                </div>
+            </div>
+
+            <!-- Challenges Section -->
+            <div class="section-container">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <span class="section-label">THE FRICTION POINTS</span>
+                        <h2 class="section-title">Critical Challenges in Healthcare Systems</h2>
+                    </div>
+
+                    <div class="grid-4-col">
+                        <div class="friction-card">
+                            <div class="fric-num">01</div>
+                            <h4>Fragmented Systems</h4>
+                            <p>Hospitals operate isolated systems, causing clinical staff to duplicate entries and struggle to fetch patient records during emergencies.</p>
+                        </div>
+                        <div class="friction-card">
+                            <div class="fric-num">02</div>
+                            <h4>Administrative Burden</h4>
+                            <p>Doctors spend substantial operational time filing forms and claims instead of delivering clinical care, creating severe backlogs.</p>
+                        </div>
+                        <div class="friction-card">
+                            <div class="fric-num">03</div>
+                            <h4>Information Silos</h4>
+                            <p>Critical diagnostic results, imaging data, and prescriptions are isolated, preventing comprehensive clinical analytics.</p>
+                        </div>
+                        <div class="friction-card">
+                            <div class="fric-num">04</div>
+                            <h4>Workforce Shortages</h4>
+                            <p>Nursing and clinical staff are overwhelmed with routine workflows, driving diagnostic lag and operational exhaustion.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Solutions Section -->
+            <div class="section-container bg-slate">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <span class="section-label">SYSTEM CAPABILITIES</span>
+                        <h2 class="section-title">Intelligent Healthcare Ecosystem</h2>
+                    </div>
+
+                    <div class="grid-2-col">
+                        <div class="sol-item-card">
+                            <div class="sol-icon-hdr">
+                                <span class="sol-dot health"></span>
+                                <h4>Clinical Intelligence & Diagnostics Support</h4>
+                            </div>
+                            <p>Deploy clinician-validated AI algorithms that cross-reference diagnostic logs, alert clinicians to patient anomalies in real time, and speed up critical triage decisions.</p>
+                            <ul class="bullet-list">
+                                <li>Real-time telemetry patient tracking</li>
+                                <li>Early-warning score (EWS) automation</li>
+                                <li>Neural imaging classification aid</li>
+                            </ul>
+                        </div>
+
+                        <div class="sol-item-card">
+                            <div class="sol-icon-hdr">
+                                <span class="sol-dot health"></span>
+                                <h4>Hospital & Claims Automation</h4>
+                            </div>
+                            <p>Leverage secure robotic software agents to automatically compile discharge files, process BPJS claims, and synchronize inventory records dynamically.</p>
+                            <ul class="bullet-list">
+                                <li>Automated BPJS claims validation</li>
+                                <li>Electronic prescription (e-Resep) routing</li>
+                                <li>Automated bed-capacity allocations</li>
+                            </ul>
+                        </div>
+
+                        <div class="sol-item-card">
+                            <div class="sol-icon-hdr">
+                                <span class="sol-dot health"></span>
+                                <h4>SatuSehat Interoperability Platform</h4>
+                            </div>
+                            <p>Achieve immediate compliance with the Indonesian Ministry of Health (Kemenkes) mandates via our pre-engineered HL7 FHIR integration engine.</p>
+                            <ul class="bullet-list">
+                                <li>SatuSehat RESTful API native linkages</li>
+                                <li>HL7 FHIR JSON data mapping pipelines</li>
+                                <li>Secure local encryption key vaults</li>
+                            </ul>
+                        </div>
+
+                        <div class="sol-item-card">
+                            <div class="sol-icon-hdr">
+                                <span class="sol-dot health"></span>
+                                <h4>Population Health Analytics</h4>
+                            </div>
+                            <p>Aggregated and anonymized data modeling that lets provincial leaders and hospital groups track epidemiology trends, allocate resources, and optimize public healthcare programs.</p>
+                            <ul class="bullet-list">
+                                <li>Disease hot-spot mapping dashboards</li>
+                                <li>Regional health index analytics</li>
+                                <li>Medical resource distribution forecasting</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefits -->
+            <div class="section-container">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <span class="section-label">MEASURED OUTCOMES</span>
+                        <h2 class="section-title">The Value We Deliver</h2>
+                    </div>
+
+                    <div class="grid-4-col text-center">
+                        <div class="benefit-box">
+                            <span class="val-metric text-accent">35%</span>
+                            <span class="lbl-metric">Reduction in Admin Time</span>
+                            <p class="desc-metric">Allowing nurses and physicians to focus on patient-facing clinical tasks.</p>
+                        </div>
+                        <div class="benefit-box">
+                            <span class="val-metric text-accent">100%</span>
+                            <span class="lbl-metric">MOH Compliance</span>
+                            <p class="desc-metric">Instant and robust synchronization with national SatuSehat FHIR platforms.</p>
+                        </div>
+                        <div class="benefit-box">
+                            <span class="val-metric text-accent">40%</span>
+                            <span class="lbl-metric">Faster Claims Settlement</span>
+                            <p class="desc-metric">Accelerated automated verification of insurance and BPJS transactions.</p>
+                        </div>
+                        <div class="benefit-box">
+                            <span class="val-metric text-accent">98%</span>
+                            <span class="lbl-metric">Diagnostic Accuracy Aid</span>
+                            <p class="desc-metric">AI algorithms backing clinical checks and reducing triage mistakes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 4: GOVERNMENT ================= -->
+        <section class="view-panel" id="view-government">
+            <div class="subpage-hero dark-theme gov-accent">
+                <div class="container">
+                    <span class="section-label text-blue">NATIONAL TRANSFORMATION</span>
+                    <h1 class="subpage-title">Government Technology & SPBE</h1>
+                    <p class="subpage-desc">Accelerating digital governance, optimizing public service efficiency, and securing municipal architectures in full compliance with SPBE mandates.</p>
+                </div>
+            </div>
+
+            <!-- SPBE Solutions -->
+            <div class="section-container">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <span class="section-label">SYSTEM ARCHITECTURES</span>
+                        <h2 class="section-title">SPBE & Digital Sovereign Public Solutions</h2>
+                        <p class="section-desc max-w-700">We construct secure, modular government software environments that connect separate regional departments into a secure unified operational system.</p>
+                    </div>
+
+                    <div class="grid-2-col">
+                        <div class="sol-item-card">
+                            <div class="sol-icon-hdr">
+                                <span class="sol-dot gov"></span>
+                                <h4>SPBE Modernization Suite</h4>
+                            </div>
+                            <p>Comply with national regulations on Sistem Pemerintahan Berbasis Elektronik. Zimagho builds integrated portals that unify municipal databases, eliminate agency software silos, and secure state reporting lines.</p>
+                            <ul class="bullet-list">
+                                <li>Single Sign-On (SSO) for civil servants</li>
+                                <li>Inter-departmental secure file transport</li>
+                                <li>Integrated regional executive dashboards</li>
+                            </ul>
+                        </div>
+
+                        <div class="sol-item-card">
+                            <div class="sol-icon-hdr">
+                                <span class="sol-dot gov"></span>
+                                <h4>Smart City Platform & Command Centers</h4>
+                            </div>
+                            <p>Deploy real-time city control grids. Pull feeds from traffic cams, environmental sensors, public security networks, and municipal service desks into an intelligent command map.</p>
+                            <ul class="bullet-list">
+                                <li>Real-time traffic flow automation</li>
+                                <li>Environmental telemetry warning sensors</li>
+                                <li>Emergency response dispatch boards</li>
+                            </ul>
+                        </div>
+
+                        <div class="sol-item-card">
+                            <div class="sol-icon-hdr">
+                                <span class="sol-dot gov"></span>
+                                <h4>Citizen Public Service Automation</h4>
+                            </div>
+                            <p>Digitize and automate licensing, document issuance, administrative claims, and citizen feedback portals to shorten queues and improve satisfaction.</p>
+                            <ul class="bullet-list">
+                                <li>Automated licensing processing engines</li>
+                                <li>AI-driven citizen service bots</li>
+                                <li>Unified municipal mobile platform integrations</li>
+                            </ul>
+                        </div>
+
+                        <div class="sol-item-card">
+                            <div class="sol-icon-hdr">
+                                <span class="sol-dot gov"></span>
+                                <h4>National Data Governance & Sovereignty</h4>
+                            </div>
+                            <p>Secure sovereign state archives. Build local cloud servers, cryptographically isolate confidential records, and define granular data access levels across agencies.</p>
+                            <ul class="bullet-list">
+                                <li>AES-256 data-at-rest database encryption</li>
+                                <li>Hierarchical identity-based access bounds</li>
+                                <li>Automated audit trail generation log systems</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Outcomes Section -->
+            <div class="section-container bg-slate">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <span class="section-label">PROVEN OUTCOMES</span>
+                        <h2 class="section-title">Fulfilling the Promise of Digital Governance</h2>
+                    </div>
+
+                    <div class="grid-4-col text-center">
+                        <div class="benefit-box">
+                            <span class="val-metric text-blue">80%</span>
+                            <span class="lbl-metric">Licensing Cycle Reduction</span>
+                            <p class="desc-metric">Automated pipelines shorten approval waits from days to minutes.</p>
+                        </div>
+                        <div class="benefit-box">
+                            <span class="val-metric text-blue">100%</span>
+                            <span class="lbl-metric">SPBE Standard Alignment</span>
+                            <p class="desc-metric">Total compliance with national technological standards and ministerial audits.</p>
+                        </div>
+                        <div class="benefit-box">
+                            <span class="val-metric text-blue">60%</span>
+                            <span class="lbl-metric">Lower Operational Overhead</span>
+                            <p class="desc-metric">Eliminating obsolete paper architectures and duplicate agency infrastructures.</p>
+                        </div>
+                        <div class="benefit-box">
+                            <span class="val-metric text-blue">Zero</span>
+                            <span class="lbl-metric">Data Breaches</span>
+                            <p class="desc-metric">Cryptographically isolated architectures defending state databases.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 5: TECHNOLOGY ================= -->
+        <section class="view-panel" id="view-technology">
+            <div class="subpage-hero dark-theme">
+                <div class="container">
+                    <span class="section-label text-accent">ENGINEERING STACK</span>
+                    <h1 class="subpage-title">Technology & Sovereign Innovation</h1>
+                    <p class="subpage-desc">Inside the advanced system architectures, AI pipelines, and cloud infrastructures engineered by Zimagho Technologies.</p>
+                </div>
+            </div>
+
+            <div class="section-container">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <span class="section-label">TECHNICAL DEPTH</span>
+                        <h2 class="section-title">The Foundation of Our Digital Systems</h2>
+                        <p class="section-desc max-w-700">We construct technologies that operate at scale. We do not integrate generic wrappers; our labs build robust software systems tailored to secure enterprise demands.</p>
+                    </div>
+
+                    <div class="grid-3-col">
+                        <!-- AI -->
+                        <div class="tech-detail-card">
+                            <div class="tech-lbl-code">AI & LOGICAL DEPLOYMENT</div>
+                            <h3>Artificial Intelligence</h3>
+                            <p>We engineer specialized Large Language Models (LLM) fine-tuned on local regulations and health documents. These models operate offline inside secure, localized servers, preventing data leaks to external servers.</p>
+                            <ul class="bullet-list small-text">
+                                <li>Custom Llama/Mistral fine-tuning pipelines</li>
+                                <li>Local data-sovereignty vector stores</li>
+                                <li>Automated medical anomaly detection aid</li>
+                            </ul>
+                        </div>
+
+                        <!-- Machine Learning -->
+                        <div class="tech-detail-card">
+                            <div class="tech-lbl-code">ML PIPELINES & TELEMETRY</div>
+                            <h3>Machine Learning</h3>
+                            <p>Our platforms execute predictive resource modeling. We train custom deep neural networks to forecast hospital beds requirement, energy consumption, and infrastructure stress points before failures occur.</p>
+                            <ul class="bullet-list small-text">
+                                <li>Distributed model training engines</li>
+                                <li>Time-series forecasting for public resources</li>
+                                <li>Multi-modal clinical telemetry classifiers</li>
+                            </ul>
+                        </div>
+
+                        <!-- Cloud -->
+                        <div class="tech-detail-card">
+                            <div class="tech-lbl-code">HYBRID HIGH-AVAILABILITY CLOUD</div>
+                            <h3>Cloud Infrastructure</h3>
+                            <p>We deploy robust containerized hybrid infrastructures. Combining localized bare-metal servers with state-approved public cloud systems to ensure 99.9% uptime and low latency.</p>
+                            <ul class="bullet-list small-text">
+                                <li>Kubernetes orchestration layers</li>
+                                <li>Multi-region live active-active failover</li>
+                                <li>Zero-latency database replication systems</li>
+                            </ul>
+                        </div>
+
+                        <!-- Cybersecurity -->
+                        <div class="tech-detail-card">
+                            <div class="tech-lbl-code">ZERO-TRUST ARCHITECTURE</div>
+                            <h3>Cybersecurity</h3>
+                            <p>We implement strict zero-trust standards. From identity validation via hardware tokens to automated intrusion containment. Every transaction inside a Zimagho platform is signed and authenticated.</p>
+                            <ul class="bullet-list small-text">
+                                <li>AES-GCM-256 link encryption protocols</li>
+                                <li>Multi-factor cryptographic signatures</li>
+                                <li>Automated SOC real-time tracking</li>
+                            </ul>
+                        </div>
+
+                        <!-- IoT -->
+                        <div class="tech-detail-card">
+                            <div class="tech-lbl-code">EDGE DATA TELEMETRY</div>
+                            <h3>Internet of Things</h3>
+                            <p>Distributed telemetry hardware and edge-computing processors that compress, validate, and sign sensory data directly at municipal boundaries before transit.</p>
+                            <ul class="bullet-list small-text">
+                                <li>Low-power wide-area network nodes</li>
+                                <li>Edge diagnostic signal compression</li>
+                                <li>Cryptographically signed telemetry packs</li>
+                            </ul>
+                        </div>
+
+                        <!-- RPA -->
+                        <div class="tech-detail-card">
+                            <div class="tech-lbl-code">WORKFLOW AUTOMATION ENGINE</div>
+                            <h3>Robotic Process Automation</h3>
+                            <p>Eliminate human administrative errors and duplicate records in government registries and hospital check-ins. Our software agents automate data inputs with total fidelity.</p>
+                            <ul class="bullet-list small-text">
+                                <li>Multimodal document OCR parsers</li>
+                                <li>Transactional reconciliation bots</li>
+                                <li>Legacy database software adapters</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 6: OUR COMPANIES ================= -->
+        <section class="view-panel" id="view-portfolio">
+            <div class="subpage-hero dark-theme">
+                <div class="container">
+                    <span class="section-label text-blue">HOLDING ARCHITECTURE</span>
+                    <h1 class="subpage-title">Our Specialized Subsidiaries</h1>
+                    <p class="subpage-desc">Zimagho Technologies operates four dedicated enterprises, each structured to deliver deep expertise to critical sectors.</p>
+                </div>
+            </div>
+
+            <!-- Interactive Hierarchy Visualizer -->
+            <div class="section-container bg-slate">
+                <div class="container">
+                    <div class="section-header text-center">
+                        <span class="section-label">ORGANIZATIONAL MATRIX</span>
+                        <h2 class="section-title">Institutional Structure of Zimagho Technologies</h2>
+                        <p class="section-desc max-w-700">A clear representation of our group structure. This architecture guarantees the scale, specialized division of labor, and resource capability to manage major national tenders.</p>
+                    </div>
+
+                    <!-- Interactive Tree diagram -->
+                    <div class="org-tree-container">
+                        <div class="tree-root">
+                            <div class="tree-node parent">
+                                <strong>ZIMAGHO TECHNOLOGIES</strong>
+                                <span>Digital Infrastructure, AI & Automation Group</span>
+                            </div>
+                        </div>
+
+                        <div class="tree-branches">
+                            <!-- Branch 1 -->
+                            <div class="tree-branch" data-sub="healthtech">
+                                <div class="tree-node child clickable active" id="node-healthtech">
+                                    <strong>Zimagho HealthTech</strong>
+                                    <span>Healthcare Modernization</span>
+                                </div>
+                            </div>
+                            <!-- Branch 2 -->
+                            <div class="tree-branch" data-sub="govtech">
+                                <div class="tree-node child clickable" id="node-govtech">
+                                    <strong>Zimagho GovTech</strong>
+                                    <span>SPBE & Municipal Automation</span>
+                                </div>
+                            </div>
+                            <!-- Branch 3 -->
+                            <div class="tree-branch" data-sub="ailabs">
+                                <div class="tree-node child clickable" id="node-ailabs">
+                                    <strong>Zimagho AI Labs</strong>
+                                    <span>Localized Model Research</span>
+                                </div>
+                            </div>
+                            <!-- Branch 4 -->
+                            <div class="tree-branch" data-sub="infra">
+                                <div class="tree-node child clickable" id="node-infra">
+                                    <strong>Zimagho Digital Infrastructure</strong>
+                                    <span>High-Availability Cloud & Security</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Subsidiary Dynamic Information Drawer -->
+                    <div class="subsidiary-info-card" id="subsidiary-drawer">
+                        <div class="drawer-header-info">
+                            <h3 id="sub-drawer-title">Zimagho HealthTech</h3>
+                            <span class="sub-drawer-tag" id="sub-drawer-tag">HEALTHCARE SECTOR SPECIALIST</span>
+                        </div>
+                        <div class="drawer-body-info">
+                            <p id="sub-drawer-desc">Empowering healthcare networks and regional hospitals through clinical intelligence, patient management, and SatuSehat interoperability modules. Zimagho HealthTech acts as the primary developer for modern electronic medical records systems across the archipelago.</p>
+                            
+                            <div class="drawer-core-solutions">
+                                <strong>Core Focus Areas:</strong>
+                                <ul id="sub-drawer-focus">
+                                    <li>Hospital Information Management Systems (HIMS)</li>
+                                    <li>Clinical Decision Support Systems (CDSS)</li>
+                                    <li>National Health Data Integration (SatuSehat HL7 FHIR)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 7: INSIGHTS ================= -->
+        <section class="view-panel" id="view-insights">
+            <div class="subpage-hero dark-theme">
+                <div class="container">
+                    <span class="section-label text-accent">PUBLICATIONS & RESEARCH</span>
+                    <h1 class="subpage-title">Zimagho Corporate Insights</h1>
+                    <p class="subpage-desc">Authoritative viewpoints on SPBE protocols, clinical digitization, data sovereignty, and secure automation in Southeast Asia.</p>
+                </div>
+            </div>
+
+            <div class="section-container">
+                <div class="container">
+                    <!-- Filter and Search Bar -->
+                    <div class="insights-controls">
+                        <div class="search-box-wrapper">
+                            <input type="text" id="insights-search" placeholder="Search publications (e.g. SatuSehat, SPBE)..." aria-label="Search articles">
+                        </div>
+                        <div class="filter-badges-container" id="category-filter-container">
+                            <button class="filter-badge active" data-category="all">All Publications</button>
+                            <button class="filter-badge" data-category="healthcare">Healthcare</button>
+                            <button class="filter-badge" data-category="government">Government</button>
+                            <button class="filter-badge" data-category="ai">AI</button>
+                            <button class="filter-badge" data-category="cybersecurity">Cybersecurity</button>
+                            <button class="filter-badge" data-category="spbe">SPBE</button>
+                            <button class="filter-badge" data-category="digital transformation">Digital Transformation</button>
+                        </div>
+                    </div>
+
+                    <!-- Articles Grid -->
+                    <div class="grid-3-col m-t-30" id="articles-grid">
+                        <!-- Article 1 -->
+                        <article class="article-card" data-category="healthcare digital transformation">
+                            <div class="art-badge">HEALTHCARE</div>
+                            <div class="art-body">
+                                <span class="art-date">May 15, 2026</span>
+                                <h3>Future of Healthcare Automation in Indonesia</h3>
+                                <p>An in-depth guide to adapting existing regional hospital EMR networks to meet the national Kemenkes SatuSehat HL7 FHIR requirements seamlessly, mitigating downtime and patient diagnostic lags.</p>
+                                <a href="#/insights" class="art-link">Read Whitepaper &rarr;</a>
+                            </div>
+                        </article>
+
+                        <!-- Article 2 -->
+                        <article class="article-card" data-category="government cybersecurity spbe">
+                            <div class="art-badge">GOVERNMENT</div>
+                            <div class="art-body">
+                                <span class="art-date">April 28, 2026</span>
+                                <h3>Building Secure Government Digital Ecosystems</h3>
+                                <p>Structuring secure municipal databases inside the framework of UU Perlindungan Data Pribadi (UU PDP). This whitepaper provides a blueprint for regional data-at-rest encryption protocols.</p>
+                                <a href="#/insights" class="art-link">Read Whitepaper &rarr;</a>
+                            </div>
+                        </article>
+
+                        <!-- Article 3 -->
+                        <article class="article-card" data-category="ai spbe digital transformation">
+                            <div class="art-badge">AI</div>
+                            <div class="art-body">
+                                <span class="art-date">March 12, 2026</span>
+                                <h3>AI Readiness for Public Institutions</h3>
+                                <p>How regional administrations can leverage localized Large Language Models (LLMs) to answer citizen inquiries automatically, while satisfying strict sovereign safety and information bounds.</p>
+                                <a href="#/insights" class="art-link">Read Whitepaper &rarr;</a>
+                            </div>
+                        </article>
+
+                        <!-- Article 4 -->
+                        <article class="article-card" data-category="cybersecurity digital transformation">
+                            <div class="art-badge">CYBERSECURITY</div>
+                            <div class="art-body">
+                                <span class="art-date">February 20, 2026</span>
+                                <h3>Applying Zero-Trust and Sovereign Controls</h3>
+                                <p>Why BUMN organizations and public entities must move beyond simple firewall lines to establish modular, identity-attested zero-trust access loops to block persistent network threats.</p>
+                                <a href="#/insights" class="art-link">Read Whitepaper &rarr;</a>
+                            </div>
+                        </article>
+
+                        <!-- Article 5 -->
+                        <article class="article-card" data-category="spbe government">
+                            <div class="art-badge">SPBE</div>
+                            <div class="art-body">
+                                <span class="art-date">January 15, 2026</span>
+                                <h3>Architectural Blueprints for Provincial SPBE</h3>
+                                <p>A technical assessment of provincial SPBE implementations, outlining methods for unifying disconnected municipal licensing databases into unified regional registries.</p>
+                                <a href="#/insights" class="art-link">Read Whitepaper &rarr;</a>
+                            </div>
+                        </article>
+
+                        <!-- Article 6 -->
+                        <article class="article-card" data-category="healthcare ai">
+                            <div class="art-badge">HEALTHCARE</div>
+                            <div class="art-body">
+                                <span class="art-date">December 05, 2025</span>
+                                <h3>Predictive Clinical Models inside Acute Wards</h3>
+                                <p>Tuning custom convolutional and recurrence networks on patient telemetry signals to identify early cardiac and diagnostic warning metrics hours before conventional alarms trigger.</p>
+                                <a href="#/insights" class="art-link">Read Whitepaper &rarr;</a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 8: CONTACT ================= -->
+        <section class="view-panel" id="view-contact">
+            <div class="subpage-hero dark-theme">
+                <div class="container">
+                    <span class="section-label text-accent">PARTNERSHIP INTERFACE</span>
+                    <h1 class="subpage-title">Let's Build the Future Together</h1>
+                    <p class="subpage-desc">Connect with our strategic relations team to explore tender partnerships, system integrations, or customized software solutions.</p>
+                </div>
+            </div>
+
+            <div class="section-container">
+                <div class="container">
+                    <div class="grid-2-col">
+                        <!-- Contact Details -->
+                        <div class="contact-details-block">
+                            <span class="section-label">INSTITUTIONAL RELATIONS</span>
+                            <h2>Strategic Partnership Hub</h2>
+                            <p class="text-large m-b-30">Zimagho collaborates with ministries, state-owned enterprises, regional hospitals, and tier-1 infrastructure investors to build high-availability public systems.</p>
+                            
+                            <div class="contact-methods">
+                                <div class="method-row">
+                                    <div class="method-icon">
+                                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="#0052CC" stroke-width="2" fill="none"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                    </div>
+                                    <div class="method-text">
+                                        <strong>Secure Advisory Line</strong>
+                                        <span>+62 (21) 5088 9988</span>
+                                    </div>
+                                </div>
+                                <div class="method-row">
+                                    <div class="method-icon">
+                                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="#0052CC" stroke-width="2" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                    </div>
+                                    <div class="method-text">
+                                        <strong>Institutional Inquiries</strong>
+                                        <span>relations@zimagho.com</span>
+                                    </div>
+                                </div>
+                                <div class="method-row">
+                                    <div class="method-icon">
+                                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="#0052CC" stroke-width="2" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    </div>
+                                    <div class="method-text">
+                                        <strong>Headquarters</strong>
+                                        <span>Zimagho Tower, Floor 44, Jl. Jend. Sudirman Kav 21, Jakarta, Indonesia</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Consulting Form -->
+                        <div class="contact-form-block" id="form-container">
+                            <span class="section-label">CONSULTATION SCHEDULER</span>
+                            <h3>Request Institutional Proposal</h3>
+                            <p class="form-desc">Provide your agency information below. Our technical advisory board will draft a localized briefing within 24 hours.</p>
+
+                            <form id="consultation-form" novalidate>
+                                <div class="form-group-row">
+                                    <div class="form-group">
+                                        <label for="contact-name">Name</label>
+                                        <input type="text" id="contact-name" placeholder="E.g. Dr. Ir. Hermawan" required>
+                                        <div class="error-msg" id="err-name">Please enter your name</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contact-org">Organization / Agency</label>
+                                        <input type="text" id="contact-org" placeholder="E.g. Dinas Kesehatan Provinsi" required>
+                                        <div class="error-msg" id="err-org">Please specify your organization</div>
+                                    </div>
+                                </div>
+                                <div class="form-group-row">
+                                    <div class="form-group">
+                                        <label for="contact-email">Corporate Email</label>
+                                        <input type="email" id="contact-email" placeholder="name@agency.go.id" required>
+                                        <div class="error-msg" id="err-email">Please enter a valid institutional email</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contact-phone">Contact Number</label>
+                                        <input type="tel" id="contact-phone" placeholder="E.g. +62 811..." required>
+                                        <div class="error-msg" id="err-phone">Please enter your telephone number</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-industry">Industry Segment</label>
+                                    <div class="custom-select-wrapper">
+                                        <select id="contact-industry" required>
+                                            <option value="" disabled selected>Select your sector...</option>
+                                            <option value="Healthcare">Healthcare (Hospitals & Boards)</option>
+                                            <option value="Government">Government & SPBE Modernization</option>
+                                            <option value="Enterprise">Enterprise & BUMN Integration</option>
+                                            <option value="Partnership">Strategic Tech Partnership</option>
+                                        </select>
+                                    </div>
+                                    <div class="error-msg" id="err-industry">Please select an industry segment</div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-message">Inquiry Details</label>
+                                    <textarea id="contact-message" rows="4" placeholder="Detail your project specifications, estimated timelines, or compliance requests..." required></textarea>
+                                    <div class="error-msg" id="err-message">Please enter your inquiry details</div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-full text-center">Submit Secure Request</button>
+                            </form>
+                        </div>
+
+                        <!-- Form Submission Success Overlay -->
+                        <div class="contact-success-card" id="form-success-card" style="display: none;">
+                            <div class="success-icon">
+                                <svg viewBox="0 0 24 24" width="64" height="64" stroke="#00C896" stroke-width="2" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            </div>
+                            <h3>Inquiry Received Securely</h3>
+                            <p class="success-desc">Your request has been cataloged under corporate reference ID <strong id="ref-id">ZIM-8890A</strong>. Our technical architecture committee will review your parameters and respond via institutional channels.</p>
+                            
+                            <div class="receipt-details">
+                                <div class="receipt-row"><span>Agency:</span> <strong id="rec-org">Dinas Kesehatan</strong></div>
+                                <div class="receipt-row"><span>Sector:</span> <strong id="rec-sector">Healthcare</strong></div>
+                                <div class="receipt-row"><span>Time:</span> <strong id="rec-time">10:44 AM (WIB)</strong></div>
+                            </div>
+                            <button class="btn btn-primary" id="btn-reset-form">Submit Another Request</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ACCENTURE STYLE HEAVY CORPORATE FOOTER (UPGRADED) -->
+    <footer id="site-footer" class="dark-theme heavy-footer">
+        <div class="container footer-upper">
+            <!-- Col 1: Brand Info -->
+            <div class="footer-brand">
+                <div class="logo-area">
+                    <svg viewBox="0 0 100 100" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 5L90 28.1V71.9L50 95L10 71.9V28.1L50 5Z" stroke="#0052CC" stroke-width="8"/>
+                        <circle cx="50" cy="50" r="8" fill="#00C896"/>
+                    </svg>
+                    <span class="logo-main">ZIMAGHO</span>
+                    <span class="logo-sub">TECHNOLOGIES</span>
+                </div>
+                <p class="tagline">Building Mission-Critical Technology Ecosystems for Healthcare, Government, and National Development.</p>
+                <div class="social-links">
+                    <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn Profile">LinkedIn</a>
+                    <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube Channel">YouTube</a>
+                </div>
+            </div>
+
+            <!-- Footer Columns -->
+            <div class="footer-links-grid">
+                <div class="footer-col">
+                    <strong>Solutions & Divisions</strong>
+                    <a href="#/healthcare">Healthcare Technology</a>
+                    <a href="#/government">Government Technology</a>
+                    <a href="#/technology">Artificial Intelligence</a>
+                    <a href="#/technology">Digital Infrastructure</a>
+                    <a href="#/technology">Cybersecurity Operations</a>
+                </div>
+                <div class="footer-col">
+                    <strong>Corporate Presence</strong>
+                    <a href="#/">Jakarta Headquarters</a>
+                    <a href="#/">Yogyakarta Engineering Hub</a>
+                    <a href="#/">Surabaya Operations Node</a>
+                </div>
+                <div class="footer-col">
+                    <strong>Tenders & Inquiries</strong>
+                    <a href="#/contact">partnership@zimagho.com</a>
+                    <a href="#/contact">corporate@zimagho.com</a>
+                    <a href="#/insights">Corporate Publications</a>
+                    <a href="#/insights">SPBE Guidelines</a>
+                </div>
+                <div class="footer-col">
+                    <strong>Legal & Compliance</strong>
+                    <a href="#/">Privacy Policy</a>
+                    <a href="#/">Terms of Use</a>
+                    <a href="#/">Cookie Policy</a>
+                    <a href="#/">Procurement Integrity Standards</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Corporate Structure Diagram for Tender Trust -->
+        <div class="container footer-diagram-container">
+            <h4>ZIMAGHO GROUP CORPORATE STRUCTURE</h4>
+            <div class="corporate-flowchart">
+                <div class="flow-level level-parent">
+                    <div class="flow-box parent">Zimagho Technologies</div>
+                </div>
+                <div class="flow-connectors">
+                    <div class="flow-line-main"></div>
+                    <div class="flow-line-branches">
+                        <div class="branch-line"></div>
+                        <div class="branch-line"></div>
+                        <div class="branch-line"></div>
+                    </div>
+                </div>
+                <div class="flow-level level-subsidiaries">
+                    <div class="flow-box child">
+                        <strong>Zimagho GovTech</strong>
+                        <span>Platforms & SPBE Services</span>
+                    </div>
+                    <div class="flow-box child">
+                        <strong>Zimagho HealthTech</strong>
+                        <span>HIMS Solutions & Clinical AI</span>
+                    </div>
+                    <div class="flow-box child">
+                        <strong>Zimagho AI Labs</strong>
+                        <span>LLM Research & Automation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container footer-lower">
+            <p>&copy; 2026 Zimagho Technologies. All Rights Reserved. ISO/IEC 27001 Registered Entity.</p>
+            <p class="footer-bottom-tag">Transforming Institutions Through Secure Technology</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
