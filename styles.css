@@ -2426,3 +2426,225 @@ form {
         font-size: 0.8rem;
     }
 }
+
+/* ==========================================================================
+   FOUNDER & SOVEREIGN PEDIGREE SECTION (Upgraded V2)
+   ========================================================================== */
+.founder-pedigree-section {
+    background-color: #F1F5F9;
+    border-top: 1px solid rgba(7, 27, 52, 0.05);
+    border-bottom: 1px solid rgba(7, 27, 52, 0.05);
+}
+
+.founder-grid {
+    align-items: start;
+    gap: 48px;
+}
+
+.founder-portrait-card {
+    background-color: var(--white);
+    border: 1px solid rgba(7, 27, 52, 0.08);
+    border-radius: 8px;
+    padding: 36px;
+    box-shadow: var(--card-shadow);
+}
+
+.founder-img-wrapper {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto 24px auto;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 2px solid var(--primary);
+    box-shadow: 0 10px 25px rgba(7, 27, 52, 0.12);
+}
+
+.founder-img-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+.founder-info-header {
+    text-align: center;
+    border-bottom: 1px solid rgba(7, 27, 52, 0.08);
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+}
+
+.founder-info-header h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+}
+
+.founder-rank {
+    display: inline-block;
+    background-color: rgba(0, 82, 204, 0.08);
+    color: var(--secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.founder-affiliation {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+}
+
+.founder-appointments h4 {
+    font-size: 0.95rem;
+    color: var(--primary);
+    font-weight: 800;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.appointment-list {
+    list-style: none;
+}
+
+.appointment-list li {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    position: relative;
+    padding-left: 18px;
+    line-height: 1.5;
+}
+
+.appointment-list li:last-child {
+    margin-bottom: 0;
+}
+
+.appointment-list li::before {
+    content: '▪';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 1.1rem;
+    top: -2px;
+}
+
+.appointment-list li strong {
+    color: var(--primary);
+}
+
+/* Right Column */
+.founder-track-record h3 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+}
+
+.track-intro {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.track-cards-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.track-card {
+    background-color: var(--white);
+    border: 1px solid rgba(7, 27, 52, 0.06);
+    border-radius: 6px;
+    padding: 24px 28px;
+    box-shadow: 0 4px 20px rgba(3, 13, 27, 0.01);
+    transition: var(--transition-smooth);
+    border-left: 4px solid var(--primary);
+}
+
+.track-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(7, 27, 52, 0.04);
+}
+
+.track-card-hdr {
+    margin-bottom: 14px;
+}
+
+.track-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 3px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+}
+
+.track-badge.blue {
+    background-color: rgba(0, 82, 204, 0.06);
+    color: var(--secondary);
+}
+
+.track-badge.emerald {
+    background-color: rgba(0, 200, 150, 0.06);
+    color: var(--accent);
+}
+
+.track-badge.navy {
+    background-color: rgba(7, 27, 52, 0.06);
+    color: var(--primary);
+}
+
+.track-badge.accent {
+    background-color: rgba(0, 200, 150, 0.06);
+    color: var(--accent);
+}
+
+.track-list {
+    list-style: none;
+}
+
+.track-list li {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+    line-height: 1.55;
+    position: relative;
+    padding-left: 18px;
+}
+
+.track-list li:last-child {
+    margin-bottom: 0;
+}
+
+.track-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--secondary);
+    font-weight: bold;
+    font-size: 1.1rem;
+    top: -2px;
+}
+
+.track-list li strong {
+    color: var(--primary);
+}
+
+@media (max-width: 991px) {
+    .founder-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+}
+
