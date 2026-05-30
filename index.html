@@ -17,23 +17,7 @@
     <header id="site-header">
         <div class="header-container">
             <a href="#/" class="logo-area" id="nav-logo">
-                <div class="logo-icon">
-                    <svg viewBox="0 0 100 100" width="40" height="40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M50 5L90 28.1V71.9L50 95L10 71.9V28.1L50 5Z" stroke="url(#logo-grad)" stroke-width="8" stroke-linejoin="round"/>
-                        <path d="M50 22L75 36.4V63.6L50 78L25 63.6V36.4L50 22Z" fill="url(#logo-grad-inner)"/>
-                        <circle cx="50" cy="50" r="8" fill="#00C896"/>
-                        <defs>
-                            <linearGradient id="logo-grad" x1="10" y1="5" x2="90" y2="95" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#0052CC"/>
-                                <stop offset="1" stop-color="#00C896"/>
-                            </linearGradient>
-                            <linearGradient id="logo-grad-inner" x1="25" y1="22" x2="75" y2="78" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#071B34"/>
-                                <stop offset="1" stop-color="#0052CC"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                </div>
+                <img src="assets/logo.png" alt="Zimagho Technologies Logo" class="logo-img">
                 <div class="logo-text">
                     <span class="logo-main">ZIMAGHO</span>
                     <span class="logo-sub">TECHNOLOGIES</span>
@@ -75,8 +59,11 @@
     <div id="mobile-drawer" class="mobile-drawer">
         <div class="drawer-header">
             <div class="logo-area">
-                <span class="logo-main">ZIMAGHO</span>
-                <span class="logo-sub">TECHNOLOGIES</span>
+                <img src="assets/logo.png" alt="Zimagho Technologies Logo" class="logo-img">
+                <div class="logo-text">
+                    <span class="logo-main">ZIMAGHO</span>
+                    <span class="logo-sub">TECHNOLOGIES</span>
+                </div>
             </div>
             <button class="drawer-close" id="drawer-close-btn">&times;</button>
         </div>
@@ -149,36 +136,36 @@
                                 <path d="M650,140 L760,140 L740,220 L660,200 Z" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
 
                                 <!-- Animated Connection Paths showing National Integration -->
-                                <path class="map-connection-path" d="M110,110 Q210,180 210,250" stroke="#0052CC" stroke-width="1.5" stroke-dasharray="8 6" />
-                                <path class="map-connection-path" d="M210,250 Q310,250 350,260" stroke="#0052CC" stroke-width="1.5" stroke-dasharray="8 6" />
-                                <path class="map-connection-path" d="M210,250 Q300,160 360,135" stroke="#00C896" stroke-width="1.5" stroke-dasharray="8 6" />
-                                <path class="map-connection-path" d="M360,135 Q410,150 460,150" stroke="#0052CC" stroke-width="1.5" stroke-dasharray="8 6" />
-                                <path class="map-connection-path" d="M460,150 Q560,180 700,180" stroke="#00C896" stroke-width="1.5" stroke-dasharray="8 6" />
+                                <path class="map-connection-path" d="M110,110 Q210,180 210,250" stroke="#0066FF" stroke-width="1.5" stroke-dasharray="8 6" />
+                                <path class="map-connection-path" d="M210,250 Q310,250 350,260" stroke="#0066FF" stroke-width="1.5" stroke-dasharray="8 6" />
+                                <path class="map-connection-path" d="M210,250 Q300,160 360,135" stroke="#C026D3" stroke-width="1.5" stroke-dasharray="8 6" />
+                                <path class="map-connection-path" d="M360,135 Q410,150 460,150" stroke="#0066FF" stroke-width="1.5" stroke-dasharray="8 6" />
+                                <path class="map-connection-path" d="M460,150 Q560,180 700,180" stroke="#C026D3" stroke-width="1.5" stroke-dasharray="8 6" />
 
                                 <!-- Pulse animations are triggered in CSS via keyframes -->
                                 <!-- Medan Node -->
-                                <circle class="map-pulse-circle blue" cx="110" cy="110" r="12" fill="none" stroke="#0052CC" stroke-width="1.5" opacity="0.6"/>
-                                <circle cx="110" cy="110" r="5" fill="#0052CC" filter="url(#glow-blue)" />
+                                <circle class="map-pulse-circle blue" cx="110" cy="110" r="12" fill="none" stroke="#0066FF" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="110" cy="110" r="5" fill="#0066FF" filter="url(#glow-blue)" />
                                 <text x="90" y="95" fill="rgba(255, 255, 255, 0.6)" font-size="9" font-family="monospace">MEDAN: ACTIVE</text>
 
                                 <!-- Jakarta Node -->
-                                <circle class="map-pulse-circle emerald" cx="210" cy="250" r="16" fill="none" stroke="#00C896" stroke-width="1.5" opacity="0.6"/>
-                                <circle cx="210" cy="250" r="6" fill="#00C896" filter="url(#glow-emerald)" />
+                                <circle class="map-pulse-circle emerald" cx="210" cy="250" r="16" fill="none" stroke="#C026D3" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="210" cy="250" r="6" fill="#C026D3" filter="url(#glow-emerald)" />
                                 <text x="170" y="235" fill="rgba(255, 255, 255, 0.9)" font-weight="bold" font-size="10" font-family="monospace">JKT HUB: SECURE</text>
 
                                 <!-- Surabaya Node -->
-                                <circle class="map-pulse-circle blue" cx="350" cy="260" r="12" fill="none" stroke="#0052CC" stroke-width="1.5" opacity="0.6"/>
-                                <circle cx="350" cy="260" r="5" fill="#0052CC" filter="url(#glow-blue)" />
+                                <circle class="map-pulse-circle blue" cx="350" cy="260" r="12" fill="none" stroke="#0066FF" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="350" cy="260" r="5" fill="#0066FF" filter="url(#glow-blue)" />
                                 <text x="330" y="280" fill="rgba(255, 255, 255, 0.6)" font-size="9" font-family="monospace">SUB: 99.9% SYNC</text>
 
                                 <!-- IKN (Nusantara) Node -->
-                                <circle class="map-pulse-circle emerald" cx="360" cy="135" r="16" fill="none" stroke="#00C896" stroke-width="1.5" opacity="0.6"/>
-                                <circle cx="360" cy="135" r="6" fill="#00C896" filter="url(#glow-emerald)" />
+                                <circle class="map-pulse-circle emerald" cx="360" cy="135" r="16" fill="none" stroke="#C026D3" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="360" cy="135" r="6" fill="#C026D3" filter="url(#glow-emerald)" />
                                 <text x="330" y="115" fill="rgba(255, 255, 255, 0.9)" font-weight="bold" font-size="10" font-family="monospace">IKN CENTRAL</text>
 
                                 <!-- Makassar Node -->
-                                <circle class="map-pulse-circle blue" cx="460" cy="150" r="12" fill="none" stroke="#0052CC" stroke-width="1.5" opacity="0.6"/>
-                                <circle cx="460" cy="150" r="5" fill="#0052CC" filter="url(#glow-blue)" />
+                                <circle class="map-pulse-circle blue" cx="460" cy="150" r="12" fill="none" stroke="#0066FF" stroke-width="1.5" opacity="0.6"/>
+                                <circle cx="460" cy="150" r="5" fill="#0066FF" filter="url(#glow-blue)" />
                                 <text x="440" y="135" fill="rgba(255, 255, 255, 0.6)" font-size="9" font-family="monospace">MKS: RECONCILED</text>
                             </svg>
                             
@@ -463,9 +450,9 @@
                                 <svg viewBox="0 0 100 100" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <!-- McKinsey Partner visual motif -->
                                     <rect width="100%" height="100%" fill="#071B34" />
-                                    <path d="M50,30 C62,30 72,40 72,52 C72,60 68,68 62,75 L38,75 C32,68 28,60 28,52 C28,40 38,30 50,30 Z" fill="#0052CC" opacity="0.6"/>
-                                    <circle cx="50" cy="48" r="10" fill="#00C896" opacity="0.8"/>
-                                    <path d="M20,90 C20,75 35,75 50,75 C65,75 80,75 80,90 Z" fill="#0052CC" />
+                                    <path d="M50,30 C62,30 72,40 72,52 C72,60 68,68 62,75 L38,75 C32,68 28,60 28,52 C28,40 38,30 50,30 Z" fill="#0066FF" opacity="0.6"/>
+                                    <circle cx="50" cy="48" r="10" fill="#C026D3" opacity="0.8"/>
+                                    <path d="M20,90 C20,75 35,75 50,75 C65,75 80,75 80,90 Z" fill="#0066FF" />
                                     <!-- Framing box lines -->
                                     <rect x="5" y="5" width="90" height="90" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1" />
                                 </svg>
@@ -562,7 +549,7 @@
                         </div>
                         <div class="about-vision-card dark-theme">
                             <div class="vision-icon">
-                                <svg viewBox="0 0 24 24" width="48" height="48" stroke="#00C896" stroke-width="1.5" fill="none"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+                                <svg viewBox="0 0 24 24" width="48" height="48" stroke="#C026D3" stroke-width="1.5" fill="none"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
                             </div>
                             <h3>Our Vision</h3>
                             <p class="vision-text">To become Southeast Asia's leading digital infrastructure and automation group, driving institutional modernization and safeguarding critical sector technologies.</p>
@@ -1312,7 +1299,7 @@
                             <div class="contact-methods">
                                 <div class="method-row">
                                     <div class="method-icon">
-                                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="#0052CC" stroke-width="2" fill="none"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="#0066FF" stroke-width="2" fill="none"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                                     </div>
                                     <div class="method-text">
                                         <strong>Secure Advisory Line</strong>
@@ -1321,7 +1308,7 @@
                                 </div>
                                 <div class="method-row">
                                     <div class="method-icon">
-                                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="#0052CC" stroke-width="2" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="#0066FF" stroke-width="2" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                                     </div>
                                     <div class="method-text">
                                         <strong>Institutional Inquiries</strong>
@@ -1330,7 +1317,7 @@
                                 </div>
                                 <div class="method-row">
                                     <div class="method-icon">
-                                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="#0052CC" stroke-width="2" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="#0066FF" stroke-width="2" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                                     </div>
                                     <div class="method-text">
                                         <strong>Headquarters</strong>
@@ -1397,7 +1384,7 @@
                         <!-- Form Submission Success Overlay -->
                         <div class="contact-success-card" id="form-success-card" style="display: none;">
                             <div class="success-icon">
-                                <svg viewBox="0 0 24 24" width="64" height="64" stroke="#00C896" stroke-width="2" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                <svg viewBox="0 0 24 24" width="64" height="64" stroke="#C026D3" stroke-width="2" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                             </div>
                             <h3>Inquiry Received Securely</h3>
                             <p class="success-desc">Your request has been cataloged under corporate reference ID <strong id="ref-id">ZIM-8890A</strong>. Our technical architecture committee will review your parameters and respond via institutional channels.</p>
@@ -1422,12 +1409,11 @@
             <!-- Col 1: Brand Info -->
             <div class="footer-brand">
                 <div class="logo-area">
-                    <svg viewBox="0 0 100 100" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M50 5L90 28.1V71.9L50 95L10 71.9V28.1L50 5Z" stroke="#0052CC" stroke-width="8"/>
-                        <circle cx="50" cy="50" r="8" fill="#00C896"/>
-                    </svg>
-                    <span class="logo-main">ZIMAGHO</span>
-                    <span class="logo-sub">TECHNOLOGIES</span>
+                    <img src="assets/logo.png" alt="Zimagho Technologies Logo" class="logo-img">
+                    <div class="logo-text">
+                        <span class="logo-main">ZIMAGHO</span>
+                        <span class="logo-sub">TECHNOLOGIES</span>
+                    </div>
                 </div>
                 <p class="tagline">Building Mission-Critical Technology Ecosystems for Healthcare, Government, and National Development.</p>
                 <div class="social-links">

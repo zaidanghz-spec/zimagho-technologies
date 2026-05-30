@@ -240,6 +240,8 @@ document.addEventListener('DOMContentLoaded', () => {
             this.vx = (Math.random() - 0.5) * 0.4;
             this.vy = (Math.random() - 0.5) * 0.4;
             this.radius = Math.random() * 2 + 1;
+            // Digital network nodes matching purple/blue logo
+            this.color = Math.random() > 0.5 ? '#B500E5' : '#0066FF';
         }
 
         update() {
@@ -268,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!ctx) return;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            ctx.fillStyle = '#0052CC';
+            ctx.fillStyle = this.color;
             ctx.fill();
         }
     }
@@ -302,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.beginPath();
                     ctx.moveTo(particles[i].x, particles[i].y);
                     ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.strokeStyle = `rgba(0, 200, 150, ${alpha})`;
+                    ctx.strokeStyle = `rgba(168, 85, 247, ${alpha})`;
                     ctx.lineWidth = 0.8;
                     ctx.stroke();
                 }
