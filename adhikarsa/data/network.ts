@@ -32,7 +32,7 @@ export const NODES: readonly NetNode[] = [
   { id: "lab", label: "LAB", meta: "Diagnostics", x: 152, y: 516, side: "right" },
   { id: "pharmacy", label: "PHARMACY", meta: "Dispensing", x: 348, y: 58, side: "bottom" },
   { id: "radiology", label: "RADIOLOGY", meta: "Imaging", x: 664, y: 72, side: "bottom" },
-  { id: "finance", label: "FINANCE", meta: "Billing", x: 888, y: 126, side: "left" },
+  { id: "finance", label: "FINANCE", meta: "Billing", x: 892, y: 172, side: "left" },
   { id: "operations", label: "OPERATIONS", meta: "Resourcing", x: 932, y: 322, side: "left" },
   { id: "iot", label: "IOT", meta: "Devices", x: 850, y: 518, side: "left", accent: "online" },
   { id: "ai", label: "AI ENGINE", meta: "Inference", x: 498, y: 580, side: "top", accent: "violet" },

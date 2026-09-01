@@ -48,10 +48,12 @@ export function RevealText({
             key={i}
             className="block overflow-hidden pb-[0.16em] -mb-[0.16em]"
           >
-            <motion.span
-              variants={maskLine}
-              className={cn("block will-change-transform", lineClassName)}
-            >
+            {/* No `will-change` here on purpose: promoting the line to its
+                own compositing layer stops an ancestor's
+                `background-clip: text` gradient from painting these glyphs,
+                which renders the whole headline invisible. Framer already
+                sets `will-change` for the duration of the animation. */}
+            <motion.span data-reveal variants={maskLine} className={cn("block", lineClassName)}>
               {line}
             </motion.span>
           </span>

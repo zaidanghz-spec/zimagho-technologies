@@ -40,7 +40,7 @@
   --text-display--line-height: 0.94;
   --text-display--letter-spacing: -0.042em;
 
-  --text-headline: clamp(2rem, 5.1vw, 3.75rem);
+  --text-headline: clamp(1.5rem, 4.7vw, 3.5rem);
   --text-headline--line-height: 1.02;
   --text-headline--letter-spacing: -0.033em;
 
@@ -171,15 +171,18 @@
   mask-image: radial-gradient(ellipse 70% 62% at 50% 45%, #000 30%, transparent 100%);
 }
 
-@utility text-gradient {
+/* Named so they can never be grouped with Tailwind's `text-*` size or colour
+   utilities: `tailwind-merge` classified `text-gradient` as a text utility and
+   silently dropped `text-headline` wherever the two met in one `cn()` call. */
+@utility gradient-paper {
   background: linear-gradient(174deg, var(--color-paper) 8%, #a9bdd4 62%, #6f8399 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-@utility text-signal-gradient {
-  background: linear-gradient(100deg, var(--color-signal-bright) 0%, var(--color-signal) 45%, var(--color-indigo) 100%);
+@utility gradient-signal {
+  background: linear-gradient(100deg, #7dd3fc 0%, var(--color-signal) 46%, #818cf8 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -188,7 +191,7 @@
 /* Shared page gutter */
 @utility shell {
   width: 100%;
-  max-width: 84rem;
+  max-width: 88rem;
   margin-inline: auto;
   padding-inline: 1.25rem;
   @media (width >= 40rem) {
@@ -276,6 +279,21 @@
   50%, 100% { opacity: 0; }
 }
 
+/* Intelligence core — each ring spins inside its own tilted plane, so the
+   composite reads as a gyroscope rather than three flat circles. */
+@keyframes adk-orbit-a {
+  from { transform: rotateX(74deg) rotateZ(0deg); }
+  to { transform: rotateX(74deg) rotateZ(360deg); }
+}
+@keyframes adk-orbit-b {
+  from { transform: rotateX(64deg) rotateY(56deg) rotateZ(0deg); }
+  to { transform: rotateX(64deg) rotateY(56deg) rotateZ(360deg); }
+}
+@keyframes adk-orbit-c {
+  from { transform: rotateX(22deg) rotateY(-44deg) rotateZ(360deg); }
+  to { transform: rotateX(22deg) rotateY(-44deg) rotateZ(0deg); }
+}
+
 .anim-blink { animation: adk-blink 2.6s steps(1, end) infinite; }
 .anim-drift { animation: adk-drift 26s ease-in-out infinite; }
 .anim-spin-slow { animation: adk-spin-slow 42s linear infinite; }
@@ -284,6 +302,30 @@
 .anim-stream { animation: adk-stream 14s linear infinite; }
 .anim-scan-x { animation: adk-scan-x 4.2s cubic-bezier(0.83, 0, 0.17, 1) infinite; }
 .anim-caret { animation: adk-caret 1.1s steps(1, end) infinite; }
+.anim-orbit-a { animation: adk-orbit-a 22s linear infinite; }
+.anim-orbit-b { animation: adk-orbit-b 30s linear infinite; }
+.anim-orbit-c { animation: adk-orbit-c 38s linear infinite; }
+
+/* ============================================================
+   NO JAVASCRIPT
+   ------------------------------------------------------------
+   Reveal animations start from an inline `opacity: 0` that is rendered on the
+   server, so without JavaScript the copy below the fold would never appear.
+   The `no-js` class is stripped by an inline script before first paint; if
+   that script never runs, everything marked `data-reveal` is simply shown.
+   ============================================================ */
+
+.no-js [data-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* The entry curtain is lifted by a timer. No JavaScript, no timer — so it must
+   never be painted in the first place. */
+.no-js [data-preloader] {
+  display: none !important;
+}
 
 /* ============================================================
    REDUCED MOTION — hard stop for every decorative animation

@@ -52,6 +52,7 @@ export function Reveal({
   const Comp = TAGS[as];
   return (
     <Comp
+      data-reveal
       className={className}
       variants={PRESETS[preset]}
       initial="hidden"
@@ -105,7 +106,7 @@ export function RevealItem({
 }: Omit<RevealProps, "delay">) {
   const Comp = TAGS[as];
   return (
-    <Comp className={cn(className)} variants={PRESETS[preset]}>
+    <Comp data-reveal className={cn(className)} variants={PRESETS[preset]}>
       {children}
     </Comp>
   );

@@ -70,8 +70,18 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html
+      lang="en"
+      className={`no-js ${GeistSans.variable} ${GeistMono.variable}`}
+    >
       <body className="antialiased">
+        {/* Runs before first paint. If it never runs, `.no-js` stays and the
+            stylesheet reveals every `data-reveal` element unconditionally. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.classList.remove('no-js')`,
+          }}
+        />
         <MotionProvider>
           <GradientDefs />
           <AmbientBackground />

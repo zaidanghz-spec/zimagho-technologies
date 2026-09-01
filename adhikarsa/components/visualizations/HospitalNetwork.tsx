@@ -46,13 +46,15 @@ export function HospitalNetwork({ className }: { className?: string }) {
     >
       {/* Full topology — pointer-capable widths only. */}
       <div className="relative hidden aspect-[1000/640] w-full md:block">
-        {/* Depth layer: ambient core bloom, drifts further than the diagram */}
+        {/* Depth layer: ambient core bloom, drifts further than the diagram.
+            Sized rather than scaled — a scaled wrapper would push its box past
+            the stage and widen the document. */}
         <motion.div
           aria-hidden
-          style={{ x: near.x, y: near.y, scale: 1.6 }}
-          className="absolute inset-0"
+          style={{ x: near.x, y: near.y }}
+          className="absolute inset-0 overflow-hidden"
         >
-          <div className="absolute top-1/2 left-1/2 h-[46%] w-[46%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(56,189,248,0.16),transparent_68%)] blur-2xl" />
+          <div className="absolute top-1/2 left-1/2 h-[74%] w-[74%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(56,189,248,0.16),transparent_68%)] blur-2xl" />
         </motion.div>
 
         {/* Diagram layer: links, nodes and core share one transform */}
@@ -96,6 +98,7 @@ export function HospitalNetwork({ className }: { className?: string }) {
 
           {/* Core */}
           <motion.div
+            data-reveal
             initial={{ opacity: 0, scale: 0.72 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 1.1, duration: 0.9, ease: EASE_OUT_EXPO }}
@@ -135,11 +138,15 @@ export function HospitalNetwork({ className }: { className?: string }) {
 
         {/* Caption layer — subtle telemetry, deliberately illustrative */}
         <div className="pointer-events-none absolute inset-0">
-          <TelemetryCaption text={SYSTEM_LABELS[0]} className="top-[4%] left-[2%]" delay={2.3} tone="online" />
-          <TelemetryCaption text={SYSTEM_LABELS[1]} className="top-[42%] right-[1%]" delay={2.5} />
-          <TelemetryCaption text={SYSTEM_LABELS[2]} className="bottom-[16%] left-[4%]" delay={2.7} tone="signal" />
-          <TelemetryCaption text={SYSTEM_LABELS[3]} className="right-[6%] bottom-[3%]" delay={2.9} />
-          <TelemetryCaption text={SYSTEM_LABELS[4]} className="top-[16%] right-[26%] hidden lg:flex" delay={3.1} />
+          <TelemetryCaption text={SYSTEM_LABELS[0]} className="top-[1%] left-0" delay={2.3} tone="online" />
+          <TelemetryCaption text={SYSTEM_LABELS[1]} className="top-[40%] right-0" delay={2.5} />
+          <TelemetryCaption text={SYSTEM_LABELS[2]} className="bottom-[5%] left-0" delay={2.7} tone="signal" />
+          <TelemetryCaption text={SYSTEM_LABELS[3]} className="right-[3%] bottom-[1%]" delay={2.9} />
+          <TelemetryCaption
+            text={SYSTEM_LABELS[4]}
+            className="top-0 left-1/2 hidden -translate-x-1/2 lg:flex"
+            delay={3.1}
+          />
         </div>
       </div>
 
@@ -162,6 +169,7 @@ function TelemetryCaption({
 }) {
   return (
     <motion.span
+      data-reveal
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.7, ease: EASE_OUT_EXPO }}
@@ -188,6 +196,7 @@ function NetworkCompact({ className }: { className?: string }) {
 
       <div className="relative flex flex-col items-center">
         <motion.div
+          data-reveal
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1.1, duration: 0.8, ease: EASE_OUT_EXPO }}
@@ -225,6 +234,7 @@ function NetworkCompact({ className }: { className?: string }) {
           {NODES.map((n, i) => (
             <motion.li
               key={n.id}
+              data-reveal
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.5 + i * 0.06, duration: 0.6, ease: EASE_OUT_EXPO }}

@@ -41,9 +41,10 @@ export function Hero() {
           {/* Copy */}
           <motion.div
             style={{ y: copyY, opacity: copyOpacity }}
-            className="xl:col-span-5 2xl:col-span-5"
+            className="xl:col-span-6"
           >
             <motion.div
+              data-reveal
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.25, duration: 0.7, ease: EASE_OUT_EXPO }}
@@ -57,11 +58,15 @@ export function Hero() {
               delay={1.3}
               gap={0.09}
               lines={["Engineering", "the intelligent", "hospital."]}
-              className="mt-7 text-display font-medium text-gradient"
+              /* Sized against the column it lives in, not the viewport alone:
+                 in the split layout the headline has half the page, so the
+                 desktop step is capped to keep three lines on three lines. */
+              className="mt-7 text-[clamp(2.15rem,7.2vw,4.5rem)] leading-[0.94] font-medium tracking-[-0.042em] gradient-paper xl:text-[clamp(3.5rem,5.15vw,5rem)]"
               lineClassName="pr-[0.06em]"
             />
 
             <motion.p
+              data-reveal
               initial={{ opacity: 0, y: 18, filter: "blur(8px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ delay: 1.72, duration: 0.85, ease: EASE_OUT_EXPO }}
@@ -73,20 +78,32 @@ export function Hero() {
             </motion.p>
 
             <motion.div
+              data-reveal
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.9, duration: 0.8, ease: EASE_OUT_EXPO }}
               className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center"
             >
-              <Button href={`#${SECTIONS.intelligence}`} icon>
+              <Button
+                href={`#${SECTIONS.intelligence}`}
+                icon
+                wrapperClassName="w-full sm:w-auto"
+                className="w-full sm:w-auto"
+              >
                 Explore Our Technology
               </Button>
-              <Button href={`#${SECTIONS.contact}`} variant="ghost">
+              <Button
+                href={`#${SECTIONS.contact}`}
+                variant="ghost"
+                wrapperClassName="w-full sm:w-auto"
+                className="w-full sm:w-auto"
+              >
                 Discuss a Project
               </Button>
             </motion.div>
 
             <motion.ul
+              data-reveal
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 2.15, duration: 0.9 }}
@@ -108,9 +125,9 @@ export function Hero() {
               opacity: visualOpacity,
               filter: visualBlur,
             }}
-            className="xl:col-span-7 2xl:col-span-7"
+            className="xl:col-span-6"
           >
-            <HospitalNetwork className="xl:-mr-[6%] 2xl:-mr-[10%]" />
+            <HospitalNetwork className="xl:-mr-[4%] 2xl:-mr-[9%]" />
           </motion.div>
         </div>
       </div>

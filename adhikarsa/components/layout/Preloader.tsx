@@ -1,7 +1,8 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 import { EASE_OUT_EXPO } from "@/lib/animations";
 import { company } from "@/data/company";
 
@@ -16,14 +17,18 @@ const LETTERS = company.wordmark.split("");
  * this never gates rendering or indexing.
  */
 export function Preloader() {
-  const reduced = useReducedMotion();
+  /**
+   * `useMediaQuery` rather than framer's `useReducedMotion`: its server
+   * snapshot is `false`, so the server and the first client render agree and
+   * hydration is clean. Framer's hook reports the real preference on the
+   * client's first pass, which made this component render on the server and
+   * vanish on the client — a hydration mismatch.
+   */
+  const reduced = useMediaQuery("(prefers-reduced-motion: reduce)");
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    if (reduced) {
-      setDone(true);
-      return;
-    }
+    if (reduced) return;
     document.documentElement.style.overflow = "hidden";
     const t = window.setTimeout(() => setDone(true), 1150);
     return () => {
@@ -42,6 +47,7 @@ export function Preloader() {
     <AnimatePresence>
       {!done && (
         <motion.div
+          data-preloader
           aria-hidden
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, filter: "blur(12px)" }}

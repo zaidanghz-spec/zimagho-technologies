@@ -22,8 +22,15 @@ type Sys = {
 const RING = { rx: 262, ry: 178 };
 const NAMES = ["Clinical", "Operations", "Finance", "Pharmacy", "Laboratory", "Radiology"];
 const JITTER: [number, number][] = [
-  [-58, -44], [46, -66], [72, 38], [34, 70], [-62, 52], [-78, 18],
+  [-40, -30], [32, -46], [50, 26], [24, 48], [-44, 36], [-54, 12],
 ];
+
+/* Scattered origins are clamped inside a safe inset. A chip is ~120px wide and
+   positioned from its centre, so an unclamped origin would hang off the stage
+   and widen the document on narrow viewports. */
+const SAFE = { x: [104, 756] as const, y: [56, 504] as const };
+const bound = (v: number, [lo, hi]: readonly [number, number]) =>
+  Math.min(hi, Math.max(lo, v));
 
 export const SYSTEMS: Sys[] = NAMES.map((label, i) => {
   const a = (Math.PI * 2 * i) / NAMES.length - Math.PI / 2 + 0.35;
@@ -32,7 +39,10 @@ export const SYSTEMS: Sys[] = NAMES.map((label, i) => {
   return {
     id: label.toLowerCase(),
     label,
-    from: [C.x + rx * 1.42 + JITTER[i][0], C.y + ry * 1.34 + JITTER[i][1]],
+    from: [
+      bound(C.x + rx * 1.24 + JITTER[i][0], SAFE.x),
+      bound(C.y + ry * 1.26 + JITTER[i][1], SAFE.y),
+    ],
     to: [C.x + rx, C.y + ry],
   };
 });

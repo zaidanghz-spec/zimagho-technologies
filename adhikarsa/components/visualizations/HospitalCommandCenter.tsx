@@ -95,7 +95,8 @@ export function HospitalCommandCenter({ className }: { className?: string }) {
       />
 
       <motion.div
-        initial={{ opacity: 0, y: 34, filter: "blur(14px)" }}
+        data-reveal
+      initial={{ opacity: 0, y: 34, filter: "blur(14px)" }}
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
         viewport={VIEWPORT_EARLY}
         transition={{ duration: 1, ease: EASE_OUT_EXPO }}
@@ -231,6 +232,7 @@ function Tile({
 }) {
   return (
     <motion.div
+      data-reveal
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={VIEWPORT_EARLY}
@@ -306,6 +308,7 @@ function Panel({
 }) {
   return (
     <motion.div
+      data-reveal
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={VIEWPORT_EARLY}

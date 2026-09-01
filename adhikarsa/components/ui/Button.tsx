@@ -35,6 +35,8 @@ type Props = {
   className?: string;
   icon?: boolean;
   magnetic?: boolean;
+  /** Applied to the magnetic wrapper — use it to let a CTA stretch. */
+  wrapperClassName?: string;
 } & Omit<ComponentProps<"button">, "ref">;
 
 export function Button({
@@ -44,6 +46,7 @@ export function Button({
   className,
   icon = false,
   magnetic = true,
+  wrapperClassName,
   ...rest
 }: Props) {
   const content = (
@@ -91,5 +94,11 @@ export function Button({
     </button>
   );
 
-  return magnetic ? <Magnetic strength={5}>{el}</Magnetic> : el;
+  return magnetic ? (
+    <Magnetic strength={5} className={wrapperClassName}>
+      {el}
+    </Magnetic>
+  ) : (
+    el
+  );
 }

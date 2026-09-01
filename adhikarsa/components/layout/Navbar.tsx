@@ -70,6 +70,7 @@ export function Navbar() {
       </a>
 
       <motion.header
+        data-reveal
         initial={{ y: -28, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.7, ease: EASE_OUT_EXPO }}
@@ -200,6 +201,7 @@ export function Navbar() {
                 <Button
                   href={`#${SECTIONS.contact}`}
                   onClick={close}
+                  wrapperClassName="w-full"
                   className="w-full"
                   icon
                 >

@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 type Props = {
   children: ReactNode;
   className?: string;
+  /** The wrapper is inline-block by default; override to let it stretch. */
   /** Peak pull in px. Kept small on purpose — the effect should be felt, not seen. */
   strength?: number;
 };

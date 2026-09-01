@@ -48,7 +48,7 @@ export function SectionHeader({
         as={as}
         lines={headline}
         className={cn(
-          "text-headline font-medium text-gradient",
+          "text-headline font-medium gradient-paper",
           headlineClassName,
         )}
       />

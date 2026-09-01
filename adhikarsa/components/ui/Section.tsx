@@ -23,10 +23,10 @@ export function Section({
 }) {
   const pad =
     size === "tight"
-      ? "py-20 sm:py-24 lg:py-28"
+      ? "py-18 sm:py-22 lg:py-26"
       : size === "tall"
-        ? "py-28 sm:py-36 lg:py-48"
-        : "py-24 sm:py-32 lg:py-40";
+        ? "py-24 sm:py-32 lg:py-40"
+        : "py-22 sm:py-28 lg:py-34";
 
   return (
     <section

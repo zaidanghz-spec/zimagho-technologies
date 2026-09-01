@@ -2,6 +2,7 @@
 
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 
 /**
  * Desktop pointer follower.
@@ -14,7 +15,10 @@ import { useEffect, useState } from "react";
  * Mounts only for fine pointers, and never for reduced-motion users.
  */
 export function CustomCursor() {
-  const [enabled, setEnabled] = useState(false);
+  const finePointer = useMediaQuery("(pointer: fine)");
+  const wantsCalm = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const enabled = finePointer && !wantsCalm;
+
   const [active, setActive] = useState(false);
 
   const x = useMotionValue(-100);
@@ -23,11 +27,7 @@ export function CustomCursor() {
   const sy = useSpring(y, { stiffness: 380, damping: 34, mass: 0.4 });
 
   useEffect(() => {
-    const fine = window.matchMedia("(pointer: fine)");
-    const calm = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (!fine.matches || calm.matches) return;
-
-    setEnabled(true);
+    if (!enabled) return;
 
     const move = (e: PointerEvent) => {
       x.set(e.clientX);
@@ -46,7 +46,7 @@ export function CustomCursor() {
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerover", over);
     };
-  }, [x, y]);
+  }, [enabled, x, y]);
 
   if (!enabled) return null;
 

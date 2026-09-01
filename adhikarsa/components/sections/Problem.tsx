@@ -24,7 +24,9 @@ export function Problem() {
     offset: ["start start", "end end"],
   });
 
-  const copyOpacity = useTransform(scrollYProgress, [0, 0.12, 0.9, 1], [0, 1, 1, 0.6]);
+  /* Visible from the first frame: the panel is already pinned at progress 0,
+     so fading in "on entry" just leaves a blank screen to scroll past. */
+  const copyOpacity = useTransform(scrollYProgress, [0, 0.9, 1], [1, 1, 0.55]);
 
   return (
     <section id={SECTIONS.problem} className="relative scroll-mt-24">
@@ -36,7 +38,7 @@ export function Problem() {
         <div className="sticky top-0 flex min-h-[100svh] items-center overflow-hidden py-24">
           <div className="shell w-full">
             <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-10">
-              <motion.div style={{ opacity: copyOpacity }} className="lg:col-span-5">
+              <motion.div style={{ opacity: copyOpacity }} className="lg:col-span-5 xl:col-span-5">
                 <Eyebrow>The Structural Problem</Eyebrow>
 
                 <RevealText
@@ -45,7 +47,9 @@ export function Problem() {
                     "operate as",
                     "disconnected systems.",
                   ]}
-                  className="mt-6 text-headline font-medium text-gradient"
+                  /* Sized to the sticky column, not the page: the full
+                     section scale would wrap the third line here. */
+                  className="mt-6 text-[clamp(1.5rem,3.4vw,2.875rem)] leading-[1.02] font-medium tracking-[-0.033em] gradient-paper"
                 />
 
                 <p className="mt-7 max-w-lg text-[1.0625rem] leading-[1.62] text-[var(--color-dim)]">
