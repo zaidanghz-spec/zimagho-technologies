@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { company } from "@/data/company";
 
 export const alt =
-  "PT Adhikarsa Mahatama Teknologi — intelligent hospital technology";
+  "PT Adhikarsa Mahatama Teknologi — healthcare technology and automation";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -21,53 +21,39 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           background:
-            "radial-gradient(1000px 620px at 70% -10%, #12283f 0%, #05070a 62%)",
+            "linear-gradient(135deg, #ffffff 0%, #f8fafc 58%, #eaf4ff 100%)",
           padding: 76,
-          color: "#f8fafc",
+          color: "#0f172a",
           fontFamily: "sans-serif",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <div
-            style={{
-              width: 10,
-              height: 10,
-              borderRadius: 999,
-              background: "#38bdf8",
-            }}
-          />
-          <div
-            style={{
-              fontSize: 22,
-              letterSpacing: 6,
-              color: "#cbd5e1",
-              fontWeight: 600,
-            }}
-          >
+          <div style={{ fontSize: 22, letterSpacing: 6, fontWeight: 600 }}>
             {company.wordmark}
           </div>
-          <div style={{ fontSize: 18, letterSpacing: 5, color: "#64748b" }}>
+          <div style={{ width: 8, height: 8, background: "#0b5cff", borderRadius: 2 }} />
+          <div style={{ fontSize: 18, letterSpacing: 5, color: "#64748b", marginLeft: 6 }}>
             {company.descriptor}
           </div>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           <div
             style={{
-              fontSize: 82,
-              lineHeight: 1.02,
+              fontSize: 78,
+              lineHeight: 1.04,
               letterSpacing: -3,
               fontWeight: 600,
               display: "flex",
               flexDirection: "column",
             }}
           >
-            <span>Engineering</span>
-            <span>the intelligent hospital.</span>
+            <span>Engineering intelligent</span>
+            <span>systems for modern healthcare.</span>
           </div>
-          <div style={{ fontSize: 26, color: "#94a3b8", maxWidth: 860 }}>
-            Hospital automation, AI systems, and enterprise integration for
-            modern healthcare institutions.
+          <div style={{ fontSize: 26, color: "#475569", maxWidth: 900 }}>
+            Healthcare technology, automation, artificial intelligence, and
+            systems integration.
           </div>
         </div>
 
@@ -75,18 +61,13 @@ export default function OpengraphImage() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 18,
+            gap: 16,
             fontSize: 20,
-            letterSpacing: 3,
             color: "#64748b",
           }}
         >
-          <div style={{ width: 56, height: 1, background: "#334155" }} />
-          <span>HOSPITAL AUTOMATION</span>
-          <span>·</span>
-          <span>AI SYSTEMS</span>
-          <span>·</span>
-          <span>ENTERPRISE INTEGRATION</span>
+          <div style={{ width: 56, height: 2, background: "#0b5cff" }} />
+          <span>{company.legalName}</span>
         </div>
       </div>
     ),

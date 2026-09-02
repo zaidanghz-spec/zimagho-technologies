@@ -9,22 +9,22 @@ export default function NotFound() {
       id="main"
       className="shell flex min-h-[100svh] flex-col items-center justify-center py-32 text-center"
     >
-      <Reveal preset="fadeUp">
+      <Reveal preset="rise">
         <Eyebrow tone="neutral">Error 404</Eyebrow>
       </Reveal>
-      <Reveal preset="blurUp" delay={0.08}>
-        <h1 className="mt-8 text-headline font-medium gradient-paper">
+      <Reveal preset="riseSoft" delay={0.08}>
+        <h1 className="mt-8 text-headline font-medium text-[var(--color-ink)]">
           No route to that resource.
         </h1>
       </Reveal>
-      <Reveal preset="blurUp" delay={0.16}>
-        <p className="mt-6 max-w-md text-[var(--color-dim)]">
+      <Reveal preset="riseSoft" delay={0.16}>
+        <p className="mt-6 max-w-md text-[var(--color-slate)]">
           The page you requested is not part of this system.
         </p>
       </Reveal>
-      <Reveal preset="fadeUp" delay={0.24}>
+      <Reveal preset="rise" delay={0.24}>
         <div className="mt-10">
-          <Button href="/" icon>
+          <Button href="/" arrow>
             Return to homepage
           </Button>
         </div>

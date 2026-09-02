@@ -4,7 +4,6 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 type Props = {
   d: string;
-  /** Stroke colour or paint-server reference. */
   stroke?: string;
   width?: number;
   /** Pulse length as a fraction of the path. */
@@ -16,20 +15,20 @@ type Props = {
 };
 
 /**
- * A data pulse travelling along an arbitrary SVG path.
+ * A data packet travelling along an arbitrary SVG path.
  *
- * The path measures itself once with `getTotalLength()` and publishes the
- * dash endpoints as custom properties. A single shared `@keyframes adk-flow`
- * then reads those properties, so every diagram on the site animates from one
- * keyframe rule regardless of path length — and the global reduced-motion
- * block disables all of them at once.
+ * The path measures itself once with `getTotalLength()` and publishes the dash
+ * endpoints as custom properties. A single shared `@keyframes adk-flow` reads
+ * those properties, so every diagram on the site animates from one keyframe
+ * rule regardless of path length — and the global reduced-motion block
+ * disables all of them at once.
  */
-export function FlowPath({
+export function MotionPath({
   d,
   stroke = "url(#adk-pulse)",
   width = 1.5,
-  dashRatio = 0.14,
-  duration = 5.6,
+  dashRatio = 0.16,
+  duration = 5,
   delay = 0,
   className,
   opacity = 1,
@@ -40,11 +39,11 @@ export function FlowPath({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    /* Measured post-layout; SVG user units, so it is resolution independent. */
+    /* Measured post-layout, in SVG user units — resolution independent. */
     setLen(el.getTotalLength());
   }, [d]);
 
-  const dash = Math.max(18, len * dashRatio);
+  const dash = Math.max(16, len * dashRatio);
 
   const style: CSSProperties | undefined = len
     ? ({

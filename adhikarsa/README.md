@@ -1,10 +1,12 @@
-# Adhikarsa — Corporate Site
+# Adhikarsa — Corporate Website
 
-Marketing site for **PT Adhikarsa Mahatama Teknologi**: hospital automation, AI
-systems, enterprise integration, and technology R&D.
+Digital company profile for **PT Adhikarsa Mahatama Teknologi**: healthcare
+technology, hospital automation, artificial intelligence, enterprise software,
+systems integration, and R&D.
 
-Built with Next.js (App Router) + TypeScript + Tailwind CSS v4 + Framer Motion.
-Statically prerendered — no server runtime required.
+Light-first, corporate, editorial. Built with Next.js (App Router) +
+TypeScript + Tailwind CSS v4 + Framer Motion. Statically prerendered — no
+server runtime required.
 
 ```bash
 npm install
@@ -16,48 +18,50 @@ npm run build
 
 ## Where to edit things
 
-| I want to change…                              | Edit                                              |
-| ---------------------------------------------- | ------------------------------------------------- |
-| Company name, contact email, disciplines, URL  | `data/company.ts`                                 |
-| Nav labels and section anchors                  | `lib/constants.ts`                                |
-| Colours, type scale, surfaces, keyframes        | `app/globals.css` (`@theme` block)                |
-| Animation timings and entrance variants         | `lib/animations.ts`                               |
-| Hero topology nodes and their positions         | `data/network.ts`                                 |
-| Section copy                                    | the matching file in `components/sections/`       |
+| I want to change…                             | Edit                                        |
+| --------------------------------------------- | ------------------------------------------- |
+| Company name, profile fields, contact email   | `data/company.ts`                           |
+| Nav labels and section anchors                 | `lib/constants.ts`                          |
+| Colours, type scale, surfaces, shadows         | `app/globals.css` (`@theme` block)          |
+| Animation timings and entrance variants        | `lib/animations.ts`                         |
+| Section copy                                   | the matching file in `components/sections/` |
 
 ## ⚠ Before launch
 
-Two things are deliberately marked as unverified and render a visible amber
-notice until you fix them:
+Fields the company has not supplied render as an explicit **"To be provided"**
+slot in the Company Information section — never as invented data. Fill them in
+`data/company.ts` and the marking disappears:
 
-1. **Contact email.** `technology@adhikarsa.id` was never confirmed as a live
-   mailbox. Set the real address in `data/company.ts` and flip
-   `contact.email.placeholder` to `false`; the notice disappears.
-2. **`site.url`.** Set it to the production origin so canonical URLs, the
-   sitemap, `robots.txt`, and OpenGraph tags point somewhere real.
+- `profile[].value` for **Headquarters**, **Email** and **Website**
+- `contactEmail` — while `null`, the final CTA points at the company profile
+  and says so instead of linking a fabricated mailbox
+- `site.url` — set to the production origin so canonical URLs, the sitemap,
+  `robots.txt` and OpenGraph tags point somewhere real
 
-Nothing on this site claims a hospital client, partnership, certification,
-award, deployment count, or regulatory approval, because none was supplied.
-`components/ui/TrustShelf.tsx` is the single insertion point for that material —
-populate `company.trust` in `data/company.ts` and it renders. Left empty, the
-site simply never makes the claim.
-
-The operations console in the Command Center section is a **conceptual design**.
-Its figures are illustrative and drift on a timer; it is not connected to any
-hospital or dataset, and the interface says so on screen.
+Nothing on this site claims a client, hospital partner, government
+relationship, testimonial, award, certification, compliance status, regulatory
+approval, customer count, revenue, headcount, or company history, because none
+was supplied. `components/ui/TrustShelf.tsx` is the single insertion point for
+verified material — populate `company.trust` and it renders; leave it empty and
+the site simply never makes the claim.
 
 ## Structure
 
 ```
 app/           routes, metadata, sitemap, robots, OG image, global CSS
 components/
-  layout/      navbar, footer, background, cursor, preloader, scroll progress
-  motion/      Reveal, RevealText, AnimatedCounter, Magnetic
+  layout/      navbar, footer, wordmark, scroll progress
+  motion/      Reveal, AnimatedText, MotionPath, Magnetic, AnimatedCounter
   sections/    one file per band of the homepage, in page order
-  ui/          Button, Section, SectionHeader, GlowCard, Eyebrow, StatusDot
-  visualizations/  the diagrams: topology, command center, workflow,
-                   intelligence core, architecture, research orbits
-data/          company facts, hero topology geometry
+  ui/          Button, Section, SectionHeader, Card, Eyebrow, TrustShelf
+  visualizations/
+               IntelligenceBoard      hero ecosystem board
+               HospitalEcosystem      five-stage scroll-driven diagram
+               WorkflowVisualization  automation pipeline
+               ArchitectureDiagram    three interactive layers
+               ResearchNetwork        R&D constellation
+               CapabilityGlyph        six capability micro-diagrams
+data/          company facts and profile fields
 lib/           animation system, class utils, media-query hook, constants
 ```
 
@@ -65,17 +69,27 @@ lib/           animation system, class utils, media-query hook, constants
 
 - **`page.tsx` is a server component.** Only pieces that genuinely need the
   browser carry `"use client"`.
-- **Pointer interactions never touch React state.** Cursor, magnetic buttons,
-  card tilt and parallax all write to Framer motion values, so moving the mouse
+- **Pointer interactions never touch React state.** Card lift, magnetic
+  buttons and hero parallax write to Framer motion values, so moving the mouse
   costs zero renders.
+- **Scroll-driven sequences reduce to one integer.** `HospitalEcosystem`
+  converts scroll progress to a `stage` (0–4) in the parent and animates
+  declaratively from it. An earlier version gave every child its own
+  `useTransform` on the scroll value; with that many subscribers the per-child
+  transforms went stale and left nodes stuck at `opacity: 0`.
 - **Looping animation is CSS; one-shot entrances are Framer.** Every travelling
-  data pulse on the site runs off one shared `@keyframes adk-flow`, fed
-  per-element dash endpoints by `components/visualizations/FlowPath.tsx`.
+  data packet on the site runs off one shared `@keyframes adk-flow`, fed
+  per-element dash endpoints by `components/motion/MotionPath.tsx`.
+- **Diagrams recompose for portrait, they do not shrink.** Each visualization
+  ships a separate mobile composition; a nine-node ring squeezed into 350px is
+  unreadable, so the same information is restated vertically.
+- **`cn()` teaches tailwind-merge the custom font sizes** (`text-display`,
+  `text-headline`, `text-title`, `text-lead`). Without that registration
+  tailwind-merge guesses they are text *colours* and silently drops the size
+  wherever a size and a colour meet in one call — which renders a 52px headline
+  at 16px.
 - **Reduced motion is handled in two places**: `MotionConfig reducedMotion="user"`
   for Framer, and a global media query that neutralises CSS animation.
 - **`.no-js`** is stripped by an inline script before first paint. If it never
-  runs, the stylesheet reveals everything marked `data-reveal` and drops the
-  entry curtain, so the copy is readable without JavaScript.
-- **Custom utilities avoid Tailwind's namespaces** (`gradient-paper`, not
-  `text-gradient`) so `tailwind-merge` cannot mistake them for `text-*`
-  utilities and silently drop a font size.
+  runs, the stylesheet reveals everything marked `data-reveal`, so the whole
+  page is readable without JavaScript.

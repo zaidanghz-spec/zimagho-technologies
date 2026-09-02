@@ -1,12 +1,12 @@
 "use client";
 
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { Wordmark } from "@/components/layout/Wordmark";
-import { company } from "@/data/company";
 import { Button } from "@/components/ui/Button";
+import { company } from "@/data/company";
 import { EASE_OUT_EXPO } from "@/lib/animations";
 import { NAV_ITEMS, SECTIONS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -19,13 +19,13 @@ export function Navbar() {
   const [active, setActive] = useState<string | null>(null);
   const { scrollY } = useScroll();
 
-  /* Only flips React state at the threshold crossing, not on every frame. */
+  /* Flips React state only at the threshold crossing, not on every frame. */
   useMotionValueEvent(scrollY, "change", (y) => {
-    const next = y > 24;
+    const next = y > 20;
     setScrolled((prev) => (prev === next ? prev : next));
   });
 
-  /* Active-section tracking via IntersectionObserver — no scroll math. */
+  /* Active-section tracking via IntersectionObserver — no scroll maths. */
   useEffect(() => {
     const targets = WATCHED.map((id) => document.getElementById(id)).filter(
       (el): el is HTMLElement => !!el,
@@ -46,7 +46,7 @@ export function Navbar() {
     return () => io.disconnect();
   }, []);
 
-  /* Lock the page behind the mobile sheet, and close it on Escape. */
+  /* Lock the page behind the mobile sheet; close on Escape. */
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
@@ -64,23 +64,17 @@ export function Navbar() {
     <>
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[90] focus:rounded-full focus:bg-[var(--color-paper)] focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:text-[var(--color-void)]"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[90] focus:rounded-full focus:bg-[var(--color-brand)] focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:text-white"
       >
         Skip to content
       </a>
 
-      <motion.header
-        data-reveal
-        initial={{ y: -28, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.7, ease: EASE_OUT_EXPO }}
-        className="fixed inset-x-0 top-0 z-50"
-      >
+      <header className="fixed inset-x-0 top-0 z-50">
         <div
           className={cn(
-            "transition-[background-color,backdrop-filter,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+            "transition-[background-color,backdrop-filter,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
             scrolled
-              ? "glass border-b border-white/[0.07]"
+              ? "border-b border-[var(--color-rule)] bg-white/85 shadow-[0_1px_2px_rgba(15,23,42,0.04)] backdrop-blur-xl"
               : "border-b border-transparent bg-transparent",
           )}
         >
@@ -101,32 +95,27 @@ export function Navbar() {
                 const id = item.href.slice(1);
                 const isActive = active === id;
                 return (
-                  <li key={item.href} className="relative">
+                  <li key={item.href}>
                     <Link
                       href={item.href}
                       aria-current={isActive ? "true" : undefined}
                       className={cn(
-                        "relative block rounded-full px-4 py-2 text-sm tracking-[-0.005em] transition-colors duration-300",
+                        "relative block px-4 py-2 text-sm tracking-[-0.005em] transition-colors duration-300",
                         isActive
-                          ? "text-[var(--color-paper)]"
-                          : "text-[var(--color-dim)] hover:text-[var(--color-paper)]",
+                          ? "text-[var(--color-ink)]"
+                          : "text-[var(--color-slate)] hover:text-[var(--color-ink)]",
                       )}
                     >
+                      {item.label}
+                      {/* Shared-layout underline: it slides between items
+                          rather than fading in and out. */}
                       {isActive && (
                         <motion.span
-                          layoutId="nav-active"
-                          transition={{ type: "spring", stiffness: 380, damping: 34 }}
-                          className="absolute inset-0 -z-10 rounded-full bg-white/[0.055] ring-1 ring-white/[0.07] ring-inset"
+                          layoutId="nav-underline"
+                          transition={{ type: "spring", stiffness: 360, damping: 36 }}
+                          className="absolute inset-x-4 -bottom-0.5 h-[2px] rounded-full bg-[var(--color-brand)]"
                         />
                       )}
-                      {item.label}
-                      <span
-                        aria-hidden
-                        className={cn(
-                          "absolute inset-x-4 -bottom-px h-px origin-center scale-x-0 bg-gradient-to-r from-transparent via-[var(--color-signal)] to-transparent transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
-                          isActive && "scale-x-100",
-                        )}
-                      />
                     </Link>
                   </li>
                 );
@@ -136,11 +125,10 @@ export function Navbar() {
             <div className="flex items-center gap-2">
               <Button
                 href={`#${SECTIONS.contact}`}
-                variant="ghost"
                 className="hidden px-5 py-2.5 text-sm sm:inline-flex"
-                icon
+                arrow
               >
-                Discuss a Project
+                Talk to Us
               </Button>
 
               <button
@@ -149,14 +137,14 @@ export function Navbar() {
                 aria-expanded={open}
                 aria-controls="mobile-nav"
                 aria-label={open ? "Close menu" : "Open menu"}
-                className="hairline flex size-10 items-center justify-center rounded-full bg-white/[0.02] text-[var(--color-mute)] transition-colors hover:text-[var(--color-paper)] lg:hidden"
+                className="hairline flex size-10 items-center justify-center rounded-full bg-white text-[var(--color-ink)] transition-colors hover:border-[var(--color-rule-strong)] lg:hidden"
               >
-                {open ? <X className="size-4.5" /> : <Menu className="size-4.5" />}
+                {open ? <X className="size-[18px]" /> : <Menu className="size-[18px]" />}
               </button>
             </div>
           </nav>
         </div>
-      </motion.header>
+      </header>
 
       <AnimatePresence>
         {open && (
@@ -166,36 +154,34 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-[rgba(5,7,10,0.965)] backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 z-40 bg-white lg:hidden"
           >
             <div className="shell flex h-full flex-col pt-28 pb-12">
               <ul className="flex flex-col">
                 {NAV_ITEMS.map((item, i) => (
                   <motion.li
                     key={item.href}
-                    initial={{ opacity: 0, y: 18, filter: "blur(6px)" }}
-                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    transition={{ delay: 0.06 + i * 0.055, duration: 0.5, ease: EASE_OUT_EXPO }}
-                    className="border-b border-white/[0.06]"
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.06 + i * 0.05, duration: 0.5, ease: EASE_OUT_EXPO }}
+                    className="border-b border-[var(--color-rule-soft)]"
                   >
                     <Link
                       href={item.href}
                       onClick={close}
-                      className="flex items-baseline justify-between py-5 text-2xl font-medium tracking-[-0.02em] text-[var(--color-paper)]"
+                      className="flex items-center justify-between py-5 text-2xl font-medium tracking-[-0.02em] text-[var(--color-ink)]"
                     >
                       {item.label}
-                      <span className="mono-label">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
+                      <ArrowRight aria-hidden className="size-4 text-[var(--color-faint)]" />
                     </Link>
                   </motion.li>
                 ))}
               </ul>
 
               <motion.div
-                initial={{ opacity: 0, y: 18 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.36, duration: 0.5, ease: EASE_OUT_EXPO }}
+                transition={{ delay: 0.34, duration: 0.5, ease: EASE_OUT_EXPO }}
                 className="mt-auto"
               >
                 <Button
@@ -203,9 +189,9 @@ export function Navbar() {
                   onClick={close}
                   wrapperClassName="w-full"
                   className="w-full"
-                  icon
+                  arrow
                 >
-                  Discuss a Project
+                  Talk to Us
                 </Button>
               </motion.div>
             </div>

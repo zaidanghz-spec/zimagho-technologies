@@ -1,116 +1,77 @@
 "use client";
 
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { EASE_OUT_EXPO, VIEWPORT } from "@/lib/animations";
 import { SECTIONS } from "@/lib/constants";
 
-const PRINCIPLES = [
+const BLOCKS = [
   {
     n: "01",
-    title: "Reliability by Design",
-    copy: "Systems engineered for environments where operational continuity matters.",
+    title: "Reliability",
+    copy: "Technology designed around operational continuity and dependable system behavior.",
   },
   {
     n: "02",
-    title: "Interoperability First",
-    copy: "Designed to connect with existing institutional technology rather than forcing unnecessary replacement.",
+    title: "Interoperability",
+    copy: "Systems designed to work with existing infrastructure and institutional technology.",
   },
   {
     n: "03",
-    title: "Security Mindset",
-    copy: "Infrastructure designed with privacy, controlled access, auditability, and data governance in mind.",
+    title: "Adaptability",
+    copy: "Solutions built around real workflows and evolving organizational requirements.",
   },
   {
     n: "04",
-    title: "Built Around Workflow",
-    copy: "Technology adapts to real operational processes — not the other way around.",
+    title: "Long-Term Engineering",
+    copy: "We approach technology as infrastructure that must continue to deliver value as organizations grow.",
   },
 ];
 
 /**
- * Engineering principles as four editorial statements.
+ * Engineering positions as four editorial blocks on a hairline grid.
  *
- * Deliberately not a card grid: these are positions the company takes, and
- * full-width rules with oversized numerals give them the weight of a
- * masthead rather than a feature list.
+ * Deliberately not feature cards: these are commitments the company makes
+ * about how it builds, and the ruled grid gives them the weight of a
+ * statement rather than a checklist.
  */
 export function WhyAdhikarsa() {
   return (
-    <Section id={SECTIONS.why}>
+    <Section id={SECTIONS.approach} tone="white">
       <div className="shell">
         <SectionHeader
-          eyebrow="Engineering Principles"
-          index="07"
-          headline={["Technology built for", "mission-critical", "environments."]}
+          eyebrow="Our Approach"
+          headline={["Built for environments", "where technology matters."]}
           className="max-w-3xl"
         />
 
-        <ul className="mt-16 lg:mt-24">
-          {PRINCIPLES.map((p, i) => (
-            <PrincipleRow key={p.n} {...p} index={i} />
+        <ol className="mt-16 grid border-t border-l border-[var(--color-rule)] bg-white sm:grid-cols-2 lg:mt-24">
+          {BLOCKS.map((b, i) => (
+            <motion.li
+              data-reveal
+              key={b.n}
+              initial={{ opacity: 0, y: 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={VIEWPORT}
+              transition={{ delay: i * 0.09, duration: 0.75, ease: EASE_OUT_EXPO }}
+              className="group/block relative border-r border-b border-[var(--color-rule)] bg-white p-8 sm:p-10 lg:p-12"
+            >
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-[var(--color-brand)] transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/block:scale-x-100"
+              />
+              <span className="annotation text-[var(--color-brand)]">{b.n}</span>
+              <h3 className="mt-6 text-title font-medium text-[var(--color-ink)]">
+                {b.title}
+              </h3>
+              <p className="mt-4 max-w-sm text-[0.9375rem] leading-relaxed text-[var(--color-slate)] lg:text-base">
+                {b.copy}
+              </p>
+            </motion.li>
           ))}
-        </ul>
+        </ol>
       </div>
     </Section>
-  );
-}
-
-function PrincipleRow({
-  n,
-  title,
-  copy,
-  index,
-}: {
-  n: string;
-  title: string;
-  copy: string;
-  index: number;
-}) {
-  const ref = useRef<HTMLLIElement>(null);
-  const mx = useMotionValue(50);
-  const beam = useMotionTemplate`radial-gradient(240px 100% at ${mx}% 50%, rgba(56,189,248,0.5), transparent 70%)`;
-
-  const onMove = (e: React.PointerEvent<HTMLLIElement>) => {
-    if (e.pointerType !== "mouse") return;
-    const r = ref.current?.getBoundingClientRect();
-    if (!r) return;
-    mx.set(((e.clientX - r.left) / r.width) * 100);
-  };
-
-  return (
-    <motion.li
-      ref={ref}
-      onPointerMove={onMove}
-      data-reveal
-      initial={{ opacity: 0, y: 26, filter: "blur(8px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={VIEWPORT}
-      transition={{ delay: index * 0.08, duration: 0.75, ease: EASE_OUT_EXPO }}
-      className="group relative border-t border-white/[0.07] py-9 last:border-b sm:py-11 lg:py-14"
-    >
-      {/* Cursor-tracked beam riding the top rule */}
-      <motion.span
-        aria-hidden
-        style={{ background: beam }}
-        className="pointer-events-none absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-      />
-
-      <div className="grid gap-5 lg:grid-cols-12 lg:items-baseline lg:gap-10">
-        <span className="font-mono text-[0.8125rem] text-[var(--color-signal)]/60 tabular-nums transition-colors duration-500 group-hover:text-[var(--color-signal)] lg:col-span-1">
-          {n}
-        </span>
-
-        <h3 className="text-title font-medium text-[var(--color-paper)] lg:col-span-6">
-          {title}
-        </h3>
-
-        <p className="max-w-md text-[0.9375rem] leading-[1.65] text-[var(--color-dim)] lg:col-span-5 lg:text-base">
-          {copy}
-        </p>
-      </div>
-    </motion.li>
   );
 }

@@ -5,16 +5,23 @@
  * Every editable company fact lives here. Change it once, it changes sitewide.
  *
  * ⚠ PLACEHOLDER POLICY
- * Fields flagged `placeholder: true` have NOT been verified. They render with
- * a visible "to be confirmed" affordance so nothing unverified is ever
- * presented to a visitor as fact. Replace the value and flip the flag.
+ * A field whose `value` is `null` has NOT been supplied by the company. The UI
+ * renders it as a clearly-marked "to be provided" slot rather than inventing
+ * something. Fill in the value and the marking disappears automatically.
+ *
+ * Nothing on this site claims a client, hospital partner, government
+ * relationship, testimonial, award, certification, compliance status,
+ * regulatory approval, customer count, revenue, headcount, or company history,
+ * because none has been supplied.
  * ============================================================================
  */
 
-export type PlaceholderValue = {
-  value: string;
-  /** true = not yet verified by the company; UI must not present it as fact. */
-  placeholder: boolean;
+export type CompanyField = {
+  label: string;
+  /** `null` = not supplied. Rendered as a marked placeholder, never invented. */
+  value: string | string[] | null;
+  /** Optional note shown beneath the field. */
+  note?: string;
 };
 
 export const company = {
@@ -23,55 +30,64 @@ export const company = {
   descriptor: "MAHATAMA TEKNOLOGI",
   shortName: "Adhikarsa",
 
-  tagline: "Engineering intelligent systems for modern healthcare.",
+  tagline: "Technology for intelligent institutions.",
   positioning:
-    "Adhikarsa builds intelligent infrastructure that makes hospitals operate smarter.",
+    "PT Adhikarsa Mahatama Teknologi develops intelligent technology, automation, and integrated digital systems designed to improve how modern healthcare institutions operate.",
 
-  disciplines: [
+  capabilities: [
+    "Healthcare Technology",
+    "Automation",
+    "Artificial Intelligence",
+    "Software Development",
+  ],
+
+  heroCapabilities: [
+    "Technology Development",
     "Hospital Automation",
     "Artificial Intelligence",
-    "Technology Development",
+    "System Integration",
   ],
 
   /**
-   * ⚠ UNVERIFIED. `technology@adhikarsa.id` was not confirmed as a live
-   * mailbox, so it is treated as a placeholder until the company confirms it.
+   * Rendered by the Company Information section, in this order. Anything with
+   * `value: null` shows as an explicit "to be provided" row.
    */
-  contact: {
-    email: {
-      value: "technology@adhikarsa.id",
-      placeholder: true,
-    } satisfies PlaceholderValue,
-    /** Set once a public inbound line is confirmed. */
-    phone: null as PlaceholderValue | null,
-    /** Set once a public office address is confirmed. */
-    address: null as PlaceholderValue | null,
-    locale: "Indonesia",
-  },
+  profile: [
+    { label: "Company", value: "PT Adhikarsa Mahatama Teknologi" },
+    { label: "Industry", value: "Technology & Digital Solutions" },
+    {
+      label: "Core Focus",
+      value: [
+        "Healthcare Technology",
+        "Automation",
+        "Artificial Intelligence",
+        "Software Development",
+        "Systems Integration",
+      ],
+    },
+    { label: "Headquarters", value: null, note: "Indonesia" },
+    { label: "Email", value: null },
+    { label: "Website", value: null },
+  ] satisfies CompanyField[],
 
-  /**
-   * ⚠ Intentionally empty. Per the project's trust rules, no client,
-   * partnership, certification, award, deployment count, or regulatory claim
-   * is asserted anywhere on this site until the company supplies verified
-   * material. Populating these arrays is the only way they appear in the UI.
-   */
-  trust: {
-    clients: [] as string[],
-    partners: [] as string[],
-    certifications: [] as string[],
-    awards: [] as string[],
-  },
+  /** Used for mailto links and the contact CTA. `null` renders a marked slot. */
+  contactEmail: null as string | null,
 
   site: {
     /** Update to the production origin before launch. */
     url: "https://adhikarsa.example",
     locale: "en_ID",
   },
-} as const;
 
-/** Formats a placeholder-aware value for display. */
-export function displayValue(v: PlaceholderValue): string {
-  return v.value;
-}
+  /**
+   * ⚠ Intentionally empty. See TrustShelf — this is the only place verified
+   * clients, partners, certifications or awards can enter the site.
+   */
+  trust: {
+    clients: [] as string[],
+    partners: [] as string[],
+    certifications: [] as string[],
+  },
+} as const;
 
 export const currentYear = new Date().getFullYear();

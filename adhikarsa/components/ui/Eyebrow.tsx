@@ -1,30 +1,36 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Section eyebrow. The leading rule + dot reads as a technical marker rather
- * than a marketing kicker — it is the site's smallest recurring signature.
+ * Section eyebrow. A short blue rule ahead of the label — the site's smallest
+ * recurring signature, and the only place uppercase is used.
  */
 export function Eyebrow({
   children,
   className,
-  tone = "signal",
+  tone = "brand",
 }: {
   children: React.ReactNode;
   className?: string;
-  tone?: "signal" | "neutral" | "online";
+  tone?: "brand" | "neutral" | "onDark";
 }) {
-  const dot =
-    tone === "online"
-      ? "bg-[var(--color-online)] shadow-[0_0_10px_rgba(16,185,129,0.8)]"
-      : tone === "neutral"
-        ? "bg-[var(--color-faint)]"
-        : "bg-[var(--color-signal)] shadow-[0_0_10px_rgba(56,189,248,0.85)]";
-
   return (
-    <p className={cn("mono-label flex items-center gap-2.5", className)}>
-      <span aria-hidden className="h-px w-6 bg-gradient-to-r from-transparent to-white/25" />
-      <span aria-hidden className={cn("size-1 rounded-full", dot)} />
-      <span className="text-[var(--color-dim)]">{children}</span>
+    <p
+      className={cn(
+        "eyebrow flex items-center gap-3",
+        tone === "onDark" && "text-white/60",
+        className,
+      )}
+    >
+      <span
+        aria-hidden
+        className={cn(
+          "h-px w-7",
+          tone === "brand" && "bg-[var(--color-brand)]",
+          tone === "neutral" && "bg-[var(--color-rule-strong)]",
+          tone === "onDark" && "bg-white/40",
+        )}
+      />
+      {children}
     </p>
   );
 }

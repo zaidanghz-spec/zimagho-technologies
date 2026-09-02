@@ -1,43 +1,43 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Boxes, Cpu, Layers } from "lucide-react";
+import { Layers, Cpu, Server } from "lucide-react";
 import { useState } from "react";
-import { FlowPath } from "@/components/visualizations/FlowPath";
+import { MotionPath } from "@/components/motion/MotionPath";
 import { EASE_OUT_EXPO, VIEWPORT } from "@/lib/animations";
 import { cn } from "@/lib/utils";
 
 const LAYERS = [
   {
     id: "experience",
-    name: "Experience Layer",
-    desc: "What people in the hospital actually touch.",
+    name: "Experience",
+    desc: "What people in the institution actually use.",
     icon: Layers,
-    items: ["Hospital Dashboard", "Clinical Apps", "Operational Apps", "Management Systems"],
+    items: ["Management Dashboard", "Clinical Applications", "Operational Systems"],
   },
   {
     id: "intelligence",
-    name: "Intelligence Layer",
+    name: "Intelligence",
     desc: "Where process logic and reasoning live.",
     icon: Cpu,
-    items: ["Automation Engine", "AI Models", "Rules Engine", "Analytics"],
+    items: ["Automation Engine", "AI Systems", "Analytics", "Rules Engine"],
   },
   {
     id: "infrastructure",
-    name: "Infrastructure Layer",
+    name: "Infrastructure",
     desc: "The systems and data already in place.",
-    icon: Boxes,
-    items: ["APIs", "Hospital Systems", "Databases", "IoT", "Cloud / On-Premise"],
+    icon: Server,
+    items: ["APIs", "Databases", "Hospital Systems", "IoT", "Cloud", "On-Premise"],
   },
 ] as const;
 
 /**
- * Interactive stack. Pointing at a layer illuminates it and the conduits that
- * touch it; clicking pins that state.
+ * Enterprise architecture, drawn as three separable layers.
  *
- * Each band is a real `<button>` rather than a hover-only div, so the same
- * exploration is available from the keyboard — and nothing the hover reveals
- * is information that is otherwise hidden.
+ * Pointing at a layer illuminates it and the conduits that touch it; clicking
+ * pins that state. Each band is a real `<button>` rather than a hover-only
+ * div, so the same exploration is available from the keyboard — and nothing
+ * the hover reveals is information that is otherwise hidden.
  */
 export function ArchitectureDiagram({ className }: { className?: string }) {
   const [hovered, setHovered] = useState<number | null>(null);
@@ -58,9 +58,7 @@ export function ArchitectureDiagram({ className }: { className?: string }) {
             onLeave={() => setHovered(null)}
             onToggle={() => setPinned((p) => (p === i ? null : i))}
           />
-          {i < LAYERS.length - 1 && (
-            <Conduits lit={active === i || active === i + 1} index={i} />
-          )}
+          {i < LAYERS.length - 1 && <Conduits lit={active === i || active === i + 1} />}
         </div>
       ))}
     </div>
@@ -90,51 +88,44 @@ function LayerBand({
 
   return (
     <motion.button
+      data-reveal
       type="button"
       aria-pressed={pinned}
-      aria-label={`${layer.name} — highlight connections`}
+      aria-label={`${layer.name} layer — highlight connections`}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
       onFocus={onEnter}
       onBlur={onLeave}
       onClick={onToggle}
-      data-reveal
-      initial={{ opacity: 0, y: 22, filter: "blur(8px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={VIEWPORT}
       transition={{ delay: index * 0.1, duration: 0.7, ease: EASE_OUT_EXPO }}
       className={cn(
-        "panel relative w-full overflow-hidden rounded-2xl p-6 text-left transition-[opacity,border-color,box-shadow] duration-500 sm:p-7 lg:p-8",
-        active &&
-          "border-[rgba(56,189,248,0.35)] shadow-[0_0_0_1px_rgba(56,189,248,0.12),0_24px_60px_-30px_rgba(56,189,248,0.55)]",
-        dimmed && "opacity-45",
+        "card w-full p-6 text-left transition-[opacity,border-color,box-shadow] duration-500 sm:p-7 lg:p-8",
+        active && "border-[var(--color-brand)]/40 shadow-[var(--shadow-lift)]",
+        dimmed && "opacity-55",
       )}
     >
-      <span
-        aria-hidden
-        className={cn(
-          "pointer-events-none absolute inset-0 bg-[radial-gradient(70%_120%_at_20%_0%,rgba(56,189,248,0.12),transparent_68%)] transition-opacity duration-500",
-          active ? "opacity-100" : "opacity-0",
-        )}
-      />
-
-      <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-10">
-        <div className="lg:w-64 lg:shrink-0">
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-10">
+        <div className="lg:w-60 lg:shrink-0">
           <div className="flex items-center gap-3">
             <span
               className={cn(
-                "hairline flex size-8 items-center justify-center rounded-lg bg-white/[0.03] transition-colors duration-500",
-                active ? "text-[var(--color-signal)]" : "text-[var(--color-faint)]",
+                "flex size-8 items-center justify-center rounded-lg border transition-colors duration-500",
+                active
+                  ? "border-[var(--color-brand)]/30 bg-[var(--color-sky-tint)] text-[var(--color-brand)]"
+                  : "border-[var(--color-rule)] bg-[var(--color-mist)] text-[var(--color-muted)]",
               )}
             >
               <Icon className="size-3.5" />
             </span>
-            <span className="mono-label">{`L${index + 1}`}</span>
+            <span className="annotation">{`L${index + 1}`}</span>
           </div>
-          <h3 className="mt-4 text-lg font-medium tracking-[-0.02em] text-[var(--color-paper)] sm:text-xl">
+          <h3 className="mt-4 text-title font-medium text-[var(--color-ink)]">
             {layer.name}
           </h3>
-          <p className="mt-1.5 text-[0.8125rem] leading-relaxed text-[var(--color-faint)]">
+          <p className="mt-2 text-[0.8125rem] leading-relaxed text-[var(--color-muted)]">
             {layer.desc}
           </p>
         </div>
@@ -145,18 +136,18 @@ function LayerBand({
               key={item}
               className={cn(
                 /* Grow to fill the band: a layer should read as spanning the
-                   hospital, not as a few chips parked on the left. */
-                "flex flex-1 basis-40 items-center gap-2 rounded-lg border px-3 py-2.5 text-[0.75rem] leading-tight transition-colors duration-500",
+                   institution, not as a few chips parked on the left. */
+                "flex flex-1 basis-32 items-center gap-2 rounded-lg border px-3 py-2.5 text-[0.75rem] leading-tight transition-colors duration-500",
                 active
-                  ? "border-[rgba(56,189,248,0.28)] bg-[rgba(56,189,248,0.07)] text-[var(--color-paper)]"
-                  : "border-white/[0.06] bg-white/[0.015] text-[var(--color-dim)]",
+                  ? "border-[var(--color-brand)]/25 bg-[var(--color-sky-tint)] text-[var(--color-ink)]"
+                  : "border-[var(--color-rule)] bg-[var(--color-mist)] text-[var(--color-slate)]",
               )}
             >
               <span
                 aria-hidden
                 className={cn(
                   "size-1 shrink-0 rounded-full transition-colors duration-500",
-                  active ? "bg-[var(--color-signal)]" : "bg-[var(--color-faint)]",
+                  active ? "bg-[var(--color-brand)]" : "bg-[var(--color-rule-strong)]",
                 )}
               />
               {item}
@@ -168,36 +159,32 @@ function LayerBand({
   );
 }
 
-const CONDUIT_X = [12, 30, 50, 70, 88];
+const CONDUIT_X = [14, 32, 50, 68, 86];
 
-function Conduits({ lit, index }: { lit: boolean; index: number }) {
+function Conduits({ lit }: { lit: boolean }) {
   return (
-    <div className="relative h-12 sm:h-14" aria-hidden>
-      <svg
-        viewBox="0 0 100 56"
-        preserveAspectRatio="none"
-        className="h-full w-full"
-        focusable="false"
-      >
+    <div className="relative h-10 sm:h-12" aria-hidden>
+      <svg viewBox="0 0 100 48" preserveAspectRatio="none" className="h-full w-full" focusable="false">
         {CONDUIT_X.map((x, i) => (
           <g key={x}>
             <line
               x1={x}
               y1="0"
               x2={x}
-              y2="56"
-              stroke={lit ? "rgba(56,189,248,0.5)" : "rgba(255,255,255,0.15)"}
+              y2="48"
+              stroke={lit ? "var(--color-brand)" : "var(--color-rule)"}
               strokeWidth="1"
               vectorEffect="non-scaling-stroke"
               className="transition-[stroke] duration-500"
+              opacity={lit ? 0.5 : 1}
             />
             {lit && (
-              <FlowPath
-                d={`M ${x} 0 V 56`}
+              <MotionPath
+                d={`M ${x} 0 V 48`}
                 width={2}
-                duration={1.6}
-                delay={i * 0.14 + index * 0.1}
-                dashRatio={0.4}
+                duration={1.5}
+                delay={i * 0.12}
+                dashRatio={0.42}
               />
             )}
           </g>

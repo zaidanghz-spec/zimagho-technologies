@@ -2,155 +2,116 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { RevealText } from "@/components/motion/RevealText";
+import { AnimatedText } from "@/components/motion/AnimatedText";
 import { Button } from "@/components/ui/Button";
 import { Eyebrow } from "@/components/ui/Eyebrow";
-import { HospitalNetwork } from "@/components/visualizations/HospitalNetwork";
+import { IntelligenceBoard } from "@/components/visualizations/IntelligenceBoard";
+import { company } from "@/data/company";
 import { EASE_OUT_EXPO } from "@/lib/animations";
 import { SECTIONS } from "@/lib/constants";
-
-const TRUST = ["Hospital Automation", "AI Systems", "Enterprise Integration"];
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
 
-  /**
-   * Hero exit. The topology recedes and dissolves as the next band arrives —
-   * the visual is handed off rather than scrolled past. Copy fades only
-   * partially so it never disappears while still on screen.
-   */
+  /* The board recedes very slightly as the page moves on — enough to feel
+     three-dimensional, far too little to read as a parallax effect. */
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-
-  const visualScale = useTransform(scrollYProgress, [0, 1], [1, 0.78]);
-  const visualOpacity = useTransform(scrollYProgress, [0, 0.72], [1, 0]);
-  const visualBlur = useTransform(scrollYProgress, [0, 1], ["blur(0px)", "blur(14px)"]);
-  const copyY = useTransform(scrollYProgress, [0, 1], [0, -70]);
-  const copyOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.25]);
+  const boardY = useTransform(scrollYProgress, [0, 1], [0, -40]);
+  const boardOpacity = useTransform(scrollYProgress, [0.4, 1], [1, 0.25]);
 
   return (
-    <section
-      ref={ref}
-      id={SECTIONS.hero}
-      className="relative flex min-h-[100svh] flex-col justify-center pt-28 pb-20 sm:pt-32 lg:pt-36 lg:pb-28"
-    >
-      <div className="shell w-full">
-        <div className="grid items-center gap-14 xl:grid-cols-12 xl:gap-8">
-          {/* Copy */}
-          <motion.div
-            style={{ y: copyY, opacity: copyOpacity }}
-            className="xl:col-span-6"
-          >
-            <motion.div
-              data-reveal
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.25, duration: 0.7, ease: EASE_OUT_EXPO }}
-            >
-              <Eyebrow>Hospital Intelligence Infrastructure</Eyebrow>
-            </motion.div>
-
-            <RevealText
-              as="h1"
-              immediate
-              delay={1.3}
-              gap={0.09}
-              lines={["Engineering", "the intelligent", "hospital."]}
-              /* Sized against the column it lives in, not the viewport alone:
-                 in the split layout the headline has half the page, so the
-                 desktop step is capped to keep three lines on three lines. */
-              className="mt-7 text-[clamp(2.15rem,7.2vw,4.5rem)] leading-[0.94] font-medium tracking-[-0.042em] gradient-paper xl:text-[clamp(3.5rem,5.15vw,5rem)]"
-              lineClassName="pr-[0.06em]"
-            />
-
-            <motion.p
-              data-reveal
-              initial={{ opacity: 0, y: 18, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ delay: 1.72, duration: 0.85, ease: EASE_OUT_EXPO }}
-              className="mt-8 max-w-[34rem] text-[1.0625rem] leading-[1.62] text-[var(--color-dim)] sm:text-lg"
-            >
-              Adhikarsa builds AI-powered automation and technology
-              infrastructure that connects systems, workflows, and people across
-              modern healthcare institutions.
-            </motion.p>
-
-            <motion.div
-              data-reveal
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.9, duration: 0.8, ease: EASE_OUT_EXPO }}
-              className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center"
-            >
-              <Button
-                href={`#${SECTIONS.intelligence}`}
-                icon
-                wrapperClassName="w-full sm:w-auto"
-                className="w-full sm:w-auto"
-              >
-                Explore Our Technology
-              </Button>
-              <Button
-                href={`#${SECTIONS.contact}`}
-                variant="ghost"
-                wrapperClassName="w-full sm:w-auto"
-                className="w-full sm:w-auto"
-              >
-                Discuss a Project
-              </Button>
-            </motion.div>
-
-            <motion.ul
-              data-reveal
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 2.15, duration: 0.9 }}
-              className="mono-label mt-9 flex flex-wrap items-center gap-x-3 gap-y-2"
-            >
-              {TRUST.map((t, i) => (
-                <li key={t} className="flex items-center gap-3">
-                  {i > 0 && <span aria-hidden className="size-0.5 rounded-full bg-[var(--color-faint)]" />}
-                  <span>{t}</span>
-                </li>
-              ))}
-            </motion.ul>
-          </motion.div>
-
-          {/* Topology */}
-          <motion.div
-            style={{
-              scale: visualScale,
-              opacity: visualOpacity,
-              filter: visualBlur,
-            }}
-            className="xl:col-span-6"
-          >
-            <HospitalNetwork className="xl:-mr-[4%] 2xl:-mr-[9%]" />
-          </motion.div>
-        </div>
+    <section ref={ref} id={SECTIONS.hero} className="relative overflow-hidden bg-white">
+      {/* Atmosphere: a faint engineering grid and one cool wash, both faded
+          well before they reach the copy. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="blueprint fade-edges absolute inset-0 opacity-60" />
+        <div className="absolute inset-x-0 top-0 h-[70%] bg-[radial-gradient(110%_70%_at_50%_0%,rgba(234,244,255,0.9)_0%,rgba(255,255,255,0)_62%)]" />
       </div>
 
-      {/* Scroll cue */}
-      <motion.div
-        aria-hidden
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2.4, duration: 0.8 }}
-        style={{ opacity: copyOpacity }}
-        className="pointer-events-none absolute inset-x-0 bottom-6 hidden justify-center lg:flex"
-      >
-        <span className="flex flex-col items-center gap-2">
-          <span className="mono-label text-[0.5625rem]">Scroll</span>
-          <span className="relative h-10 w-px overflow-hidden bg-white/10">
-            <span
-              className="absolute inset-x-0 top-0 h-3 bg-gradient-to-b from-transparent via-[var(--color-signal)] to-transparent"
-              style={{ animation: "adk-sweep 2.4s ease-in-out infinite" }}
-            />
-          </span>
-        </span>
-      </motion.div>
+      <div className="shell relative pt-32 pb-20 sm:pt-36 lg:pt-44 lg:pb-28">
+        <div className="max-w-4xl">
+          <motion.div
+            data-reveal
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.7, ease: EASE_OUT_EXPO }}
+          >
+            <Eyebrow>Healthcare Technology • Automation • AI</Eyebrow>
+          </motion.div>
+
+          <AnimatedText
+            as="h1"
+            immediate
+            delay={0.18}
+            gap={0.1}
+            lines={["Engineering intelligent", "systems for modern", "healthcare."]}
+            className="mt-8 text-display font-medium text-[var(--color-ink)]"
+          />
+
+          <motion.p
+            data-reveal
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.62, duration: 0.85, ease: EASE_OUT_EXPO }}
+            className="mt-8 max-w-2xl text-lead text-[var(--color-slate)]"
+          >
+            {company.positioning}
+          </motion.p>
+
+          <motion.div
+            data-reveal
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.78, duration: 0.8, ease: EASE_OUT_EXPO }}
+            className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center"
+          >
+            <Button
+              href={`#${SECTIONS.capabilities}`}
+              arrow
+              wrapperClassName="w-full sm:w-auto"
+              className="w-full sm:w-auto"
+            >
+              Explore Our Solutions
+            </Button>
+            <Button
+              href={`#${SECTIONS.profile}`}
+              variant="outline"
+              wrapperClassName="w-full sm:w-auto"
+              className="w-full sm:w-auto"
+            >
+              Company Profile
+            </Button>
+          </motion.div>
+
+          <motion.ul
+            data-reveal
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.95, duration: 0.9 }}
+            className="mt-12 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-[var(--color-rule)] pt-6 sm:flex sm:flex-wrap sm:items-center sm:gap-x-8"
+          >
+            {company.heroCapabilities.map((c) => (
+              <li
+                key={c}
+                className="flex items-center gap-2.5 text-[0.8125rem] font-medium text-[var(--color-slate)]"
+              >
+                <span
+                  aria-hidden
+                  className="size-1 shrink-0 rounded-full bg-[var(--color-brand)]"
+                />
+                {c}
+              </li>
+            ))}
+          </motion.ul>
+        </div>
+
+        <motion.div style={{ y: boardY, opacity: boardOpacity }}>
+          <IntelligenceBoard className="mt-16 lg:mt-24" />
+        </motion.div>
+      </div>
     </section>
   );
 }

@@ -2,10 +2,10 @@
 
 import { motion, type Variants } from "framer-motion";
 import type { ReactNode } from "react";
-import { blurUp, fadeUp, scaleIn, stagger, VIEWPORT } from "@/lib/animations";
+import { fade, rise, riseSoft, settle, stagger, VIEWPORT } from "@/lib/animations";
 import { cn } from "@/lib/utils";
 
-const PRESETS = { blurUp, fadeUp, scaleIn } satisfies Record<string, Variants>;
+const PRESETS = { rise, riseSoft, settle, fade } satisfies Record<string, Variants>;
 
 /**
  * Motion components are created once at module scope. Building them inside
@@ -19,11 +19,13 @@ const TAGS = {
   span: motion.span,
   p: motion.p,
   ul: motion.ul,
+  ol: motion.ol,
   li: motion.li,
   h2: motion.h2,
   h3: motion.h3,
   header: motion.header,
   figure: motion.figure,
+  dl: motion.dl,
 } as const;
 
 export type RevealTag = keyof typeof TAGS;
@@ -31,7 +33,6 @@ export type RevealTag = keyof typeof TAGS;
 type RevealProps = {
   children: ReactNode;
   className?: string;
-  /** Entrance character. `blurUp` is the site default. */
   preset?: keyof typeof PRESETS;
   delay?: number;
   as?: RevealTag;
@@ -45,7 +46,7 @@ type RevealProps = {
 export function Reveal({
   children,
   className,
-  preset = "blurUp",
+  preset = "rise",
   delay = 0,
   as = "div",
 }: RevealProps) {
@@ -73,14 +74,11 @@ type RevealGroupProps = {
   as?: RevealTag;
 };
 
-/**
- * Orchestrates staggered children. Children must be `RevealItem` (or any
- * motion element declaring the same variant names) to inherit the timing.
- */
+/** Orchestrates staggered children. Children must be `RevealItem`. */
 export function RevealGroup({
   children,
   className,
-  gap = 0.09,
+  gap = 0.1,
   delay = 0,
   as = "div",
 }: RevealGroupProps) {
@@ -101,7 +99,7 @@ export function RevealGroup({
 export function RevealItem({
   children,
   className,
-  preset = "blurUp",
+  preset = "rise",
   as = "div",
 }: Omit<RevealProps, "delay">) {
   const Comp = TAGS[as];

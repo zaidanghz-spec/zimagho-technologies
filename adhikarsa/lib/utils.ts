@@ -1,7 +1,26 @@
 import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { extendTailwindMerge } from "tailwind-merge";
 
-/** Conditional class names with conflict-aware Tailwind merging. */
+/**
+ * `cn` — conditional class names with conflict-aware Tailwind merging.
+ *
+ * The design system adds its own font sizes in `@theme` (`text-display`,
+ * `text-headline`, `text-title`, `text-lead`). Out of the box tailwind-merge
+ * has never heard of them, guesses they are text *colours*, and therefore
+ * drops the size whenever a size and a colour meet in one `cn()` call — which
+ * silently renders a 52px headline at 16px.
+ *
+ * Registering them in the `font-size` group is the fix: the merge logic now
+ * knows a size and a colour are different properties and keeps both.
+ */
+const twMerge = extendTailwindMerge({
+  extend: {
+    classGroups: {
+      "font-size": [{ text: ["display", "headline", "title", "lead"] }],
+    },
+  },
+});
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -12,25 +31,3 @@ export const clamp = (n: number, min: number, max: number) =>
 
 /** Linear interpolation. */
 export const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-
-/**
- * Point on a cubic bezier, used to place moving packets along the same curve
- * an SVG <path> draws — keeps DOM markers and SVG geometry in exact agreement.
- */
-export function cubicPoint(
-  p0: [number, number],
-  p1: [number, number],
-  p2: [number, number],
-  p3: [number, number],
-  t: number,
-): [number, number] {
-  const u = 1 - t;
-  const a = u * u * u;
-  const b = 3 * u * u * t;
-  const c = 3 * u * t * t;
-  const d = t * t * t;
-  return [
-    a * p0[0] + b * p1[0] + c * p2[0] + d * p3[0],
-    a * p0[1] + b * p1[1] + c * p2[1] + d * p3[1],
-  ];
-}
