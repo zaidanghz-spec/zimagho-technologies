@@ -23,15 +23,20 @@ const ROWS = [56, 165, 275, 384];
 
 type SystemPanel = { label: string; short: string; side: "left" | "right"; row: number };
 
-const SYSTEMS: SystemPanel[] = [
-  { label: "Hospital Information System", short: "HIS", side: "left", row: 0 },
-  { label: "Electronic Medical Record", short: "EMR", side: "left", row: 1 },
-  { label: "Laboratory", short: "LAB", side: "left", row: 2 },
-  { label: "Radiology", short: "RAD", side: "left", row: 3 },
-  { label: "Pharmacy", short: "PHR", side: "right", row: 0 },
-  { label: "Operations", short: "OPS", side: "right", row: 1 },
-  { label: "Finance", short: "FIN", side: "right", row: 2 },
-  { label: "IoT Infrastructure", short: "IOT", side: "right", row: 3 },
+/**
+ * Placement is fixed; only the wording changes with the locale. The short
+ * codes stay untranslated — they are the abbreviations an IT department
+ * actually uses, in either language.
+ */
+const SLOTS: Omit<SystemPanel, "label">[] = [
+  { short: "HIS", side: "left", row: 0 },
+  { short: "EMR", side: "left", row: 1 },
+  { short: "LAB", side: "left", row: 2 },
+  { short: "RAD", side: "left", row: 3 },
+  { short: "PHR", side: "right", row: 0 },
+  { short: "OPS", side: "right", row: 1 },
+  { short: "FIN", side: "right", row: 2 },
+  { short: "IOT", side: "right", row: 3 },
 ];
 
 const LEFT_X = 162;
@@ -60,7 +65,24 @@ function linkFor(s: SystemPanel) {
 
 const pct = (v: number, total: number) => `${(v / total) * 100}%`;
 
-export function IntelligenceBoard({ className }: { className?: string }) {
+export type BoardCopy = {
+  coreLabel: string;
+  coreSubtitle: string;
+  systems: string[];
+};
+
+export function IntelligenceBoard({
+  copy,
+  className,
+}: {
+  copy: BoardCopy;
+  className?: string;
+}) {
+  const systems: SystemPanel[] = SLOTS.map((slot, i) => ({
+    ...slot,
+    label: copy.systems[i],
+  }));
+
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
 
@@ -102,7 +124,7 @@ export function IntelligenceBoard({ className }: { className?: string }) {
           aria-hidden
           focusable="false"
         >
-          {SYSTEMS.map((s, i) => {
+          {systems.map((s, i) => {
             const d = linkFor(s);
             return (
               <g key={s.short}>
@@ -132,15 +154,15 @@ export function IntelligenceBoard({ className }: { className?: string }) {
           })}
         </svg>
 
-        {SYSTEMS.map((s, i) => (
+        {systems.map((s, i) => (
           <SystemCard key={s.short} system={s} index={i} />
         ))}
 
-        <CoreCard />
+        <CoreCard copy={copy} />
       </motion.div>
 
       {/* ── Portrait recomposition ──────────────────────────────────────── */}
-      <BoardCompact className="md:hidden" />
+      <BoardCompact copy={copy} systems={systems} className="md:hidden" />
     </div>
   );
 }
@@ -163,10 +185,10 @@ function SystemCard({ system, index }: { system: SystemPanel; index: number }) {
       <div className="card flex items-center gap-3 rounded-xl px-3.5 py-3 lg:px-4">
         <span
           aria-hidden
-          className="anim-breathe size-1.5 shrink-0 rounded-[2px] bg-[var(--color-brand)]"
+          className="anim-breathe size-1.5 shrink-0 rounded-[2px] bg-brand"
           style={{ animationDelay: `${index * 0.4}s` }}
         />
-        <span className="text-[0.75rem] leading-tight font-medium text-[var(--color-ink)] lg:text-[0.8125rem]">
+        <span className="text-[0.75rem] leading-tight font-medium text-ink lg:text-[0.8125rem]">
           {system.label}
         </span>
         <span className="annotation ml-auto hidden shrink-0 xl:block">{system.short}</span>
@@ -175,7 +197,7 @@ function SystemCard({ system, index }: { system: SystemPanel; index: number }) {
   );
 }
 
-function CoreCard() {
+function CoreCard({ copy }: { copy: BoardCopy }) {
   return (
     <motion.div
       data-reveal
@@ -195,19 +217,19 @@ function CoreCard() {
         aria-hidden
         className="pointer-events-none absolute -inset-8 rounded-full bg-[radial-gradient(circle,rgba(16,70,214,0.12),transparent_70%)] blur-xl"
       />
-      <div className="relative rounded-2xl border border-[var(--color-brand)]/25 bg-white px-4 py-4 shadow-[var(--shadow-float)] lg:px-5 lg:py-5">
+      <div className="relative rounded-2xl border border-[var(--color-brand)]/25 bg-surface px-4 py-4 shadow-[var(--shadow-float)] lg:px-5 lg:py-5">
         <div className="flex items-center gap-2">
           <span aria-hidden className="relative flex size-2 items-center justify-center">
-            <span className="anim-ripple absolute inset-0 rounded-full bg-[var(--color-brand)]/40" />
-            <span className="size-1.5 rounded-full bg-[var(--color-brand)]" />
+            <span className="anim-ripple absolute inset-0 rounded-full bg-brand/40" />
+            <span className="size-1.5 rounded-full bg-brand" />
           </span>
-          <span className="annotation text-[var(--color-brand)]">Core</span>
+          <span className="annotation text-brand">{copy.coreLabel}</span>
         </div>
-        <p className="mt-2 text-[0.9375rem] leading-none font-semibold tracking-[0.1em] text-[var(--color-ink)] lg:text-base">
+        <p className="mt-2 text-[0.9375rem] leading-none font-semibold tracking-[0.1em] text-ink lg:text-base">
           ADHIKARSA
         </p>
-        <p className="mt-1.5 text-[0.6875rem] leading-none font-medium tracking-[0.06em] text-[var(--color-slate)] lg:text-xs">
-          Intelligence Layer
+        <p className="mt-1.5 text-[0.6875rem] leading-none font-medium tracking-[0.06em] text-slate lg:text-xs">
+          {copy.coreSubtitle}
         </p>
       </div>
     </motion.div>
@@ -219,7 +241,15 @@ function CoreCard() {
  * so the same information is restated as a core plus a two-column system grid
  * fed by one visible conduit.
  */
-function BoardCompact({ className }: { className?: string }) {
+function BoardCompact({
+  copy,
+  systems,
+  className,
+}: {
+  copy: BoardCopy;
+  systems: SystemPanel[];
+  className?: string;
+}) {
   return (
     <div className={cn("flex flex-col items-center", className)}>
       <motion.div
@@ -233,43 +263,43 @@ function BoardCompact({ className }: { className?: string }) {
           aria-hidden
           className="pointer-events-none absolute -inset-6 rounded-full bg-[radial-gradient(circle,rgba(16,70,214,0.12),transparent_70%)] blur-xl"
         />
-        <div className="relative rounded-2xl border border-[var(--color-brand)]/25 bg-white px-5 py-5 text-center shadow-[var(--shadow-float)]">
+        <div className="relative rounded-2xl border border-[var(--color-brand)]/25 bg-surface px-5 py-5 text-center shadow-[var(--shadow-float)]">
           <span aria-hidden className="mx-auto flex size-2 items-center justify-center">
-            <span className="anim-ripple absolute size-2 rounded-full bg-[var(--color-brand)]/40" />
-            <span className="size-1.5 rounded-full bg-[var(--color-brand)]" />
+            <span className="anim-ripple absolute size-2 rounded-full bg-brand/40" />
+            <span className="size-1.5 rounded-full bg-brand" />
           </span>
-          <p className="mt-3 text-base leading-none font-semibold tracking-[0.1em] text-[var(--color-ink)]">
+          <p className="mt-3 text-base leading-none font-semibold tracking-[0.1em] text-ink">
             ADHIKARSA
           </p>
-          <p className="mt-2 text-xs leading-none font-medium text-[var(--color-slate)]">
-            Intelligence Layer
+          <p className="mt-2 text-xs leading-none font-medium text-slate">
+            {copy.coreSubtitle}
           </p>
         </div>
       </motion.div>
 
-      <span aria-hidden className="relative my-4 h-10 w-px overflow-hidden bg-[var(--color-rule)]">
+      <span aria-hidden className="relative my-4 h-10 w-px overflow-hidden bg-rule">
         <span
-          className="absolute inset-x-0 top-0 h-3 bg-[var(--color-brand)]"
+          className="absolute inset-x-0 top-0 h-3 bg-brand"
           style={{ animation: "adk-travel-y 2.4s linear infinite" }}
         />
       </span>
 
       <ul className="grid w-full grid-cols-2 gap-2">
-        {SYSTEMS.map((s, i) => (
+        {systems.map((s, i) => (
           <motion.li
             data-reveal
             key={s.short}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45 + i * 0.05, duration: 0.6, ease: EASE_OUT_EXPO }}
-            className="hairline flex items-center gap-2 rounded-xl bg-white px-3 py-3 shadow-[var(--shadow-hair)]"
+            className="hairline flex items-center gap-2 rounded-xl bg-surface px-3 py-3 shadow-[var(--shadow-hair)]"
           >
             <span
               aria-hidden
-              className="anim-breathe size-1.5 shrink-0 rounded-[2px] bg-[var(--color-brand)]"
+              className="anim-breathe size-1.5 shrink-0 rounded-[2px] bg-brand"
               style={{ animationDelay: `${i * 0.35}s` }}
             />
-            <span className="text-[0.6875rem] leading-tight font-medium text-[var(--color-ink)]">
+            <span className="text-[0.6875rem] leading-tight font-medium text-ink">
               {s.label}
             </span>
           </motion.li>

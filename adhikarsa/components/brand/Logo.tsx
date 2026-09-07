@@ -84,7 +84,7 @@ export function Logo({
       <LogoMark
         className={cn(
           "h-7 w-7 shrink-0 sm:h-8 sm:w-8",
-          dark ? "text-white" : "text-[var(--color-ink)]",
+          dark ? "text-white" : "text-ink",
           markClassName,
         )}
       />
@@ -99,7 +99,7 @@ export function Logo({
           <span
             className={cn(
               "mb-[0.35em] text-[0.5rem] leading-none font-medium tracking-[0.22em]",
-              dark ? "text-white/50" : "text-[var(--color-muted)]",
+              dark ? "text-white/50" : "text-muted",
             )}
           >
             PT
@@ -108,7 +108,7 @@ export function Logo({
         <span
           className={cn(
             "text-[0.9375rem] leading-none font-semibold tracking-[0.2em] sm:text-base",
-            dark ? "text-white" : "text-[var(--color-ink)]",
+            dark ? "text-white" : "text-ink",
           )}
         >
           {company.wordmark}
@@ -117,7 +117,7 @@ export function Logo({
           <span
             className={cn(
               "mt-[0.52em] hidden text-[0.5rem] leading-none font-medium tracking-[0.325em] sm:block",
-              dark ? "text-white/55" : "text-[var(--color-muted)]",
+              dark ? "text-white/55" : "text-muted",
             )}
           >
             {company.descriptor}
@@ -144,12 +144,12 @@ export function LogoStacked({
   return (
     <span className={cn("flex flex-col items-center", className)}>
       <LogoMark
-        className={cn("h-12 w-12", dark ? "text-white" : "text-[var(--color-ink)]")}
+        className={cn("h-12 w-12", dark ? "text-white" : "text-ink")}
       />
       <span
         className={cn(
           "mt-6 text-sm leading-none font-semibold tracking-[0.24em]",
-          dark ? "text-white" : "text-[var(--color-ink)]",
+          dark ? "text-white" : "text-ink",
         )}
       >
         {company.wordmark}
@@ -157,7 +157,7 @@ export function LogoStacked({
       <span
         className={cn(
           "mt-[0.7em] text-[0.5625rem] leading-none font-medium tracking-[0.3em]",
-          dark ? "text-white/55" : "text-[var(--color-muted)]",
+          dark ? "text-white/55" : "text-muted",
         )}
       >
         {company.descriptor}

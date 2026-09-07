@@ -1,53 +1,66 @@
-/** Sitewide navigation and section anchors. Ids are the scroll targets. */
+import type { Locale } from "@/lib/i18n";
+import type { Dictionary } from "@/data/dictionaries";
 
-export const SECTIONS = {
-  hero: "top",
+/**
+ * ============================================================================
+ * ROUTES
+ * ----------------------------------------------------------------------------
+ * Every path is built from a locale, so no component ever hand-writes a URL
+ * and no link can silently drop the language. `PAGES` is the single list the
+ * navbar, the footer, the sitemap and `generateStaticParams` all read from.
+ * ==========================================================================
+ */
+
+export const PAGE_KEYS = [
+  "home",
+  "company",
+  "solutions",
+  "technology",
+  "innovation",
+  "contact",
+] as const;
+
+export type PageKey = (typeof PAGE_KEYS)[number];
+
+/** Path segment for each page. `home` is the locale root. */
+const SEGMENT: Record<PageKey, string> = {
+  home: "",
   company: "company",
-  capabilities: "solutions",
-  healthcare: "healthcare",
+  solutions: "solutions",
+  technology: "technology",
+  innovation: "innovation",
+  contact: "contact",
+};
+
+export function routeFor(locale: Locale, page: PageKey): string {
+  const segment = SEGMENT[page];
+  return segment ? `/${locale}/${segment}` : `/${locale}`;
+}
+
+export function legalRoute(locale: Locale, page: "privacy" | "terms"): string {
+  return `/${locale}/${page}`;
+}
+
+/** Pages that appear in the primary navigation, in order. */
+export const NAV_PAGES: PageKey[] = [
+  "company",
+  "solutions",
+  "technology",
+  "innovation",
+  "contact",
+];
+
+export function navLabel(dict: Dictionary, page: PageKey): string {
+  return dict.nav[page];
+}
+
+/** In-page anchors, used only where a page still tells a scrolling story. */
+export const ANCHORS = {
+  ecosystem: "ecosystem",
+  architecture: "architecture",
   automation: "automation",
   engineering: "engineering",
-  architecture: "technology",
-  approach: "approach",
-  innovation: "innovation",
-  statement: "statement",
   profile: "profile",
-  contact: "contact",
+  approach: "approach",
+  statement: "statement",
 } as const;
-
-export type NavItem = { label: string; href: string };
-
-export const NAV_ITEMS: NavItem[] = [
-  { label: "Company", href: `#${SECTIONS.company}` },
-  { label: "Solutions", href: `#${SECTIONS.capabilities}` },
-  { label: "Technology", href: `#${SECTIONS.architecture}` },
-  { label: "Innovation", href: `#${SECTIONS.innovation}` },
-  { label: "Contact", href: `#${SECTIONS.contact}` },
-];
-
-export const FOOTER_NAV: { heading: string; items: NavItem[] }[] = [
-  {
-    heading: "Navigation",
-    items: [
-      { label: "Company", href: `#${SECTIONS.company}` },
-      { label: "Solutions", href: `#${SECTIONS.capabilities}` },
-      { label: "Technology", href: `#${SECTIONS.architecture}` },
-      { label: "Innovation", href: `#${SECTIONS.innovation}` },
-      { label: "Contact", href: `#${SECTIONS.contact}` },
-    ],
-  },
-  {
-    heading: "Capabilities",
-    items: [
-      { label: "Healthcare Technology", href: `#${SECTIONS.healthcare}` },
-      { label: "Automation", href: `#${SECTIONS.automation}` },
-      { label: "Artificial Intelligence", href: `#${SECTIONS.capabilities}` },
-      { label: "Software Development", href: `#${SECTIONS.engineering}` },
-    ],
-  },
-];
-
-export const LEGAL_NAV: NavItem[] = [
-  { label: "Privacy", href: "/privacy" },
-  { label: "Terms", href: "/terms" },
-];

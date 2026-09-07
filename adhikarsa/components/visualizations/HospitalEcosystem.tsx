@@ -28,25 +28,15 @@ const C = { x: 450, y: 320 };
 const RING = { rx: 322, ry: 226 };
 const CORE = { w: 248, h: 96 };
 
-const NAMES = [
-  "Clinical Systems",
-  "Patient Services",
-  "Laboratory",
-  "Radiology",
-  "Pharmacy",
-  "Operations",
-  "Finance",
-  "Management",
-  "Infrastructure",
-] as const;
+export type EcosystemCopy = {
+  coreTitle: string;
+  coreSubtitle: string;
+  nodes: string[];
+  stages: string[];
+};
 
-export const STAGES = [
-  { n: "01", label: "Independent systems" },
-  { n: "02", label: "Connections established" },
-  { n: "03", label: "Data in motion" },
-  { n: "04", label: "Intelligence layer active" },
-  { n: "05", label: "One connected ecosystem" },
-] as const;
+/** Nine slots on the ring. Only the wording is localised. */
+const SLOT_COUNT = 9;
 
 /** Stage thresholds along the track. Shared by the diagram and the rail. */
 const THRESHOLDS = [0.18, 0.4, 0.56, 0.74] as const;
@@ -56,8 +46,8 @@ export function stageFor(p: number) {
 }
 
 /** Positions resolved once at module load — pure geometry, never re-derived. */
-const NODES = NAMES.map((label, i) => {
-  const a = (Math.PI * 2 * i) / NAMES.length - Math.PI / 2;
+const NODES = Array.from({ length: SLOT_COUNT }, (_, i) => {
+  const a = (Math.PI * 2 * i) / SLOT_COUNT - Math.PI / 2;
   const x = C.x + Math.cos(a) * RING.rx;
   const y = C.y + Math.sin(a) * RING.ry;
   /* Trim the spoke so it meets the core's edge, not its centre. */
@@ -66,8 +56,7 @@ const NODES = NAMES.map((label, i) => {
   const len = Math.hypot(dx, dy) || 1;
   const stop = Math.min(len - 12, CORE.w / 2 + 30);
   return {
-    id: label.toLowerCase().replace(/\s+/g, "-"),
-    label,
+    id: `node-${i}`,
     x,
     y,
     spoke: `M ${x.toFixed(1)} ${y.toFixed(1)} L ${(x + (dx / len) * (len - stop)).toFixed(1)} ${(y + (dy / len) * (len - stop)).toFixed(1)}`,
@@ -89,9 +78,11 @@ function useStage(progress: MotionValue<number>) {
 
 export function HospitalEcosystem({
   progress,
+  copy,
   className,
 }: {
   progress: MotionValue<number>;
+  copy: EcosystemCopy;
   className?: string;
 }) {
   const stage = useStage(progress);
@@ -101,7 +92,7 @@ export function HospitalEcosystem({
       {/* Portrait recomposition — a 900-unit ring squeezed into 350px puts nine
           labels on top of each other. The same five stages are restated
           vertically instead. */}
-      <EcosystemCompact stage={stage} className="md:hidden" />
+      <EcosystemCompact stage={stage} copy={copy} className="md:hidden" />
 
       <div className="relative hidden aspect-[900/640] w-full md:block">
         <motion.div
@@ -184,15 +175,15 @@ export function HospitalEcosystem({
           }}
           className="absolute -translate-x-1/2 -translate-y-1/2"
         >
-          <div className="rounded-2xl border border-[var(--color-brand)]/25 bg-white px-4 py-4 text-center shadow-[var(--shadow-float)]">
+          <div className="rounded-2xl border border-[var(--color-brand)]/25 bg-surface px-4 py-4 text-center shadow-[var(--shadow-float)]">
             <span aria-hidden className="mx-auto flex size-2 items-center justify-center">
-              <span className="anim-ripple absolute size-2 rounded-full bg-[var(--color-brand)]/40" />
-              <span className="size-1.5 rounded-full bg-[var(--color-brand)]" />
+              <span className="anim-ripple absolute size-2 rounded-full bg-brand/40" />
+              <span className="size-1.5 rounded-full bg-brand" />
             </span>
-            <p className="mt-3 text-[0.6875rem] leading-none font-semibold tracking-[0.09em] text-[var(--color-ink)] sm:text-xs lg:text-[0.8125rem]">
-              INTELLIGENT HOSPITAL
+            <p className="mt-3 text-[0.6875rem] leading-none font-semibold tracking-[0.09em] text-ink sm:text-xs lg:text-[0.8125rem]">
+              {copy.coreTitle}
             </p>
-            <p className="annotation mt-2 whitespace-nowrap">Adhikarsa intelligence layer</p>
+            <p className="annotation mt-2 whitespace-nowrap">{copy.coreSubtitle}</p>
           </div>
         </motion.div>
 
@@ -219,8 +210,8 @@ export function HospitalEcosystem({
                 transition={{ duration: 0.6, delay: stage >= 2 ? i * 0.04 : 0 }}
                 className="size-1.5 shrink-0 rounded-full"
               />
-              <span className="text-[0.625rem] leading-none font-medium text-[var(--color-ink)] sm:text-[0.6875rem] lg:text-xs">
-                {n.label}
+              <span className="text-[0.625rem] leading-none font-medium text-ink sm:text-[0.6875rem] lg:text-xs">
+                {copy.nodes[i]}
               </span>
             </div>
           </motion.div>
@@ -230,7 +221,15 @@ export function HospitalEcosystem({
   );
 }
 
-function EcosystemCompact({ stage, className }: { stage: number; className?: string }) {
+function EcosystemCompact({
+  stage,
+  copy,
+  className,
+}: {
+  stage: number;
+  copy: EcosystemCopy;
+  className?: string;
+}) {
   return (
     <div className={cn("flex flex-col items-center", className)}>
       <ul className="grid w-full grid-cols-2 gap-2">
@@ -257,8 +256,8 @@ function EcosystemCompact({ stage, className }: { stage: number; className?: str
               transition={{ duration: 0.6, delay: stage >= 2 ? i * 0.04 : 0 }}
               className="size-1.5 shrink-0 rounded-full"
             />
-            <span className="text-[0.6875rem] leading-tight font-medium text-[var(--color-ink)]">
-              {n.label}
+            <span className="text-[0.6875rem] leading-tight font-medium text-ink">
+              {copy.nodes[i]}
             </span>
           </motion.li>
         ))}
@@ -276,7 +275,7 @@ function EcosystemCompact({ stage, className }: { stage: number; className?: str
           initial={false}
           animate={{ opacity: stage >= 2 ? 1 : 0 }}
           transition={{ duration: 0.6 }}
-          className="absolute inset-x-0 top-0 h-4 bg-[var(--color-brand)]"
+          className="absolute inset-x-0 top-0 h-4 bg-brand"
           style={{ animation: "adk-travel-y 2.2s linear infinite" }}
         />
       </motion.span>
@@ -294,15 +293,15 @@ function EcosystemCompact({ stage, className }: { stage: number; className?: str
           transition={{ duration: 0.9, ease: EASE }}
           className="pointer-events-none absolute -inset-6 rounded-full bg-[radial-gradient(circle,rgba(16,70,214,0.16),transparent_70%)] blur-xl"
         />
-        <div className="relative rounded-2xl border border-[var(--color-brand)]/25 bg-white px-5 py-5 text-center shadow-[var(--shadow-float)]">
+        <div className="relative rounded-2xl border border-[var(--color-brand)]/25 bg-surface px-5 py-5 text-center shadow-[var(--shadow-float)]">
           <span aria-hidden className="mx-auto flex size-2 items-center justify-center">
-            <span className="anim-ripple absolute size-2 rounded-full bg-[var(--color-brand)]/40" />
-            <span className="size-1.5 rounded-full bg-[var(--color-brand)]" />
+            <span className="anim-ripple absolute size-2 rounded-full bg-brand/40" />
+            <span className="size-1.5 rounded-full bg-brand" />
           </span>
-          <p className="mt-3 text-xs leading-none font-semibold tracking-[0.09em] text-[var(--color-ink)]">
-            INTELLIGENT HOSPITAL
+          <p className="mt-3 text-xs leading-none font-semibold tracking-[0.09em] text-ink">
+            {copy.coreTitle}
           </p>
-          <p className="annotation mt-2">Adhikarsa intelligence layer</p>
+          <p className="annotation mt-2">{copy.coreSubtitle}</p>
         </div>
       </motion.div>
     </div>
@@ -310,18 +309,25 @@ function EcosystemCompact({ stage, className }: { stage: number; className?: str
 }
 
 /** Horizontal stage rail, driven by the same threshold table as the diagram. */
-export function EcosystemStages({ progress }: { progress: MotionValue<number> }) {
+export function EcosystemStages({
+  progress,
+  stages,
+}: {
+  progress: MotionValue<number>;
+  stages: string[];
+}) {
   const stage = useStage(progress);
 
   return (
     <ol className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-6">
-      {STAGES.map((s, i) => {
+      {stages.map((label, i) => {
         const done = i <= stage;
+        const n = String(i + 1).padStart(2, "0");
         return (
-          <li key={s.n} className="flex flex-col gap-2.5">
-            <span className="relative block h-[2px] w-full overflow-hidden rounded-full bg-[var(--color-rule)]">
+          <li key={n} className="flex flex-col gap-2.5">
+            <span className="relative block h-[2px] w-full overflow-hidden rounded-full bg-rule">
               <motion.span
-                className="absolute inset-y-0 left-0 rounded-full bg-[var(--color-brand)]"
+                className="absolute inset-y-0 left-0 rounded-full bg-brand"
                 initial={false}
                 animate={{ width: done ? "100%" : "0%" }}
                 transition={{ duration: 0.7, ease: EASE }}
@@ -330,18 +336,18 @@ export function EcosystemStages({ progress }: { progress: MotionValue<number> })
             <span
               className={cn(
                 "annotation transition-colors duration-500",
-                done ? "text-[var(--color-brand)]" : "text-[var(--color-faint)]",
+                done ? "text-brand" : "text-faint",
               )}
             >
-              {s.n}
+              {n}
             </span>
             <span
               className={cn(
                 "text-[0.8125rem] leading-snug font-medium transition-colors duration-500",
-                done ? "text-[var(--color-ink)]" : "text-[var(--color-muted)]",
+                done ? "text-ink" : "text-muted",
               )}
             >
-              {s.label}
+              {label}
             </span>
           </li>
         );

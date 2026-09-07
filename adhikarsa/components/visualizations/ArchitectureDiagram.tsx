@@ -7,29 +7,13 @@ import { MotionPath } from "@/components/motion/MotionPath";
 import { EASE_OUT_EXPO, VIEWPORT } from "@/lib/animations";
 import { cn } from "@/lib/utils";
 
-const LAYERS = [
-  {
-    id: "experience",
-    name: "Experience",
-    desc: "What people in the institution actually use.",
-    icon: Layers,
-    items: ["Management Dashboard", "Clinical Applications", "Operational Systems"],
-  },
-  {
-    id: "intelligence",
-    name: "Intelligence",
-    desc: "Where process logic and reasoning live.",
-    icon: Cpu,
-    items: ["Automation Engine", "AI Systems", "Analytics", "Rules Engine"],
-  },
-  {
-    id: "infrastructure",
-    name: "Infrastructure",
-    desc: "The systems and data already in place.",
-    icon: Server,
-    items: ["APIs", "Databases", "Hospital Systems", "IoT", "Cloud", "On-Premise"],
-  },
-] as const;
+export type ArchitectureCopy = {
+  highlightAria: string;
+  layers: { name: string; desc: string; items: string[] }[];
+};
+
+/** Icons are structural, not linguistic — they stay bound to the slot. */
+const ICONS = [Layers, Cpu, Server];
 
 /**
  * Enterprise architecture, drawn as three separable layers.
@@ -39,18 +23,26 @@ const LAYERS = [
  * div, so the same exploration is available from the keyboard — and nothing
  * the hover reveals is information that is otherwise hidden.
  */
-export function ArchitectureDiagram({ className }: { className?: string }) {
+export function ArchitectureDiagram({
+  copy,
+  className,
+}: {
+  copy: ArchitectureCopy;
+  className?: string;
+}) {
   const [hovered, setHovered] = useState<number | null>(null);
   const [pinned, setPinned] = useState<number | null>(null);
   const active = hovered ?? pinned;
+  const layers = copy.layers;
 
   return (
     <div className={cn("relative", className)}>
-      {LAYERS.map((layer, i) => (
-        <div key={layer.id}>
+      {layers.map((layer, i) => (
+        <div key={layer.name}>
           <LayerBand
             layer={layer}
             index={i}
+            ariaSuffix={copy.highlightAria}
             active={active === i}
             dimmed={active !== null && active !== i}
             pinned={pinned === i}
@@ -58,7 +50,7 @@ export function ArchitectureDiagram({ className }: { className?: string }) {
             onLeave={() => setHovered(null)}
             onToggle={() => setPinned((p) => (p === i ? null : i))}
           />
-          {i < LAYERS.length - 1 && <Conduits lit={active === i || active === i + 1} />}
+          {i < layers.length - 1 && <Conduits lit={active === i || active === i + 1} />}
         </div>
       ))}
     </div>
@@ -68,6 +60,7 @@ export function ArchitectureDiagram({ className }: { className?: string }) {
 function LayerBand({
   layer,
   index,
+  ariaSuffix,
   active,
   dimmed,
   pinned,
@@ -75,8 +68,9 @@ function LayerBand({
   onLeave,
   onToggle,
 }: {
-  layer: (typeof LAYERS)[number];
+  layer: ArchitectureCopy["layers"][number];
   index: number;
+  ariaSuffix: string;
   active: boolean;
   dimmed: boolean;
   pinned: boolean;
@@ -84,14 +78,14 @@ function LayerBand({
   onLeave: () => void;
   onToggle: () => void;
 }) {
-  const Icon = layer.icon;
+  const Icon = ICONS[index] ?? ICONS[0];
 
   return (
     <motion.button
       data-reveal
       type="button"
       aria-pressed={pinned}
-      aria-label={`${layer.name} layer — highlight connections`}
+      aria-label={`${layer.name} ${ariaSuffix}`}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
       onFocus={onEnter}
@@ -114,18 +108,18 @@ function LayerBand({
               className={cn(
                 "flex size-8 items-center justify-center rounded-lg border transition-colors duration-500",
                 active
-                  ? "border-[var(--color-brand)]/30 bg-[var(--color-sky-tint)] text-[var(--color-brand)]"
-                  : "border-[var(--color-rule)] bg-[var(--color-mist)] text-[var(--color-muted)]",
+                  ? "border-[var(--color-brand)]/30 bg-sky-tint text-brand"
+                  : "border-rule bg-mist text-muted",
               )}
             >
               <Icon className="size-3.5" />
             </span>
             <span className="annotation">{`L${index + 1}`}</span>
           </div>
-          <h3 className="mt-4 text-title font-medium text-[var(--color-ink)]">
+          <h3 className="mt-4 text-title font-medium text-ink">
             {layer.name}
           </h3>
-          <p className="mt-2 text-[0.8125rem] leading-relaxed text-[var(--color-muted)]">
+          <p className="mt-2 text-[0.8125rem] leading-relaxed text-muted">
             {layer.desc}
           </p>
         </div>
@@ -139,15 +133,15 @@ function LayerBand({
                    institution, not as a few chips parked on the left. */
                 "flex flex-1 basis-32 items-center gap-2 rounded-lg border px-3 py-2.5 text-[0.75rem] leading-tight transition-colors duration-500",
                 active
-                  ? "border-[var(--color-brand)]/25 bg-[var(--color-sky-tint)] text-[var(--color-ink)]"
-                  : "border-[var(--color-rule)] bg-[var(--color-mist)] text-[var(--color-slate)]",
+                  ? "border-[var(--color-brand)]/25 bg-sky-tint text-ink"
+                  : "border-rule bg-mist text-slate",
               )}
             >
               <span
                 aria-hidden
                 className={cn(
                   "size-1 shrink-0 rounded-full transition-colors duration-500",
-                  active ? "bg-[var(--color-brand)]" : "bg-[var(--color-rule-strong)]",
+                  active ? "bg-brand" : "bg-rule-strong",
                 )}
               />
               {item}

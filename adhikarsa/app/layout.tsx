@@ -1,64 +1,42 @@
 import type { Metadata, Viewport } from "next";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
-import { MotionProvider } from "@/components/layout/MotionProvider";
-import { Navbar } from "@/components/layout/Navbar";
-import { ScrollProgress } from "@/components/layout/ScrollProgress";
-import { GradientDefs } from "@/components/visualizations/GradientDefs";
+import { ThemeScript } from "@/components/layout/ThemeScript";
 import { company } from "@/data/company";
+import { en } from "@/data/dictionaries/en";
 import "./globals.css";
 
-const TITLE = "Adhikarsa Mahatama Teknologi | Healthcare Technology & Automation";
-const DESCRIPTION =
-  "PT Adhikarsa Mahatama Teknologi develops healthcare technology, hospital automation, artificial intelligence, system integration, and custom digital solutions for modern institutions.";
+/**
+ * Root shell.
+ *
+ * Deliberately thin: it owns <html>, the fonts and the pre-paint theme script,
+ * and nothing else. Locale-specific chrome — navbar, footer, `lang`, metadata —
+ * lives in `app/[locale]/layout.tsx`, because those all depend on which
+ * language the reader asked for.
+ */
 
 export const metadata: Metadata = {
   metadataBase: new URL(company.site.url),
   title: {
-    default: TITLE,
+    default: en.meta.home.title,
     template: `%s | ${company.shortName}`,
   },
-  description: DESCRIPTION,
+  description: en.meta.home.description,
   applicationName: company.shortName,
-  keywords: [
-    "healthcare technology",
-    "hospital automation",
-    "artificial intelligence",
-    "enterprise software development",
-    "systems integration",
-    "workflow automation",
-    "technology company Indonesia",
-    "digital transformation healthcare",
-  ],
   authors: [{ name: company.legalName }],
   creator: company.legalName,
   publisher: company.legalName,
   category: "technology",
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    siteName: company.legalName,
-    locale: company.site.locale,
-    url: "/",
-    title: TITLE,
-    description: DESCRIPTION,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: TITLE,
-    description: DESCRIPTION,
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true, "max-image-preview": "large" },
-  },
   formatDetection: { telephone: false, address: false, email: false },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
-  colorScheme: "light",
+  /* Matched to `--color-canvas` in each theme, so the browser chrome on mobile
+     tracks the page instead of framing it in the wrong colour. */
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a1020" },
+  ],
   width: "device-width",
   initialScale: 1,
 };
@@ -67,25 +45,17 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
+    /* `lang` is a placeholder here and overwritten per locale by the inner
+       layout; `no-js` is stripped by ThemeScript before first paint. */
     <html
       lang="en"
       className={`no-js ${GeistSans.variable} ${GeistMono.variable}`}
+      suppressHydrationWarning
     >
-      <body className="antialiased">
-        {/* Runs before first paint. If it never runs, `.no-js` stays and the
-            stylesheet reveals every `data-reveal` element unconditionally. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `document.documentElement.classList.remove('no-js')`,
-          }}
-        />
-        <MotionProvider>
-          <GradientDefs />
-          <ScrollProgress />
-          <Navbar />
-          {children}
-        </MotionProvider>
-      </body>
+      <head>
+        <ThemeScript />
+      </head>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

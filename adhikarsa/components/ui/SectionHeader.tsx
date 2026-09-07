@@ -30,7 +30,7 @@ export function SectionHeader({
   const centered = align === "center";
 
   return (
-    <div className={cn("flex flex-col gap-6", centered && "items-center text-center", className)}>
+    <div className={cn("measure flex flex-col gap-6", centered && "items-center text-center", className)}>
       {eyebrow && (
         <Reveal preset="rise">
           <Eyebrow tone={tone === "dark" ? "onDark" : "brand"}>{eyebrow}</Eyebrow>
@@ -42,7 +42,7 @@ export function SectionHeader({
         lines={headline}
         className={cn(
           "text-headline font-medium",
-          tone === "dark" ? "text-white" : "text-[var(--color-ink)]",
+          tone === "dark" ? "text-white" : "text-ink",
           headlineClassName,
         )}
       />
@@ -52,7 +52,7 @@ export function SectionHeader({
           <p
             className={cn(
               "max-w-2xl text-lead",
-              tone === "dark" ? "text-white/70" : "text-[var(--color-slate)]",
+              tone === "dark" ? "text-white/70" : "text-slate",
               centered && "mx-auto",
               copyClassName,
             )}

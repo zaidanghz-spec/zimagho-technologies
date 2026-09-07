@@ -25,8 +25,8 @@ export function Eyebrow({
         aria-hidden
         className={cn(
           "h-px w-7",
-          tone === "brand" && "bg-[var(--color-brand)]",
-          tone === "neutral" && "bg-[var(--color-rule-strong)]",
+          tone === "brand" && "bg-brand",
+          tone === "neutral" && "bg-rule-strong",
           tone === "onDark" && "bg-white/40",
         )}
       />

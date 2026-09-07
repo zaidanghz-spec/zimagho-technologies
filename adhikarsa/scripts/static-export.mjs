@@ -52,6 +52,8 @@ try {
   const out = join(root, "out");
   inlineFonts(out);
   relativiseLinks(out);
+  retargetRuntime(out);
+  settleAnimations(out);
   writeReadme(out);
 
   console.log("\n\u2713 Static site written to out/ \u2014 open out/index.html in a browser.");
@@ -109,18 +111,106 @@ function relativiseLinks(out) {
     const depth = relative(out, dirname(html)).split(sep).filter(Boolean).length;
     const up = depth === 0 ? "./" : "../".repeat(depth);
 
-    const next = readFileSync(html, "utf8").replace(
-      /(href|src)="\/(?!\/)([^"]*)"/g,
-      (_whole, attr, path) => {
-        /* Directory-style routes need an explicit document on disk. */
-        const target = path === "" || path.endsWith("/") ? `${path}index.html` : path;
-        /* Cache-busting queries have no meaning on a file system. */
-        return `${attr}="${up}${target.split("?")[0]}"`;
-      },
-    );
+    const onDisk = (path) =>
+      /* Directory-style routes need an explicit document on disk, and
+         cache-busting queries have no meaning on a file system. */
+      (path === "" || path.endsWith("/") ? `${path}index.html` : path).split("?")[0];
+
+    const next = readFileSync(html, "utf8")
+      .replace(
+        /(href|src)="\/(?!\/)([^"]*)"/g,
+        (_whole, attr, path) => `${attr}="${up}${onDisk(path)}"`,
+      )
+      /* The locale gateway's no-script fallback. Its script counterpart
+         resolves `file:` on its own; this attribute cannot. */
+      .replace(
+        /content="(\d+;\s*url=)\/(?!\/)([^"]*)"/gi,
+        (_whole, prefix, path) => `content="${prefix}${up}${onDisk(path)}"`,
+      )
+      /* Runtime chunk URLs also live inside Next's inline flight payload, as
+         escaped JSON strings the rule above cannot see. Left absolute they
+         resolve against the filesystem root from a `file://` origin, which is
+         how a nested page ends up with no stylesheet and system serif type. */
+      .replace(/\\?"\/_next\//g, (m) => m.replace("/_next/", `${up}_next/`));
     writeFileSync(html, next);
   }
   console.log("  rewrote absolute links to relative");
+}
+
+/**
+ * Points Next's client runtime at the folder rather than the filesystem root.
+ *
+ * `relativiseLinks` fixes the URLs written into the markup, but the chunks the
+ * runtime fetches *after* hydration are built from a base path compiled into
+ * the runtime itself — one shared file, so it cannot carry a different number
+ * of `../` for every page. Left as `/_next/` it resolves to the filesystem
+ * root under `file://`, hydration never completes, and the page looks right
+ * while nothing on it responds: no theme toggle, no menu, no animation.
+ *
+ * So the base becomes a global each document sets for itself, before any
+ * chunk loads. It is resolved to an absolute URL rather than left as `../`:
+ * the runtime does not only build URLs from this value, it also matches it
+ * against `document.currentScript.src` to locate itself, and that src is
+ * always absolute. The `|| "/_next/"` keeps the file valid if it is ever
+ * served over HTTP after all.
+ */
+function retargetRuntime(out) {
+  const GLOBAL = "__ADK_ASSET_BASE__";
+  let patched = 0;
+
+  for (const js of walk(join(out, "_next"), [".js"])) {
+    const src = readFileSync(js, "utf8");
+    if (!src.includes('"/_next/"')) continue;
+    writeFileSync(js, src.replaceAll('"/_next/"', `(globalThis.${GLOBAL} || "/_next/")`));
+    patched += 1;
+  }
+
+  for (const html of walk(out, [".html"])) {
+    const depth = relative(out, dirname(html)).split(sep).filter(Boolean).length;
+    const up = depth === 0 ? "./" : "../".repeat(depth);
+    const src = readFileSync(html, "utf8");
+    if (src.includes(GLOBAL)) continue;
+    /* First thing in <head>, so it is set before any chunk is requested. */
+    writeFileSync(
+      html,
+      src.replace(
+        "<head>",
+        `<head><script>globalThis.${GLOBAL}=new URL(${JSON.stringify(
+          `${up}_next/`,
+        )},document.baseURI).href</script>`,
+      ),
+    );
+  }
+
+  console.log(`  retargeted the client runtime in ${patched} chunk(s)`);
+}
+
+/**
+ * Renders the entrance animations in their finished state.
+ *
+ * React does not hydrate from a `file://` origin, and every reveal is
+ * server-rendered at its `initial` value — opacity 0. Without this the folder
+ * opens to a page that is present in the markup and invisible on screen: the
+ * headline missing, the diagrams empty, only the few paragraphs that are not
+ * animated showing through.
+ *
+ * The site already has exactly this rule for visitors with JavaScript off
+ * (`.no-js [data-reveal]` in `globals.css`); the inline theme script strips
+ * `no-js` before paint, so it cannot apply here. Restating it unconditionally
+ * in the exported stylesheet is the same decision — the copy is legible,
+ * complete, and simply does not animate.
+ */
+function settleAnimations(out) {
+  const RULE = [
+    "",
+    "/* Static export: no hydration from file://, so every reveal is settled. */",
+    "[data-reveal]{opacity:1!important;transform:none!important;filter:none!important}",
+    "",
+  ].join("\n");
+
+  const sheets = walk(join(out, "_next"), [".css"]);
+  for (const css of sheets) writeFileSync(css, readFileSync(css, "utf8") + RULE);
+  console.log(`  settled entrance animations in ${sheets.length} stylesheet(s)`);
 }
 
 /** Hand-off note, written into the export so the folder explains itself. */
@@ -135,19 +225,36 @@ function writeReadme(out) {
       '  Klik dua kali "index.html".',
       "  Tidak perlu install apa pun \u2014 tanpa Node, tanpa npm, tanpa terminal.",
       "",
+      "ISI FOLDER",
+      "  index.html        \u2014 pengalih bahasa (otomatis ke EN atau ID)",
+      "  en/               \u2014 situs versi English",
+      "  id/               \u2014 situs versi Bahasa Indonesia",
+      "",
+      "  Tiap bahasa berisi halaman: Beranda, Perusahaan, Solusi,",
+      "  Teknologi, Inovasi, Kontak, Privasi, dan Ketentuan.",
+      "",
       "APA YANG BERFUNGSI",
-      "  Seluruh halaman: animasi scroll, diagram ekosistem rumah sakit lima",
-      "  tahap, arsitektur interaktif, konstelasi R&D, dan semua",
-      "  microinteraction. Font Geist ditanam di dalam CSS, jadi tipografinya",
-      "  persis sama seperti versi live.",
+      "  \u00b7 Navigasi antar halaman \u2014 semua link sudah relatif, jadi berpindah",
+      "    halaman berfungsi langsung dari folder ini tanpa server.",
+      "  \u00b7 Tombol bahasa (EN / ID) dan tombol mode gelap di kanan atas.",
+      "    Pilihan Anda tersimpan di browser dan dipakai lagi saat dibuka ulang.",
+      "  \u00b7 Seluruh isi halaman, tata letak, warna, dan tipografi. Font Geist",
+      "    ditanam di dalam CSS, jadi hurufnya persis sama seperti versi live.",
+      "",
+      "YANG TIDAK BERFUNGSI DARI FOLDER INI",
+      "  Browser tidak menjalankan React dari file:// \u2014 itu batasan browser,",
+      "  bukan kesalahan pada situsnya. Jadi di folder ini:",
+      "  \u00b7 Animasi tidak berjalan. Semua elemen langsung tampil selesai,",
+      "    jadi tidak ada yang hilang \u2014 hanya tidak bergerak.",
+      "  \u00b7 Diagram yang mengikuti scroll (ekosistem rumah sakit) dan menu",
+      "    versi ponsel tidak interaktif.",
+      "  Untuk versi bergerak sepenuhnya, jalankan sebagai server (lihat bawah).",
       "",
       "CATATAN",
-      '  \u00b7 Link "Privacy" dan "Terms" perlu server untuk berpindah halaman.',
-      "    Semua navigasi utama (anchor) berfungsi normal.",
       "  \u00b7 Devtools menampilkan dua peringatan font-preload. Itu kosmetik:",
       "    font aslinya dimuat dari data URI di dalam CSS, bukan dari file itu.",
       "",
-      "VERSI LENGKAP (dengan routing antar halaman)",
+      "VERSI LENGKAP (dijalankan sebagai server)",
       "  cd adhikarsa && npm install && npm run dev   \u2192  http://localhost:3000",
       "",
       "Dibuat ulang dengan: npm run export",

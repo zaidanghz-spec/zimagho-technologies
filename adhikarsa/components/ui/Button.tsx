@@ -17,19 +17,19 @@ const BASE =
 const VARIANTS: Record<Variant, string> = {
   /* The single strongest action on any given screen. */
   primary:
-    "bg-[var(--color-brand)] px-6 py-3.5 text-white shadow-[var(--shadow-float)] " +
-    "hover:bg-[var(--color-brand-alt)] focus-visible:outline-[var(--color-brand)]",
+    "bg-brand px-6 py-3.5 text-on-brand shadow-[var(--shadow-float)] " +
+    "hover:bg-brand-alt focus-visible:outline-[var(--color-brand)]",
   /* Secondary: hairline on white, blue on approach. */
   outline:
-    "hairline bg-white px-6 py-3.5 text-[var(--color-ink)] shadow-[var(--shadow-hair)] " +
-    "hover:border-[var(--color-brand)] hover:text-[var(--color-brand)] " +
+    "hairline bg-surface px-6 py-3.5 text-ink shadow-[var(--shadow-hair)] " +
+    "hover:border-[var(--color-brand)] hover:text-brand " +
     "focus-visible:outline-[var(--color-brand)]",
   /* For the deep-blue band, where white is the contrast. */
   white:
     "bg-white px-6 py-3.5 text-[var(--color-navy)] shadow-[0_12px_30px_-14px_rgba(2,20,50,0.7)] " +
-    "hover:bg-[var(--color-sky-tint)] focus-visible:outline-white",
+    "hover:bg-sky-tint focus-visible:outline-white",
   quiet:
-    "px-1 py-1 text-[var(--color-slate)] hover:text-[var(--color-brand)] " +
+    "px-1 py-1 text-slate hover:text-brand " +
     "focus-visible:outline-[var(--color-brand)]",
 };
 

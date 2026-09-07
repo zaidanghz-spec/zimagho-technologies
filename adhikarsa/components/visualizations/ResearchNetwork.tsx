@@ -9,68 +9,23 @@ import { cn } from "@/lib/utils";
 const VIEW = { w: 900, h: 560 };
 const C = { x: 450, y: 280 };
 
-type Theme = {
-  id: string;
-  label: string;
-  detail: string;
-  x: number;
-  y: number;
+export type ResearchCopy = {
+  trackLabel: string;
+  themes: { label: string; detail: string }[];
 };
 
 /**
  * Hand-placed rather than distributed on a perfect circle. An evenly spaced
  * ring reads as a diagram template; a slightly irregular constellation reads
- * as an actual research map.
+ * as an actual research map. Only the wording is localised.
  */
-const THEMES: Theme[] = [
-  {
-    id: "ai",
-    label: "Artificial Intelligence",
-    detail:
-      "Models scoped to institutional decisions — ranking, forecasting, and surfacing what a team should look at next.",
-    x: 448,
-    y: 58,
-  },
-  {
-    id: "vision",
-    label: "Computer Vision",
-    detail:
-      "Applied perception for operational contexts: asset tracking, occupancy, and environment monitoring.",
-    x: 782,
-    y: 168,
-  },
-  {
-    id: "automation",
-    label: "Automation",
-    detail:
-      "Process engines that carry state across departments, so a step never restarts from a blank form.",
-    x: 758,
-    y: 428,
-  },
-  {
-    id: "data",
-    label: "Healthcare Data",
-    detail:
-      "Interoperability, schema reconciliation, and governance for data that was never designed to be joined.",
-    x: 420,
-    y: 500,
-  },
-  {
-    id: "infra",
-    label: "Intelligent Infrastructure",
-    detail:
-      "Buildings and devices treated as addressable systems, monitored and coordinated alongside software.",
-    x: 128,
-    y: 402,
-  },
-  {
-    id: "hci",
-    label: "Human–Computer Interaction",
-    detail:
-      "Interfaces for high-pressure environments, where clarity under load matters more than density.",
-    x: 142,
-    y: 148,
-  },
+const POSITIONS = [
+  { x: 448, y: 58 },
+  { x: 782, y: 168 },
+  { x: 758, y: 428 },
+  { x: 420, y: 500 },
+  { x: 128, y: 402 },
+  { x: 142, y: 148 },
 ];
 
 const pct = (v: number, total: number) => `${(v / total) * 100}%`;
@@ -83,8 +38,19 @@ const pct = (v: number, total: number) => `${(v / total) * 100}%`;
  * point at a moving target — so the motion goes to the connections and the
  * gentle breathing of the markers.
  */
-export function ResearchNetwork({ className }: { className?: string }) {
+export function ResearchNetwork({
+  copy,
+  className,
+}: {
+  copy: ResearchCopy;
+  className?: string;
+}) {
   const [active, setActive] = useState(0);
+  const THEMES = POSITIONS.map((pos, i) => ({
+    id: `track-${i}`,
+    ...pos,
+    ...copy.themes[i],
+  }));
   const current = THEMES[active];
 
   return (
@@ -160,12 +126,12 @@ export function ResearchNetwork({ className }: { className?: string }) {
             aria-hidden
             className="pointer-events-none absolute -inset-10 rounded-full bg-[radial-gradient(circle,rgba(16,70,214,0.1),transparent_70%)] blur-xl"
           />
-          <div className="relative rounded-2xl border border-[var(--color-brand)]/25 bg-white px-5 py-4 text-center shadow-[var(--shadow-float)]">
+          <div className="relative rounded-2xl border border-[var(--color-brand)]/25 bg-surface px-5 py-4 text-center shadow-[var(--shadow-float)]">
             <span aria-hidden className="mx-auto flex size-2 items-center justify-center">
-              <span className="anim-ripple absolute size-2 rounded-full bg-[var(--color-brand)]/40" />
-              <span className="size-1.5 rounded-full bg-[var(--color-brand)]" />
+              <span className="anim-ripple absolute size-2 rounded-full bg-brand/40" />
+              <span className="size-1.5 rounded-full bg-brand" />
             </span>
-            <p className="mt-2.5 text-xs leading-none font-semibold tracking-[0.1em] text-[var(--color-ink)]">
+            <p className="mt-2.5 text-xs leading-none font-semibold tracking-[0.1em] text-ink">
               R &amp; D
             </p>
           </div>
@@ -187,8 +153,8 @@ export function ResearchNetwork({ className }: { className?: string }) {
             className={cn(
               "absolute flex max-w-[11rem] -translate-x-1/2 -translate-y-1/2 items-center gap-2.5 rounded-xl border px-3.5 py-2.5 text-left transition-[border-color,box-shadow,transform] duration-400",
               i === active
-                ? "z-10 scale-[1.04] border-[var(--color-brand)]/45 bg-white shadow-[var(--shadow-lift)]"
-                : "border-[var(--color-rule)] bg-white shadow-[var(--shadow-hair)] hover:border-[var(--color-rule-strong)]",
+                ? "z-10 scale-[1.04] border-[var(--color-brand)]/45 bg-surface shadow-[var(--shadow-lift)]"
+                : "border-rule bg-surface shadow-[var(--shadow-hair)] hover:border-rule-strong",
             )}
             style={{ left: pct(t.x, VIEW.w), top: pct(t.y, VIEW.h) }}
           >
@@ -197,12 +163,12 @@ export function ResearchNetwork({ className }: { className?: string }) {
               className={cn(
                 "size-1.5 shrink-0 rounded-full transition-colors duration-400",
                 i === active
-                  ? "bg-[var(--color-brand)]"
-                  : "anim-breathe bg-[var(--color-rule-strong)]",
+                  ? "bg-brand"
+                  : "anim-breathe bg-rule-strong",
               )}
               style={{ animationDelay: `${i * 0.5}s` }}
             />
-            <span className="text-[0.75rem] leading-tight font-medium text-[var(--color-ink)]">
+            <span className="text-[0.75rem] leading-tight font-medium text-ink">
               {t.label}
             </span>
           </motion.button>
@@ -214,7 +180,7 @@ export function ResearchNetwork({ className }: { className?: string }) {
       <div className="mx-auto mt-8 hidden max-w-2xl md:block">
         <div className="card min-h-[8rem] p-6">
           <div className="flex items-center justify-between gap-4">
-            <span className="annotation text-[var(--color-brand)]">Research track</span>
+            <span className="annotation text-brand">{copy.trackLabel}</span>
             <span className="annotation">
               {String(active + 1).padStart(2, "0")} / {String(THEMES.length).padStart(2, "0")}
             </span>
@@ -227,10 +193,10 @@ export function ResearchNetwork({ className }: { className?: string }) {
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.3, ease: EASE_OUT_EXPO }}
             >
-              <h3 className="mt-4 text-lg font-medium text-[var(--color-ink)]">
+              <h3 className="mt-4 text-lg font-medium text-ink">
                 {current.label}
               </h3>
-              <p className="mt-2 text-[0.9375rem] leading-relaxed text-[var(--color-slate)]">
+              <p className="mt-2 text-[0.9375rem] leading-relaxed text-slate">
                 {current.detail}
               </p>
             </motion.div>
@@ -251,13 +217,13 @@ export function ResearchNetwork({ className }: { className?: string }) {
             className="card p-5"
           >
             <div className="flex items-center justify-between gap-3">
-              <span aria-hidden className="size-1.5 rounded-full bg-[var(--color-brand)]" />
+              <span aria-hidden className="size-1.5 rounded-full bg-brand" />
               <span className="annotation">{String(i + 1).padStart(2, "0")}</span>
             </div>
-            <h3 className="mt-3 text-base font-medium text-[var(--color-ink)]">
+            <h3 className="mt-3 text-base font-medium text-ink">
               {t.label}
             </h3>
-            <p className="mt-2 text-sm leading-relaxed text-[var(--color-slate)]">
+            <p className="mt-2 text-sm leading-relaxed text-slate">
               {t.detail}
             </p>
           </motion.li>

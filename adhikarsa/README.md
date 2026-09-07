@@ -8,6 +8,9 @@ Light-first, corporate, editorial. Built with Next.js (App Router) +
 TypeScript + Tailwind CSS v4 + Framer Motion. Statically prerendered — no
 server runtime required.
 
+Eight pages, in **English and Bahasa Indonesia**, each with a **light and a
+dark** presentation.
+
 ```bash
 npm install
 npm run dev        # http://localhost:3000
@@ -22,19 +25,31 @@ npm run export     # static, file://-openable copy in out/
 need a runtime (`opengraph-image`, `robots`, `sitemap`), inlines the Geist
 fonts as data URIs (Chrome blocks `@font-face` over `file://`, which would
 silently swap in a system font), and rewrites root-absolute links to relative
-ones. Page-to-page routing still needs a server; anchors and every animation
-work from disk.
+ones — including the locale gateway's `<meta http-equiv="refresh">`, so
+`out/index.html` still forwards to `en/` or `id/` when opened from a folder.
+Page-to-page routing, the language switch and the theme switch all work from
+disk. Two things are done for that folder specifically: the client runtime's
+base path is retargeted per document, because a single compiled `/_next/`
+cannot be right for pages at three different depths; and the entrance
+animations are settled to their finished state, because React does not hydrate
+from a `file://` origin and every reveal is server-rendered at `opacity: 0` —
+without it the folder opens to a page that is complete in the markup and blank
+on screen. So the export is the whole site, legible and navigable, minus the
+motion.
 
 ## Where to edit things
 
 | I want to change…                             | Edit                                        |
 | --------------------------------------------- | ------------------------------------------- |
 | Company name, profile fields, contact email   | `data/company.ts`                           |
-| Nav labels and section anchors                 | `lib/constants.ts`                          |
-| Colours, type scale, surfaces, shadows         | `app/globals.css` (`@theme` block)          |
+| Any visible wording, in either language        | `data/dictionaries/en.ts` and `id.ts`       |
+| Which pages exist and their URLs               | `lib/constants.ts`                          |
+| Which languages exist                          | `lib/i18n.ts`                               |
+| Light colours, type scale, surfaces, shadows   | `app/globals.css` (`@theme` block)          |
+| Dark colours                                   | `app/globals.css` (`.dark` block)           |
 | The logo mark, lockups, favicon                | `components/brand/Logo.tsx`, `app/icon.svg` |
 | Animation timings and entrance variants        | `lib/animations.ts`                         |
-| Section copy                                   | the matching file in `components/sections/` |
+| Section layout (not its words)                 | the matching file in `components/sections/` |
 
 ## ⚠ Before launch
 
@@ -58,23 +73,94 @@ the site simply never makes the claim.
 ## Structure
 
 ```
-app/           routes, metadata, sitemap, robots, OG image, global CSS
+app/
+  layout.tsx        root shell: <html>, fonts, the pre-paint theme script
+  page.tsx          the locale gateway at `/`
+  [locale]/         every page, once per language
+    layout.tsx      navbar, footer, per-locale metadata and hreflang
+    page.tsx        home
+    company/ solutions/ technology/ innovation/ contact/
+    privacy/ terms/
+  globals.css       the whole design system: light @theme, dark override
+  sitemap.ts robots.ts opengraph-image.tsx icon.svg
 components/
   brand/       LogoMark + horizontal and stacked lockups
-  layout/      navbar, footer, scroll progress
+  layout/      navbar, footer, scroll progress, page header, theme + language
+               toggles, ThemeScript, structured data
   motion/      Reveal, AnimatedText, MotionPath, Magnetic, AnimatedCounter
-  sections/    one file per band of the homepage, in page order
+  sections/    one file per band; pages compose them
   ui/          Button, Section, SectionHeader, Card, Eyebrow, TrustShelf
   visualizations/
                IntelligenceBoard      hero ecosystem board
-               HospitalEcosystem      five-stage scroll-driven diagram
+               HospitalEcosystem      nine-node, five-stage scroll diagram
                WorkflowVisualization  automation pipeline
                ArchitectureDiagram    three interactive layers
                ResearchNetwork        R&D constellation
                CapabilityGlyph        six capability micro-diagrams
-data/          company facts and profile fields
-lib/           animation system, class utils, media-query hook, constants
+data/
+  company.ts        company facts and profile fields
+  dictionaries/     en.ts, id.ts — every visible string
+lib/           animations, i18n, routes, class utils, media-query hook
 ```
+
+## Pages, in two languages
+
+Every route exists once per locale: `/en/solutions` and `/id/solutions`, with
+no implicit default hiding at the root. The symmetry is the point — an
+Indonesian company profile shown to Indonesian institutions should not treat
+Indonesian as a translation of the "real" site, and every page stays shareable
+as a URL in the language it was read in. `/` itself renders nothing but a
+gateway: a script picks up a stored choice, then `navigator.languages`, then
+the default, with a `<meta refresh>` and a plain link behind it so the page is
+never a dead end without JavaScript.
+
+`data/dictionaries/en.ts` is the source of truth and `Dictionary` is inferred
+from it — deliberately without `as const`, because literal string types would
+make every other language fail to satisfy the type. Widening to `string` is
+exactly what turns the English file into a contract `id.ts` must fulfil: add a
+key in English and TypeScript fails the build until Indonesian has it too.
+
+`<html lang>` is set by the same blocking script that applies the theme, read
+off the first path segment. The root layout owns `<html>` and sits above every
+dynamic segment, so it has nothing to read the locale from and ships the default
+tag; correcting that in an effect would leave the accessibility tree wrong for
+the whole first frame, and a screen reader that has already started speaking
+Indonesian in an English voice does not go back. Doing it before paint closes
+that window. The served HTML therefore still carries `lang="en"` on Indonesian
+pages — visible to a crawler that executes no JavaScript, though `hreflang`,
+`og:locale` and the Indonesian content itself all state the language plainly.
+Making the markup itself correct means two root layouts in route groups, with
+`global-not-found` to match; that is the upgrade path if it is ever needed.
+
+Headline `lines` arrays are **re-authored per language, not translated line by
+line**. Each entry is one visual line behind its own reveal mask, and
+Indonesian runs longer than English word for word, so a faithful line-for-line
+translation would wrap and break the composition.
+
+## Light and dark
+
+One class on `<html>`, nothing more. `@theme` declares the light values and
+`.dark` redefines *the same* custom properties, so almost nothing branches on
+the theme — `bg-surface` and `text-ink` simply mean something different once the
+class is present. Adding a colour means adding it in both blocks; nothing else
+has to know. The `dark:` variant is reserved for the one case where a token
+cannot help, which is the toggle itself: its two icons have to react to the
+class rather than be recoloured by it.
+
+`components/layout/ThemeScript.tsx` runs blocking in `<head>` and applies the
+stored choice before first paint, which is what prevents the white flash a
+dark-mode visitor would otherwise get on every navigation. It also owns the
+*switching*, through one delegated click listener — `ThemeToggle` renders the
+control and has no `onClick`, no state, and no `"use client"`. Both faces of the
+button are drawn from the same `.dark` class in CSS, so it cannot disagree with
+the page, it works from the first paint rather than being dead until the bundle
+arrives, and it still works in the static export, where React never hydrates at
+all.
+
+Contrast was recomputed for the dark palette rather than assumed. The brand
+blue lightens to `#5B93FF` so it reads on a dark ground, and white text on that
+blue measures 2.97:1 — a failure. Hence `--color-on-brand`, which flips to near
+black in dark mode and takes the pairing to 6.37:1.
 
 ## Brand
 
@@ -120,6 +206,20 @@ beside an achromatic mark. It also lifts white-on-blue contrast from 5.26:1 to
   tailwind-merge guesses they are text *colours* and silently drops the size
   wherever a size and a colour meet in one call — which renders a 52px headline
   at 16px.
+- **A page is one composition, not a stack of sections.** `PageHeader` on an
+  inner route and the first section below it must not repeat each other — the
+  company masthead deliberately says what the page contains rather than
+  restating the About headline verbatim, which is what it did when the page
+  was first split out of the single-scroll site.
+- **Headlines are measured against their column, not the viewport.**
+  `text-display` and `text-headline` are `min(clamp(…vw…), …cqi)`, and the box
+  that holds them carries `.measure` (`container-type: inline-size`). A viewport
+  clamp alone cannot keep an authored line on one line: the same headline set in
+  a five-column well is a third of the width it has full-bleed and would render
+  at the same size. The second term steps the type down to fit the well it is
+  actually in — which is also what absorbs Indonesian running longer than
+  English. Without a `.measure` ancestor the `cqi` term resolves against the
+  viewport, where it sits far above the clamp and is therefore inert.
 - **Reduced motion is handled in two places**: `MotionConfig reducedMotion="user"`
   for Framer, and a global media query that neutralises CSS animation.
 - **`.no-js`** is stripped by an inline script before first paint. If it never

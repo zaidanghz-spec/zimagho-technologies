@@ -37,7 +37,7 @@ export function Card({
       className={cn(
         "card group/card relative h-full overflow-hidden",
         interactive &&
-          "transition-[box-shadow,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-[var(--color-rule-strong)] hover:shadow-[var(--shadow-lift)]",
+          "transition-[box-shadow,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-rule-strong hover:shadow-[var(--shadow-lift)]",
         className,
       )}
     >

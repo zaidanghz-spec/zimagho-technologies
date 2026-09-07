@@ -24,11 +24,11 @@ export function TrustShelf({ className }: { className?: string }) {
     if (process.env.NODE_ENV === "production") return null;
     return (
       <div className={className}>
-        <div className="rounded-xl border border-dashed border-[var(--color-rule-strong)] bg-[var(--color-mist)] p-5">
-          <p className="eyebrow text-[var(--color-brand)]">
+        <div className="rounded-xl border border-dashed border-rule-strong bg-mist p-5">
+          <p className="eyebrow text-brand">
             Reserved — verified clients / partners / certifications
           </p>
-          <p className="mt-2 text-xs text-[var(--color-muted)]">
+          <p className="mt-2 text-xs text-muted">
             Empty by design. Populate <code className="font-mono">company.trust</code> in{" "}
             <code className="font-mono">data/company.ts</code> to render this shelf.
             This notice is development-only.
@@ -43,7 +43,7 @@ export function TrustShelf({ className }: { className?: string }) {
       <p className="eyebrow">Institutional partners</p>
       <ul className="mt-5 flex flex-wrap items-center gap-x-10 gap-y-4">
         {entries.map((e) => (
-          <li key={e} className="text-sm font-medium text-[var(--color-slate)]">
+          <li key={e} className="text-sm font-medium text-slate">
             {e}
           </li>
         ))}

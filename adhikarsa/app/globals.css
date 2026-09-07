@@ -1,56 +1,78 @@
 @import "tailwindcss";
 
-/* ============================================================================
-   PT ADHIKARSA MAHATAMA TEKNOLOGI — DESIGN SYSTEM
-   ----------------------------------------------------------------------------
-   Light-first, corporate, editorial. The page is white; blue is an accent that
-   earns its place, not a wash. Depth comes from layered hairlines and very soft
-   shadows rather than from colour.
-   ========================================================================== */
+/**
+ * ============================================================================
+ * PT ADHIKARSA MAHATAMA TEKNOLOGI — DESIGN SYSTEM
+ * ----------------------------------------------------------------------------
+ * Light-first, corporate, editorial — with a full dark counterpart.
+ *
+ * Every colour is a semantic token, never a literal. `@theme` declares the
+ * light values; `.dark` redefines the same custom properties, so a single class
+ * on <html> flips the entire site without a `dark:` variant on any component.
+ * That is the whole trick: components describe *roles* (`bg-surface`,
+ * `text-ink`), and the theme decides what a role looks like.
+ * ==========================================================================
+ */
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* Surfaces — most of the site lives on the first two */
-  --color-canvas: #ffffff;
-  --color-mist: #f8fafc;
+  /* Surfaces */
+  --color-canvas: #ffffff;     /* page ground */
+  --color-surface: #ffffff;    /* cards, navbar */
+  --color-mist: #f8fafc;       /* alternating band */
   --color-fog: #f5f7fa;
-  --color-stone: #f1f5f9;
-  --color-sky-tint: #eaf4ff;
+  --color-stone: #f1f5f9;      /* chips, inset wells */
+  --color-sky-tint: #eaf4ff;   /* the one blue-tinted surface */
 
   /* Text */
-  --color-ink: #0f172a;
-  --color-slate: #475569;
-  --color-muted: #64748b;
-  --color-faint: #94a3b8;
+  --color-ink: #0f172a;        /* headings */
+  --color-slate: #475569;      /* body */
+  --color-muted: #64748b;      /* labels */
+  --color-faint: #94a3b8;      /* annotations */
 
-  /* Brand
-     The mark is achromatic and dense. A fully saturated blue (B = 255, the
-     originally specified #0B5CFF) was the only maximally saturated element in
-     an otherwise desaturated system, and it now sits directly beside the logo.
-     Stepping it down one notch keeps every affordance unmistakably blue while
-     letting the mark lead. Revert by restoring #0B5CFF here. */
+  /* Brand */
   --color-brand: #1046d6;
   --color-brand-alt: #1a55e6;
+  /* Text that sits ON a brand fill. Flips with the theme, because white on a
+     light-blue dark-mode button measures 2.97:1 and fails outright. */
+  --color-on-brand: #ffffff;
   --color-cyan: #00aeef;
-  --color-navy: #0a2540;
+  --color-navy: #0a2540;       /* the single saturated band */
 
   /* Hairlines */
   --color-rule: #e2e8f0;
   --color-rule-soft: #eef2f7;
   --color-rule-strong: #cbd5e1;
 
+  /* Diagram strokes, kept as tokens so the diagrams theme too */
+  --color-wire: rgba(16, 70, 214, 0.42);
+  --color-wire-soft: rgba(16, 70, 214, 0.3);
+  --color-bloom: rgba(16, 70, 214, 0.13);
+  --color-grid-line: rgba(15, 23, 42, 0.032);
+
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  /* Editorial type scale */
-  --text-display: clamp(2rem, 6.1vw, 4.75rem);
+  /* Editorial type scale.
+     Headlines are set as authored lines, one entry per visual line, so a line
+     that wraps is a broken composition rather than a cosmetic nuisance. The
+     viewport clamp alone cannot guarantee that: a headline in a five-column
+     well is a third of the width of the same headline full-bleed, and reads at
+     the same size. The `cqi` term is the second constraint — type sized against
+     the column it actually occupies — so a half-width well steps its own type
+     down. It also absorbs the fact that Indonesian runs longer than English
+     word for word. Where no ancestor carries `.measure`, `cqi` falls back to
+     the viewport, where the term is far above the clamp and therefore inert. */
+  --text-display: min(clamp(2rem, 6.1vw, 4.75rem), 8cqi);
   --text-display--line-height: 1.04;
   --text-display--letter-spacing: -0.035em;
 
-  --text-headline: clamp(1.75rem, 4.3vw, 3.25rem);
+  --text-headline: min(clamp(1.75rem, 4.3vw, 3.25rem), 7.4cqi);
   --text-headline--line-height: 1.08;
   --text-headline--letter-spacing: -0.028em;
 
-  --text-title: clamp(1.375rem, 2.6vw, 1.875rem);
+  --text-title: min(clamp(1.375rem, 2.6vw, 1.875rem), 11.5cqi);
   --text-title--line-height: 1.2;
   --text-title--letter-spacing: -0.02em;
 
@@ -62,12 +84,52 @@
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
 
-  /* Elevation. Deliberately shallow — corporate surfaces sit on the page,
-     they do not float above it. */
+  /* Elevation. Corporate surfaces sit on the page, they do not float. */
   --shadow-hair: 0 1px 2px rgba(15, 23, 42, 0.04);
   --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 10px 24px -14px rgba(15, 23, 42, 0.16);
   --shadow-lift: 0 2px 4px rgba(15, 23, 42, 0.05), 0 20px 42px -18px rgba(15, 23, 42, 0.22);
   --shadow-float: 0 1px 2px rgba(15, 23, 42, 0.05), 0 24px 56px -24px rgba(16, 70, 214, 0.28);
+}
+
+/**
+ * DARK THEME
+ * A deep navy-black in the same family as the brand navy — not a neutral grey,
+ * and emphatically not the cyberpunk register. Depth comes from hairlines and a
+ * one-step surface lift, because drop shadows are nearly invisible on a dark
+ * ground: the shadows are dialled right down and the borders take over.
+ */
+.dark {
+  --color-canvas: #0a1020;
+  --color-surface: #111a2e;
+  --color-mist: #0d1526;
+  --color-fog: #0f1829;
+  --color-stone: #16203a;
+  --color-sky-tint: #12233d;
+
+  --color-ink: #f1f5f9;
+  --color-slate: #c3cedd;
+  --color-muted: #94a3b8;
+  --color-faint: #7d8da4;
+
+  --color-brand: #5b93ff;
+  --color-brand-alt: #7aa8ff;
+  --color-on-brand: #08101f;
+  --color-cyan: #38bdf8;
+  --color-navy: #060d1a;
+
+  --color-rule: rgba(255, 255, 255, 0.1);
+  --color-rule-soft: rgba(255, 255, 255, 0.06);
+  --color-rule-strong: rgba(255, 255, 255, 0.2);
+
+  --color-wire: rgba(91, 147, 255, 0.55);
+  --color-wire-soft: rgba(91, 147, 255, 0.34);
+  --color-bloom: rgba(91, 147, 255, 0.16);
+  --color-grid-line: rgba(255, 255, 255, 0.045);
+
+  --shadow-hair: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.45), 0 10px 24px -16px rgba(0, 0, 0, 0.8);
+  --shadow-lift: 0 2px 6px rgba(0, 0, 0, 0.5), 0 20px 42px -20px rgba(0, 0, 0, 0.9);
+  --shadow-float: 0 1px 2px rgba(0, 0, 0, 0.5), 0 24px 56px -28px rgba(91, 147, 255, 0.4);
 }
 
 /* ============================================================================
@@ -86,6 +148,10 @@
     color-scheme: light;
   }
 
+  html.dark {
+    color-scheme: dark;
+  }
+
   body {
     background-color: var(--color-canvas);
     color: var(--color-slate);
@@ -95,6 +161,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: clip;
+    /* Only the theme swap animates; page loads must not fade in. */
+    transition: background-color 0.4s var(--ease-out-expo);
   }
 
   h1, h2, h3, h4 {
@@ -103,7 +171,7 @@
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--color-brand) 18%, transparent);
+    background: color-mix(in oklab, var(--color-brand) 22%, transparent);
     color: var(--color-ink);
   }
 
@@ -125,12 +193,9 @@
     background: var(--color-mist);
   }
   ::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+    background: var(--color-rule-strong);
     border-radius: 999px;
     border: 3px solid var(--color-mist);
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
   }
 }
 
@@ -138,7 +203,6 @@
    UTILITIES
    ========================================================================== */
 
-/* Page gutter. One measure for the whole site. */
 @utility shell {
   width: 100%;
   max-width: 80rem;
@@ -152,9 +216,14 @@
   }
 }
 
-/* Standard card: hairline ring plus a shadow shallow enough to read as paper. */
+@utility measure {
+  /* Marks the box a headline is measured against. Pair it with `text-display`
+     or `text-headline` on a child; nothing else reads it. */
+  container-type: inline-size;
+}
+
 @utility card {
-  background: var(--color-canvas);
+  background: var(--color-surface);
   border: 1px solid var(--color-rule);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
@@ -187,11 +256,10 @@
   color: var(--color-faint);
 }
 
-/* Faint engineering grid, faded out at the edges. Used sparingly. */
 @utility blueprint {
   background-image:
-    linear-gradient(to right, rgba(15, 23, 42, 0.032) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.032) 1px, transparent 1px);
+    linear-gradient(to right, var(--color-grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-grid-line) 1px, transparent 1px);
   background-size: 72px 72px;
 }
 
@@ -211,8 +279,6 @@
    KEYFRAMES — transform / opacity / dash only
    ========================================================================== */
 
-/* Travelling data pulse. Endpoints come from per-element custom properties so
-   one keyframe serves every path length on the site. */
 @keyframes adk-flow {
   from { stroke-dashoffset: var(--flow-start, 0px); }
   to { stroke-dashoffset: var(--flow-end, -1000px); }
@@ -250,11 +316,10 @@
 
 /* ============================================================================
    NO JAVASCRIPT
-   ----------------------------------------------------------------------------
    Reveal animations start from an inline `opacity: 0` rendered on the server,
-   so without JavaScript the copy below the fold would never appear. The `no-js`
-   class is stripped by an inline script before first paint; if that never runs,
-   everything marked `data-reveal` is simply shown.
+   so without JavaScript the copy below the fold would never appear. `no-js` is
+   stripped before first paint; if that never runs, everything marked
+   `data-reveal` is simply shown.
    ========================================================================== */
 
 .no-js [data-reveal] {
@@ -264,7 +329,7 @@
 }
 
 /* ============================================================================
-   REDUCED MOTION — hard stop for every decorative animation
+   REDUCED MOTION
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {

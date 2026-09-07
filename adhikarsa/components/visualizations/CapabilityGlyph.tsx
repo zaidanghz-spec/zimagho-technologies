@@ -12,9 +12,9 @@ import { MotionPath } from "@/components/motion/MotionPath";
  */
 
 const S = {
-  line: "stroke-[var(--color-rule-strong)]",
-  node: "fill-white stroke-[var(--color-rule-strong)]",
-  live: "fill-[var(--color-brand)]",
+  line: "stroke-rule-strong",
+  node: "fill-surface stroke-rule-strong",
+  live: "fill-brand",
 } as const;
 
 const wrap = "h-[52px] w-[132px] overflow-visible";
@@ -35,7 +35,7 @@ function Automation() {
           height={10}
           rx={3}
           className={`${S.node} transition-[fill,stroke] duration-500 ${
-            i === 2 ? "group-hover/row:fill-[var(--color-brand)] group-hover/row:stroke-[var(--color-brand)]" : ""
+            i === 2 ? "group-hover/row:fill-brand group-hover/row:stroke-brand" : ""
           }`}
           strokeWidth="1"
         />
@@ -66,7 +66,7 @@ function Integration() {
         width={18}
         height={18}
         rx={5}
-        className="fill-white stroke-[var(--color-brand)] transition-[fill] duration-500 group-hover/row:fill-[var(--color-sky-tint)]"
+        className="fill-surface stroke-brand transition-[fill] duration-500 group-hover/row:fill-[var(--color-sky-tint)]"
         strokeWidth="1.2"
       />
       <circle cx={107} cy={26} r={2.5} className={S.live} />
@@ -86,7 +86,7 @@ function Intelligence() {
     <svg viewBox="0 0 132 52" className={wrap} aria-hidden focusable="false">
       {rows.map((r, i) => (
         <g key={r.y}>
-          <rect x={6} y={r.y - 3} width={120} height={3} rx={1.5} className="fill-[var(--color-stone)]" />
+          <rect x={6} y={r.y - 3} width={120} height={3} rx={1.5} className="fill-stone" />
           <rect
             x={6}
             y={r.y - 3}
@@ -95,8 +95,8 @@ function Intelligence() {
             rx={1.5}
             className={
               r.on
-                ? "fill-[var(--color-brand)]"
-                : "fill-[var(--color-rule-strong)] transition-[fill] duration-500 group-hover/row:fill-[var(--color-brand)]/45"
+                ? "fill-brand"
+                : "fill-[var(--color-rule-strong)] transition-[fill] duration-500 group-hover/row:fill-brand/45"
             }
             style={{ transitionDelay: `${i * 60}ms` }}
           />
@@ -122,7 +122,7 @@ function Development() {
           width={r.w}
           height={10}
           rx={3}
-          className={`fill-white stroke-[var(--color-rule-strong)] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`fill-surface stroke-rule-strong transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             i === 1 ? "group-hover/row:translate-x-1.5" : "group-hover/row:-translate-x-1"
           }`}
           strokeWidth="1"
@@ -134,7 +134,7 @@ function Development() {
         width={3}
         height={10}
         rx={1.5}
-        className="fill-[var(--color-brand)] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/row:translate-x-1.5"
+        className="fill-brand transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/row:translate-x-1.5"
       />
     </svg>
   );
@@ -146,13 +146,13 @@ function DataIntelligence() {
   return (
     <svg viewBox="0 0 132 52" className={wrap} aria-hidden focusable="false">
       {[16, 30, 44].map((y) => (
-        <line key={y} x1="6" y1={y} x2="126" y2={y} className="stroke-[var(--color-rule-soft)]" strokeWidth="1" />
+        <line key={y} x1="6" y1={y} x2="126" y2={y} className="stroke-rule-soft" strokeWidth="1" />
       ))}
       <path
         d={`${d} L 126 48 L 6 48 Z`}
-        className="fill-[var(--color-brand)] opacity-0 transition-opacity duration-500 group-hover/row:opacity-[0.08]"
+        className="fill-brand opacity-0 transition-opacity duration-500 group-hover/row:opacity-[0.08]"
       />
-      <path d={d} className="stroke-[var(--color-brand)]" strokeWidth="1.6" fill="none" strokeLinejoin="round" strokeLinecap="round" />
+      <path d={d} className="stroke-brand" strokeWidth="1.6" fill="none" strokeLinejoin="round" strokeLinecap="round" />
       <circle cx={126} cy={16} r={2.5} className={S.live} />
     </svg>
   );
@@ -162,12 +162,12 @@ function DataIntelligence() {
 function Research() {
   return (
     <svg viewBox="0 0 132 52" className={wrap} aria-hidden focusable="false">
-      <ellipse cx={66} cy={26} rx={54} ry={20} className="stroke-[var(--color-rule-strong)]" strokeWidth="1" fill="none" strokeDasharray="3 5" />
-      <ellipse cx={66} cy={26} rx={30} ry={11} className="stroke-[var(--color-rule)]" strokeWidth="1" fill="none" strokeDasharray="3 5" />
-      <circle cx={66} cy={26} r={4} className="fill-white stroke-[var(--color-brand)]" strokeWidth="1.2" />
+      <ellipse cx={66} cy={26} rx={54} ry={20} className="stroke-rule-strong" strokeWidth="1" fill="none" strokeDasharray="3 5" />
+      <ellipse cx={66} cy={26} rx={30} ry={11} className="stroke-rule" strokeWidth="1" fill="none" strokeDasharray="3 5" />
+      <circle cx={66} cy={26} r={4} className="fill-surface stroke-brand" strokeWidth="1.2" />
       <circle cx={66} cy={26} r={1.6} className={S.live} />
-      <circle cx={120} cy={26} r={2.5} className="fill-[var(--color-brand)] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/row:-translate-x-3 group-hover/row:-translate-y-1" />
-      <circle cx={36} cy={15} r={2} className="fill-[var(--color-cyan)] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/row:translate-x-2 group-hover/row:translate-y-1" />
+      <circle cx={120} cy={26} r={2.5} className="fill-brand transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/row:-translate-x-3 group-hover/row:-translate-y-1" />
+      <circle cx={36} cy={15} r={2} className="fill-cyan transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/row:translate-x-2 group-hover/row:translate-y-1" />
     </svg>
   );
 }

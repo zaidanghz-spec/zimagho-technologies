@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Footer } from "@/components/layout/Footer";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { company, currentYear } from "@/data/company";
+import type { Dictionary } from "@/data/dictionaries";
+import type { Locale } from "@/lib/i18n";
+import { routeFor } from "@/lib/constants";
 
-type Section = { heading: string; body: string };
+type LegalCopy = Dictionary["legal"]["privacy"];
 
 /**
  * Shared shell for the legal pages.
@@ -15,70 +17,57 @@ type Section = { heading: string; body: string };
  * banner states plainly rather than burying.
  */
 export function LegalPage({
-  title,
-  intro,
-  sections,
+  locale,
+  dict,
+  copy,
 }: {
-  title: string;
-  intro: string;
-  sections: Section[];
+  locale: Locale;
+  dict: Dictionary;
+  copy: LegalCopy;
 }) {
   return (
-    <>
-      <main id="main" className="shell pt-36 pb-24 sm:pt-44 lg:pt-48">
-        <div className="mx-auto max-w-3xl">
-          <Reveal preset="rise">
-            <Eyebrow tone="neutral">{company.legalName}</Eyebrow>
-          </Reveal>
+    <main id="main" className="shell pt-36 pb-24 sm:pt-44 lg:pt-48">
+      <div className="mx-auto max-w-3xl">
+        <Reveal preset="rise">
+          <Eyebrow tone="neutral">{company.legalName}</Eyebrow>
+        </Reveal>
 
-          <Reveal preset="riseSoft" delay={0.06}>
-            <h1 className="mt-6 text-headline font-medium text-[var(--color-ink)]">{title}</h1>
-          </Reveal>
+        <Reveal preset="riseSoft" delay={0.06}>
+          <h1 className="mt-6 text-headline font-medium text-ink">{copy.title}</h1>
+        </Reveal>
 
-          <Reveal preset="riseSoft" delay={0.12}>
-            <p className="mt-6 text-lg leading-[1.62] text-[var(--color-slate)]">
-              {intro}
-            </p>
-          </Reveal>
+        <Reveal preset="riseSoft" delay={0.12}>
+          <p className="mt-6 text-lg leading-[1.62] text-slate">{copy.intro}</p>
+        </Reveal>
 
-          <Reveal preset="rise" delay={0.18}>
-            <p className="eyebrow mt-8 flex items-center gap-2 rounded-lg border border-dashed border-[var(--color-rule-strong)] px-4 py-3 text-[0.5625rem] text-[var(--color-brand)]">
-              <span aria-hidden className="size-1 rounded-full bg-[var(--color-brand)]" />
-              Working draft — pending review by counsel
-            </p>
-          </Reveal>
-
-          <RevealGroup as="div" gap={0.08} className="mt-16 flex flex-col">
-            {sections.map((s) => (
-              <RevealItem
-                key={s.heading}
-                as="section"
-                className="border-t border-[var(--color-rule)] py-8"
-              >
-                <h2 className="text-lg font-medium text-[var(--color-ink)]">
-                  {s.heading}
-                </h2>
-                <p className="mt-3 leading-[1.68] text-[var(--color-slate)]">
-                  {s.body}
-                </p>
-              </RevealItem>
-            ))}
-          </RevealGroup>
-
-          <p className="mt-12 text-xs text-[var(--color-muted)]">
-            Last reviewed {currentYear}.
+        <Reveal preset="rise" delay={0.18}>
+          <p className="eyebrow mt-8 flex items-center gap-2 rounded-lg border border-dashed border-rule-strong px-4 py-3 text-brand">
+            <span aria-hidden className="size-1 rounded-full bg-brand" />
+            {dict.legal.draftNotice}
           </p>
+        </Reveal>
 
-          <Link
-            href="/"
-            className="mt-12 inline-flex items-center gap-2 rounded-full text-sm text-[var(--color-slate)] transition-colors hover:text-[var(--color-ink)]"
-          >
-            <ArrowRight aria-hidden className="size-4 rotate-180" />
-            Back to homepage
-          </Link>
-        </div>
-      </main>
-      <Footer />
-    </>
+        <RevealGroup as="div" gap={0.08} className="mt-16 flex flex-col">
+          {copy.sections.map((s) => (
+            <RevealItem key={s.heading} as="section" className="border-t border-rule py-8">
+              <h2 className="text-lg font-medium text-ink">{s.heading}</h2>
+              <p className="mt-3 leading-[1.68] text-slate">{s.body}</p>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+
+        <p className="mt-12 text-xs text-muted">
+          {dict.legal.lastReviewed} {currentYear}.
+        </p>
+
+        <Link
+          href={routeFor(locale, "home")}
+          className="mt-12 inline-flex items-center gap-2 rounded-full text-sm text-slate transition-colors hover:text-ink"
+        >
+          <ArrowRight aria-hidden className="size-4 rotate-180" />
+          {dict.actions.backHome}
+        </Link>
+      </div>
+    </main>
   );
 }

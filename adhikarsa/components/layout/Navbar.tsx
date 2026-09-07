@@ -3,20 +3,36 @@
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { ArrowRight, Menu, X } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { LanguageToggle } from "@/components/layout/LanguageToggle";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { Logo } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/Button";
-import { company } from "@/data/company";
+import type { Dictionary } from "@/data/dictionaries";
 import { EASE_OUT_EXPO } from "@/lib/animations";
-import { NAV_ITEMS, SECTIONS } from "@/lib/constants";
+import type { Locale } from "@/lib/i18n";
+import { NAV_PAGES, routeFor } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-const WATCHED = NAV_ITEMS.map((n) => n.href.slice(1));
-
-export function Navbar() {
+export function Navbar({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [active, setActive] = useState<string | null>(null);
+  /* The sheet is keyed to the path it was opened on. When the route changes,
+     the stored path no longer matches and the sheet is closed by derivation —
+     no effect, no cascading render. */
+  const [openedAt, setOpenedAt] = useState<string | null>(null);
+  const pathname = usePathname();
+  const open = openedAt !== null && openedAt === pathname;
+  const setOpen = useCallback(
+    (next: boolean | ((v: boolean) => boolean)) => {
+      setOpenedAt((prev) => {
+        const isOpen = prev !== null && prev === pathname;
+        const want = typeof next === "function" ? next(isOpen) : next;
+        return want ? pathname : null;
+      });
+    },
+    [pathname],
+  );
   const { scrollY } = useScroll();
 
   /* Flips React state only at the threshold crossing, not on every frame. */
@@ -25,28 +41,6 @@ export function Navbar() {
     setScrolled((prev) => (prev === next ? prev : next));
   });
 
-  /* Active-section tracking via IntersectionObserver — no scroll maths. */
-  useEffect(() => {
-    const targets = WATCHED.map((id) => document.getElementById(id)).filter(
-      (el): el is HTMLElement => !!el,
-    );
-    if (!targets.length) return;
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActive(visible.target.id);
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: [0, 0.25, 0.5, 1] },
-    );
-
-    targets.forEach((t) => io.observe(t));
-    return () => io.disconnect();
-  }, []);
-
-  /* Lock the page behind the mobile sheet; close on Escape. */
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
@@ -56,17 +50,18 @@ export function Navbar() {
       document.documentElement.style.overflow = "";
       window.removeEventListener("keydown", onKey);
     };
-  }, [open]);
+  }, [open, setOpen]);
 
-  const close = useCallback(() => setOpen(false), []);
+  const close = useCallback(() => setOpen(false), [setOpen]);
+  const homeHref = routeFor(locale, "home");
 
   return (
     <>
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[90] focus:rounded-full focus:bg-[var(--color-brand)] focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:text-white"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[90] focus:rounded-full focus:bg-brand focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:text-on-brand"
       >
-        Skip to content
+        {dict.nav.skipToContent}
       </a>
 
       <header className="fixed inset-x-0 top-0 z-50">
@@ -74,46 +69,40 @@ export function Navbar() {
           className={cn(
             "transition-[background-color,backdrop-filter,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
             scrolled
-              ? "border-b border-[var(--color-rule)] bg-white/85 shadow-[0_1px_2px_rgba(15,23,42,0.04)] backdrop-blur-xl"
+              ? "border-b border-rule bg-canvas/85 shadow-[var(--shadow-hair)] backdrop-blur-xl"
               : "border-b border-transparent bg-transparent",
           )}
         >
           <nav
             aria-label="Primary"
-            className="shell flex h-16 items-center justify-between gap-6 sm:h-20"
+            className="shell flex h-16 items-center justify-between gap-4 sm:h-20"
           >
-            <Link
-              href={`#${SECTIONS.hero}`}
-              className="shrink-0 rounded-sm"
-              aria-label={`${company.shortName} — home`}
-            >
+            <Link href={homeHref} className="shrink-0 rounded-sm" aria-label={dict.nav.homeAria}>
               <Logo />
             </Link>
 
             <ul className="hidden items-center gap-1 lg:flex">
-              {NAV_ITEMS.map((item) => {
-                const id = item.href.slice(1);
-                const isActive = active === id;
+              {NAV_PAGES.map((page) => {
+                const href = routeFor(locale, page);
+                const isActive = pathname === href;
                 return (
-                  <li key={item.href}>
+                  <li key={page}>
                     <Link
-                      href={item.href}
-                      aria-current={isActive ? "true" : undefined}
+                      href={href}
+                      aria-current={isActive ? "page" : undefined}
                       className={cn(
                         "relative block px-4 py-2 text-sm tracking-[-0.005em] transition-colors duration-300",
-                        isActive
-                          ? "text-[var(--color-ink)]"
-                          : "text-[var(--color-slate)] hover:text-[var(--color-ink)]",
+                        isActive ? "text-ink" : "text-slate hover:text-ink",
                       )}
                     >
-                      {item.label}
+                      {dict.nav[page]}
                       {/* Shared-layout underline: it slides between items
                           rather than fading in and out. */}
                       {isActive && (
                         <motion.span
                           layoutId="nav-underline"
                           transition={{ type: "spring", stiffness: 360, damping: 36 }}
-                          className="absolute inset-x-4 -bottom-0.5 h-[2px] rounded-full bg-[var(--color-brand)]"
+                          className="absolute inset-x-4 -bottom-0.5 h-[2px] rounded-full bg-brand"
                         />
                       )}
                     </Link>
@@ -123,12 +112,22 @@ export function Navbar() {
             </ul>
 
             <div className="flex items-center gap-2">
+              <LanguageToggle
+                locale={locale}
+                label={dict.language.label}
+                className="hidden sm:flex"
+              />
+              <ThemeToggle
+                labels={{ light: dict.theme.toLight, dark: dict.theme.toDark }}
+                className="hidden sm:flex"
+              />
+
               <Button
-                href={`#${SECTIONS.contact}`}
-                className="hidden px-5 py-2.5 text-sm sm:inline-flex"
+                href={routeFor(locale, "contact")}
+                className="hidden px-5 py-2.5 text-sm xl:inline-flex"
                 arrow
               >
-                Talk to Us
+                {dict.nav.primaryCta}
               </Button>
 
               <button
@@ -136,8 +135,8 @@ export function Navbar() {
                 onClick={() => setOpen((v) => !v)}
                 aria-expanded={open}
                 aria-controls="mobile-nav"
-                aria-label={open ? "Close menu" : "Open menu"}
-                className="hairline flex size-10 items-center justify-center rounded-full bg-white text-[var(--color-ink)] transition-colors hover:border-[var(--color-rule-strong)] lg:hidden"
+                aria-label={open ? dict.nav.closeMenu : dict.nav.openMenu}
+                className="hairline flex size-10 items-center justify-center rounded-full bg-surface text-ink transition-colors hover:border-rule-strong lg:hidden"
               >
                 {open ? <X className="size-[18px]" /> : <Menu className="size-[18px]" />}
               </button>
@@ -154,25 +153,25 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-white lg:hidden"
+            className="fixed inset-0 z-40 bg-canvas lg:hidden"
           >
             <div className="shell flex h-full flex-col pt-28 pb-12">
               <ul className="flex flex-col">
-                {NAV_ITEMS.map((item, i) => (
+                {NAV_PAGES.map((page, i) => (
                   <motion.li
-                    key={item.href}
+                    key={page}
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.06 + i * 0.05, duration: 0.5, ease: EASE_OUT_EXPO }}
-                    className="border-b border-[var(--color-rule-soft)]"
+                    className="border-b border-rule-soft"
                   >
                     <Link
-                      href={item.href}
+                      href={routeFor(locale, page)}
                       onClick={close}
-                      className="flex items-center justify-between py-5 text-2xl font-medium tracking-[-0.02em] text-[var(--color-ink)]"
+                      className="flex items-center justify-between py-5 text-2xl font-medium tracking-[-0.02em] text-ink"
                     >
-                      {item.label}
-                      <ArrowRight aria-hidden className="size-4 text-[var(--color-faint)]" />
+                      {dict.nav[page]}
+                      <ArrowRight aria-hidden className="size-4 text-faint" />
                     </Link>
                   </motion.li>
                 ))}
@@ -182,16 +181,22 @@ export function Navbar() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.34, duration: 0.5, ease: EASE_OUT_EXPO }}
-                className="mt-auto"
+                className="mt-auto flex flex-col gap-5"
               >
+                <div className="flex items-center gap-2 sm:hidden">
+                  <LanguageToggle locale={locale} label={dict.language.label} />
+                  <ThemeToggle
+                    labels={{ light: dict.theme.toLight, dark: dict.theme.toDark }}
+                  />
+                </div>
                 <Button
-                  href={`#${SECTIONS.contact}`}
+                  href={routeFor(locale, "contact")}
                   onClick={close}
                   wrapperClassName="w-full"
                   className="w-full"
                   arrow
                 >
-                  Talk to Us
+                  {dict.nav.primaryCta}
                 </Button>
               </motion.div>
             </div>

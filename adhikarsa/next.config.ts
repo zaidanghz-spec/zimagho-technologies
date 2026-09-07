@@ -20,8 +20,11 @@ const nextConfig: NextConfig = {
     ? {
         output: "export" as const,
         trailingSlash: true,
-        /* Rewrites /_next/... to ./_next/... so file:// resolves it. */
-        assetPrefix: ".",
+        /* Deliberately no `assetPrefix: "."`. It rewrites every asset URL to
+           `./_next/...`, which resolves only for a document sitting at the root
+           of the folder — and since the site became multi-page, none of them do.
+           `scripts/static-export.mjs` rewrites the paths per document instead,
+           where the depth is actually known. */
         images: { unoptimized: true },
       }
     : {}),

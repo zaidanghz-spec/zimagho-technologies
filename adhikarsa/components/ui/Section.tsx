@@ -2,11 +2,11 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 const TONES = {
-  white: "bg-white",
-  mist: "bg-[var(--color-mist)]",
-  fog: "bg-[var(--color-fog)]",
+  white: "bg-canvas",
+  mist: "bg-mist",
+  fog: "bg-fog",
   tint: "bg-[linear-gradient(180deg,var(--color-canvas)_0%,var(--color-sky-tint)_55%,var(--color-canvas)_100%)]",
-  navy: "bg-[var(--color-navy)]",
+  navy: "bg-navy",
 } as const;
 
 /**
@@ -47,7 +47,7 @@ export function Section({
       {rule && (
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[var(--color-rule)]"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-rule"
         />
       )}
       {children}

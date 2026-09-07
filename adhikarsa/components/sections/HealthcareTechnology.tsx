@@ -7,7 +7,8 @@ import {
   HospitalEcosystem,
 } from "@/components/visualizations/HospitalEcosystem";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { SECTIONS } from "@/lib/constants";
+import type { Dictionary } from "@/data/dictionaries";
+import { ANCHORS } from "@/lib/constants";
 
 /**
  * Healthcare as the company's core domain, told by scrolling one diagram from
@@ -16,7 +17,8 @@ import { SECTIONS } from "@/lib/constants";
  * The header scrolls normally and only the diagram is pinned, so the pinned
  * region always fits a laptop viewport without shrinking the drawing.
  */
-export function HealthcareTechnology() {
+export function HealthcareTechnology({ dict }: { dict: Dictionary }) {
+  const t = dict.technology;
   const track = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: track,
@@ -25,23 +27,18 @@ export function HealthcareTechnology() {
 
   return (
     <section
-      id={SECTIONS.healthcare}
-      className="relative scroll-mt-24 bg-[var(--color-mist)]"
+      id={ANCHORS.ecosystem}
+      className="relative scroll-mt-24 bg-mist"
     >
       <div className="shell pt-24 sm:pt-28 lg:pt-36">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <SectionHeader
-            eyebrow="Healthcare Technology"
-            headline={["Connecting the hospital", "into one intelligent", "ecosystem."]}
+            eyebrow={t.hero.eyebrow}
+            headline={t.hero.lines}
             className="lg:col-span-7"
           />
           <div className="lg:col-span-5 lg:pt-4">
-            <p className="text-lead text-[var(--color-slate)]">
-              Modern hospitals depend on numerous clinical, operational,
-              administrative, and financial systems. Adhikarsa develops
-              technology that helps these systems communicate and operate as a
-              more connected digital environment.
-            </p>
+            <p className="text-lead text-slate">{t.hero.body}</p>
           </div>
         </div>
       </div>
@@ -51,10 +48,11 @@ export function HealthcareTechnology() {
           <div className="shell w-full">
             <HospitalEcosystem
               progress={scrollYProgress}
+              copy={t.ecosystem}
               className="mx-auto max-w-4xl"
             />
-            <div className="mx-auto mt-10 max-w-4xl border-t border-[var(--color-rule)] pt-8">
-              <EcosystemStages progress={scrollYProgress} />
+            <div className="mx-auto mt-10 max-w-4xl border-t border-rule pt-8">
+              <EcosystemStages progress={scrollYProgress} stages={t.ecosystem.stages} />
             </div>
           </div>
         </div>

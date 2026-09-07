@@ -1,21 +1,22 @@
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ResearchNetwork } from "@/components/visualizations/ResearchNetwork";
-import { SECTIONS } from "@/lib/constants";
+import type { Dictionary } from "@/data/dictionaries";
 
-export function Innovation() {
+export function Innovation({ dict }: { dict: Dictionary }) {
+  const t = dict.innovation;
   return (
-    <Section id={SECTIONS.innovation} tone="white" rule>
+    <Section tone="white">
       <div className="shell">
         <SectionHeader
-          eyebrow="Innovation"
+          eyebrow={t.hero.eyebrow}
           align="center"
-          headline={["Exploring what", "comes next."]}
-          copy="Our research and development initiatives explore technologies that can improve automation, intelligence, and human–technology collaboration across healthcare and enterprise environments."
+          headline={t.hero.lines}
+          copy={t.hero.body}
           className="mx-auto max-w-3xl"
         />
 
-        <ResearchNetwork className="mt-16 lg:mt-20" />
+        <ResearchNetwork copy={t} className="mt-16 lg:mt-20" />
       </div>
     </Section>
   );

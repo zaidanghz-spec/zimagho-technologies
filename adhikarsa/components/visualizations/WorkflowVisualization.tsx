@@ -7,19 +7,13 @@ import { MotionPath } from "@/components/motion/MotionPath";
 import { EASE_OUT_EXPO, VIEWPORT } from "@/lib/animations";
 import { cn } from "@/lib/utils";
 
-/** The conceptual model, stated once. */
-export const PHASES = ["Input", "System", "Automation", "Intelligence", "Action"] as const;
-
-/** A worked example of that model, using a patient journey. */
-const STEPS = [
-  { id: "registration", label: "Patient Registration", phase: "Input" },
-  { id: "verification", label: "Verification", phase: "System" },
-  { id: "routing", label: "Department Routing", phase: "Automation" },
-  { id: "clinical", label: "Clinical Process", phase: "Automation" },
-  { id: "supporting", label: "Supporting Services", phase: "Automation" },
-  { id: "administration", label: "Administration", phase: "System" },
-  { id: "analytics", label: "Analytics", phase: "Intelligence" },
-] as const;
+export type WorkflowCopy = {
+  exampleLabel: string;
+  /** The conceptual model, stated once. */
+  phases: string[];
+  /** A worked example of that model, using a patient journey. */
+  steps: { label: string; phase: string }[];
+};
 
 /**
  * The automation pipeline, self-playing.
@@ -29,7 +23,14 @@ const STEPS = [
  * timer exists only while the rail is on screen and never under reduced
  * motion.
  */
-export function WorkflowVisualization({ className }: { className?: string }) {
+export function WorkflowVisualization({
+  copy,
+  className,
+}: {
+  copy: WorkflowCopy;
+  className?: string;
+}) {
+  const STEPS = copy.steps;
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.3 });
   const reduced = useReducedMotion();
@@ -39,7 +40,7 @@ export function WorkflowVisualization({ className }: { className?: string }) {
     if (!inView || reduced) return;
     const id = window.setInterval(() => setActive((i) => (i + 1) % STEPS.length), 1800);
     return () => window.clearInterval(id);
-  }, [inView, reduced]);
+  }, [inView, reduced, STEPS.length]);
 
   return (
     <div ref={ref} className={cn("relative", className)}>
@@ -52,7 +53,7 @@ export function WorkflowVisualization({ className }: { className?: string }) {
         transition={{ duration: 0.7, ease: EASE_OUT_EXPO }}
         className="flex flex-wrap items-center gap-x-2 gap-y-3"
       >
-        {PHASES.map((p, i) => {
+        {copy.phases.map((p, i) => {
           const on = STEPS[active].phase === p;
           return (
             <li key={p} className="flex items-center gap-2">
@@ -63,8 +64,8 @@ export function WorkflowVisualization({ className }: { className?: string }) {
                 className={cn(
                   "rounded-full border px-3 py-1.5 text-[0.6875rem] font-medium tracking-[0.04em] transition-colors duration-500",
                   on
-                    ? "border-[var(--color-brand)] bg-[var(--color-sky-tint)] text-[var(--color-brand)]"
-                    : "border-[var(--color-rule)] bg-white text-[var(--color-muted)]",
+                    ? "border-[var(--color-brand)] bg-sky-tint text-brand"
+                    : "border-rule bg-surface text-muted",
                 )}
               >
                 {p}
@@ -75,7 +76,7 @@ export function WorkflowVisualization({ className }: { className?: string }) {
       </motion.ol>
 
       {/* ── The worked example ────────────────────────────────────────── */}
-      <p className="annotation mt-10">Example — patient journey</p>
+      <p className="annotation mt-10">{copy.exampleLabel}</p>
 
       {/* Horizontal rail (lg+) */}
       <div className="relative mt-6 hidden lg:block">
@@ -95,7 +96,7 @@ export function WorkflowVisualization({ className }: { className?: string }) {
           {STEPS.map((s, i) => (
             <motion.li
               data-reveal
-              key={s.id}
+              key={s.label}
               initial={{ opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={VIEWPORT}
@@ -106,7 +107,7 @@ export function WorkflowVisualization({ className }: { className?: string }) {
               <p
                 className={cn(
                   "mt-5 text-[0.8125rem] leading-snug font-medium transition-colors duration-500",
-                  active === i ? "text-[var(--color-ink)]" : "text-[var(--color-slate)]",
+                  active === i ? "text-ink" : "text-slate",
                 )}
               >
                 {s.label}
@@ -140,7 +141,7 @@ export function WorkflowVisualization({ className }: { className?: string }) {
           {STEPS.map((s, i) => (
             <motion.li
               data-reveal
-              key={s.id}
+              key={s.label}
               initial={{ opacity: 0, x: 12 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={VIEWPORT}
@@ -152,7 +153,7 @@ export function WorkflowVisualization({ className }: { className?: string }) {
                 <p
                   className={cn(
                     "text-[0.9375rem] leading-snug font-medium transition-colors duration-500",
-                    active === i ? "text-[var(--color-ink)]" : "text-[var(--color-slate)]",
+                    active === i ? "text-ink" : "text-slate",
                   )}
                 >
                   {s.label}
@@ -173,12 +174,12 @@ function StepNode({ index, active }: { index: number; active: boolean }) {
       <motion.span
         animate={{ scale: active ? 1.35 : 1, opacity: active ? 0.16 : 0 }}
         transition={{ duration: 0.7, ease: EASE_OUT_EXPO }}
-        className="absolute inset-0 rounded-xl bg-[var(--color-brand)]"
+        className="absolute inset-0 rounded-xl bg-brand"
       />
       <motion.span
         animate={{
           borderColor: active ? "var(--color-brand)" : "var(--color-rule)",
-          backgroundColor: active ? "var(--color-sky-tint)" : "#ffffff",
+          backgroundColor: active ? "var(--color-sky-tint)" : "var(--color-surface)",
         }}
         transition={{ duration: 0.5 }}
         className="relative flex size-[38px] items-center justify-center rounded-xl border shadow-[var(--shadow-hair)]"
