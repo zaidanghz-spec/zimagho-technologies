@@ -14,7 +14,16 @@ npm run dev        # http://localhost:3000
 npm run lint
 npm run typecheck
 npm run build
+npm run export     # static, file://-openable copy in out/
 ```
+
+`npm run export` produces a folder you can open by double-clicking
+`out/index.html` — no Node, no server. It parks the three metadata routes that
+need a runtime (`opengraph-image`, `robots`, `sitemap`), inlines the Geist
+fonts as data URIs (Chrome blocks `@font-face` over `file://`, which would
+silently swap in a system font), and rewrites root-absolute links to relative
+ones. Page-to-page routing still needs a server; anchors and every animation
+work from disk.
 
 ## Where to edit things
 
