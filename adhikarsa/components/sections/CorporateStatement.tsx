@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { AnimatedText } from "@/components/motion/AnimatedText";
 import { Reveal } from "@/components/motion/Reveal";
-import { company } from "@/data/company";
+import { LogoStacked } from "@/components/brand/Logo";
 import { SECTIONS } from "@/lib/constants";
 
 /**
@@ -58,14 +58,7 @@ export function CorporateStatement() {
           />
 
           <Reveal preset="riseSoft" delay={0.2}>
-            <div className="mt-20 flex flex-col items-center gap-2 sm:mt-24">
-              <p className="text-sm font-semibold tracking-[0.24em] text-[var(--color-ink)]">
-                {company.wordmark}
-              </p>
-              <p className="text-[0.625rem] font-medium tracking-[0.22em] text-[var(--color-faint)]">
-                {company.descriptor}
-              </p>
-            </div>
+            <LogoStacked className="mt-20 sm:mt-24" />
           </Reveal>
         </div>
       </div>

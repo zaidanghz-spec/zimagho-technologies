@@ -23,6 +23,7 @@ npm run build
 | Company name, profile fields, contact email   | `data/company.ts`                           |
 | Nav labels and section anchors                 | `lib/constants.ts`                          |
 | Colours, type scale, surfaces, shadows         | `app/globals.css` (`@theme` block)          |
+| The logo mark, lockups, favicon                | `components/brand/Logo.tsx`, `app/icon.svg` |
 | Animation timings and entrance variants        | `lib/animations.ts`                         |
 | Section copy                                   | the matching file in `components/sections/` |
 
@@ -50,7 +51,8 @@ the site simply never makes the claim.
 ```
 app/           routes, metadata, sitemap, robots, OG image, global CSS
 components/
-  layout/      navbar, footer, wordmark, scroll progress
+  brand/       LogoMark + horizontal and stacked lockups
+  layout/      navbar, footer, scroll progress
   motion/      Reveal, AnimatedText, MotionPath, Magnetic, AnimatedCounter
   sections/    one file per band of the homepage, in page order
   ui/          Button, Section, SectionHeader, Card, Eyebrow, TrustShelf
@@ -64,6 +66,27 @@ components/
 data/          company facts and profile fields
 lib/           animation system, class utils, media-query hook, constants
 ```
+
+## Brand
+
+The mark is **redrawn as vector geometry** in `components/brand/Logo.tsx`, not
+embedded as an image: it stays sharp at 16px and at billboard size, costs a few
+hundred bytes, and inherits `currentColor` — which is what lets one component
+serve the light lockup, the dark lockup and the app icon from a single source.
+
+Construction: a square rotated 45°, cut by a horizontal gap set 24.5% of the
+half-height above centre, with the gap at 6.8% of the mark's height. At any
+horizontal cut the half-width equals the distance from the apex, which is what
+keeps every flank at a true 45°. Change those two ratios in `MARK` and the
+whole system — navbar, footer, signature, favicon, social card — follows.
+
+The mark is monochrome by design, exactly as supplied: ink on light surfaces,
+white on the navy band. It is never tinted blue.
+
+The accent moved from the originally specified `#0B5CFF` to **`#1046D6`** so a
+fully saturated blue would not be the only maximally saturated element sitting
+beside an achromatic mark. It also lifts white-on-blue contrast from 5.26:1 to
+7.32:1. Revert by restoring `#0B5CFF` in the `@theme` block.
 
 ## Conventions worth knowing
 

@@ -2,6 +2,7 @@ import { AnimatedText } from "@/components/motion/AnimatedText";
 import { Reveal } from "@/components/motion/Reveal";
 import { Button } from "@/components/ui/Button";
 import { Eyebrow } from "@/components/ui/Eyebrow";
+import { Logo } from "@/components/brand/Logo";
 import { company } from "@/data/company";
 import { SECTIONS } from "@/lib/constants";
 
@@ -30,12 +31,16 @@ export function ContactCTA() {
             backgroundSize: "72px 72px",
           }}
         />
-        <div className="absolute inset-0 bg-[radial-gradient(90%_70%_at_50%_0%,rgba(11,92,255,0.32)_0%,rgba(10,37,64,0)_65%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(90%_70%_at_50%_0%,rgba(16,70,214,0.32)_0%,rgba(10,37,64,0)_65%)]" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-[rgba(6,24,42,0.6)]" />
       </div>
 
       <div className="shell relative py-28 sm:py-32 lg:py-40">
         <div className="max-w-3xl">
+          <Reveal preset="rise">
+            <Logo tone="dark" showPt className="mb-14" />
+          </Reveal>
+
           <Reveal preset="rise">
             <Eyebrow tone="onDark">Contact</Eyebrow>
           </Reveal>

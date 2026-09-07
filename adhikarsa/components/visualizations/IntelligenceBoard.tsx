@@ -193,7 +193,7 @@ function CoreCard() {
           the page glows. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -inset-8 rounded-full bg-[radial-gradient(circle,rgba(11,92,255,0.12),transparent_70%)] blur-xl"
+        className="pointer-events-none absolute -inset-8 rounded-full bg-[radial-gradient(circle,rgba(16,70,214,0.12),transparent_70%)] blur-xl"
       />
       <div className="relative rounded-2xl border border-[var(--color-brand)]/25 bg-white px-4 py-4 shadow-[var(--shadow-float)] lg:px-5 lg:py-5">
         <div className="flex items-center gap-2">
@@ -231,7 +231,7 @@ function BoardCompact({ className }: { className?: string }) {
       >
         <div
           aria-hidden
-          className="pointer-events-none absolute -inset-6 rounded-full bg-[radial-gradient(circle,rgba(11,92,255,0.12),transparent_70%)] blur-xl"
+          className="pointer-events-none absolute -inset-6 rounded-full bg-[radial-gradient(circle,rgba(16,70,214,0.12),transparent_70%)] blur-xl"
         />
         <div className="relative rounded-2xl border border-[var(--color-brand)]/25 bg-white px-5 py-5 text-center shadow-[var(--shadow-float)]">
           <span aria-hidden className="mx-auto flex size-2 items-center justify-center">

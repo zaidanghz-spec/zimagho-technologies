@@ -108,7 +108,7 @@ export function HospitalEcosystem({
           aria-hidden
           animate={{ opacity: stage >= 3 ? 1 : 0 }}
           transition={{ duration: 1, ease: EASE }}
-          className="pointer-events-none absolute top-1/2 left-1/2 h-[48%] w-[48%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(11,92,255,0.13),transparent_70%)] blur-2xl"
+          className="pointer-events-none absolute top-1/2 left-1/2 h-[48%] w-[48%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(16,70,214,0.13),transparent_70%)] blur-2xl"
         />
 
         <svg
@@ -127,7 +127,7 @@ export function HospitalEcosystem({
                 y1={n.y}
                 x2={next.x}
                 y2={next.y}
-                stroke="rgba(11,92,255,0.3)"
+                stroke="rgba(16,70,214,0.3)"
                 strokeWidth={1}
                 initial={false}
                 animate={{ pathLength: stage >= 4 ? 1 : 0, opacity: stage >= 4 ? 1 : 0 }}
@@ -142,7 +142,7 @@ export function HospitalEcosystem({
               key={`spoke-${n.id}`}
               d={n.spoke}
               fill="none"
-              stroke="rgba(11,92,255,0.42)"
+              stroke="rgba(16,70,214,0.42)"
               strokeWidth={1.3}
               initial={false}
               animate={{ pathLength: stage >= 1 ? 1 : 0, opacity: stage >= 1 ? 1 : 0 }}
@@ -270,7 +270,7 @@ function EcosystemCompact({ stage, className }: { stage: number; className?: str
         initial={false}
         animate={{ scaleY: stage >= 1 ? 1 : 0, opacity: stage >= 1 ? 1 : 0 }}
         transition={{ duration: 0.8, ease: EASE }}
-        className="relative my-5 h-14 w-px origin-top overflow-hidden bg-[rgba(11,92,255,0.35)]"
+        className="relative my-5 h-14 w-px origin-top overflow-hidden bg-[rgba(16,70,214,0.35)]"
       >
         <motion.span
           initial={false}
@@ -292,7 +292,7 @@ function EcosystemCompact({ stage, className }: { stage: number; className?: str
           initial={false}
           animate={{ opacity: stage >= 4 ? 1 : 0 }}
           transition={{ duration: 0.9, ease: EASE }}
-          className="pointer-events-none absolute -inset-6 rounded-full bg-[radial-gradient(circle,rgba(11,92,255,0.16),transparent_70%)] blur-xl"
+          className="pointer-events-none absolute -inset-6 rounded-full bg-[radial-gradient(circle,rgba(16,70,214,0.16),transparent_70%)] blur-xl"
         />
         <div className="relative rounded-2xl border border-[var(--color-brand)]/25 bg-white px-5 py-5 text-center shadow-[var(--shadow-float)]">
           <span aria-hidden className="mx-auto flex size-2 items-center justify-center">

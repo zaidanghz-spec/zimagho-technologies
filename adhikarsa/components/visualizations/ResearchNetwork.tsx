@@ -158,7 +158,7 @@ export function ResearchNetwork({ className }: { className?: string }) {
         >
           <div
             aria-hidden
-            className="pointer-events-none absolute -inset-10 rounded-full bg-[radial-gradient(circle,rgba(11,92,255,0.1),transparent_70%)] blur-xl"
+            className="pointer-events-none absolute -inset-10 rounded-full bg-[radial-gradient(circle,rgba(16,70,214,0.1),transparent_70%)] blur-xl"
           />
           <div className="relative rounded-2xl border border-[var(--color-brand)]/25 bg-white px-5 py-4 text-center shadow-[var(--shadow-float)]">
             <span aria-hidden className="mx-auto flex size-2 items-center justify-center">

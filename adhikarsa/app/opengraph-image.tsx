@@ -27,13 +27,21 @@ export default function OpengraphImage() {
           fontFamily: "sans-serif",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <div style={{ fontSize: 22, letterSpacing: 6, fontWeight: 600 }}>
-            {company.wordmark}
-          </div>
-          <div style={{ width: 8, height: 8, background: "#0b5cff", borderRadius: 2 }} />
-          <div style={{ fontSize: 18, letterSpacing: 5, color: "#64748b", marginLeft: 6 }}>
-            {company.descriptor}
+        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+          {/* The mark, inlined as raw geometry — Satori renders SVG paths but
+              cannot reach a component from the app bundle. */}
+          <svg width="46" height="46" viewBox="0 0 96 96" fill="#0f172a">
+            <path d="M48 0 L81 33 L15 33 Z" />
+            <path d="M8.5 39.5 L87.5 39.5 L96 48 L48 96 L0 48 Z" />
+          </svg>
+          <div style={{ width: 1, height: 48, background: "#cbd5e1" }} />
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ fontSize: 26, letterSpacing: 7, fontWeight: 600 }}>
+              {company.wordmark}
+            </div>
+            <div style={{ fontSize: 14, letterSpacing: 9, color: "#64748b" }}>
+              {company.descriptor}
+            </div>
           </div>
         </div>
 
@@ -66,7 +74,7 @@ export default function OpengraphImage() {
             color: "#64748b",
           }}
         >
-          <div style={{ width: 56, height: 2, background: "#0b5cff" }} />
+          <div style={{ width: 56, height: 2, background: "#1046d6" }} />
           <span>{company.legalName}</span>
         </div>
       </div>

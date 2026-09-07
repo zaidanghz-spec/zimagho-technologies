@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Wordmark } from "@/components/layout/Wordmark";
+import { Logo } from "@/components/brand/Logo";
 import { company, currentYear } from "@/data/company";
 import { FOOTER_NAV, LEGAL_NAV } from "@/lib/constants";
 
@@ -9,7 +9,7 @@ export function Footer() {
       <div className="shell py-16 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-5">
-            <Wordmark />
+            <Logo showPt />
             <p className="mt-6 text-sm text-[var(--color-slate)]">{company.legalName}</p>
             <p className="mt-3 max-w-xs text-[0.9375rem] leading-relaxed text-[var(--color-muted)]">
               {company.tagline}

@@ -4,7 +4,7 @@ import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-
 import { ArrowRight, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { Wordmark } from "@/components/layout/Wordmark";
+import { Logo } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/Button";
 import { company } from "@/data/company";
 import { EASE_OUT_EXPO } from "@/lib/animations";
@@ -87,7 +87,7 @@ export function Navbar() {
               className="shrink-0 rounded-sm"
               aria-label={`${company.shortName} — home`}
             >
-              <Wordmark />
+              <Logo />
             </Link>
 
             <ul className="hidden items-center gap-1 lg:flex">

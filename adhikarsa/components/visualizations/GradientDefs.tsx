@@ -18,15 +18,15 @@ export function GradientDefs() {
       <defs>
         {/* Static connection line */}
         <linearGradient id="adk-link" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#0b5cff" stopOpacity="0.34" />
+          <stop offset="0%" stopColor="#1046d6" stopOpacity="0.34" />
           <stop offset="100%" stopColor="#00aeef" stopOpacity="0.2" />
         </linearGradient>
 
         {/* Travelling data packet */}
         <linearGradient id="adk-pulse" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#0b5cff" stopOpacity="0" />
-          <stop offset="50%" stopColor="#0b5cff" stopOpacity="1" />
-          <stop offset="100%" stopColor="#0b5cff" stopOpacity="0" />
+          <stop offset="0%" stopColor="#1046d6" stopOpacity="0" />
+          <stop offset="50%" stopColor="#1046d6" stopOpacity="1" />
+          <stop offset="100%" stopColor="#1046d6" stopOpacity="0" />
         </linearGradient>
 
         {/* Secondary packet, for return paths and outputs */}

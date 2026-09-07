@@ -22,9 +22,14 @@
   --color-muted: #64748b;
   --color-faint: #94a3b8;
 
-  /* Brand */
-  --color-brand: #0b5cff;
-  --color-brand-alt: #2563eb;
+  /* Brand
+     The mark is achromatic and dense. A fully saturated blue (B = 255, the
+     originally specified #0B5CFF) was the only maximally saturated element in
+     an otherwise desaturated system, and it now sits directly beside the logo.
+     Stepping it down one notch keeps every affordance unmistakably blue while
+     letting the mark lead. Revert by restoring #0B5CFF here. */
+  --color-brand: #1046d6;
+  --color-brand-alt: #1a55e6;
   --color-cyan: #00aeef;
   --color-navy: #0a2540;
 
@@ -62,7 +67,7 @@
   --shadow-hair: 0 1px 2px rgba(15, 23, 42, 0.04);
   --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 10px 24px -14px rgba(15, 23, 42, 0.16);
   --shadow-lift: 0 2px 4px rgba(15, 23, 42, 0.05), 0 20px 42px -18px rgba(15, 23, 42, 0.22);
-  --shadow-float: 0 1px 2px rgba(15, 23, 42, 0.05), 0 24px 56px -24px rgba(11, 92, 255, 0.28);
+  --shadow-float: 0 1px 2px rgba(15, 23, 42, 0.05), 0 24px 56px -24px rgba(16, 70, 214, 0.28);
 }
 
 /* ============================================================================
