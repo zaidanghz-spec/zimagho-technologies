@@ -4,12 +4,21 @@ Digital company profile for **PT Adhikarsa Mahatama Teknologi**: healthcare
 technology, hospital automation, artificial intelligence, enterprise software,
 systems integration, and R&D.
 
-Light-first, corporate, editorial. Built with Next.js (App Router) +
-TypeScript + Tailwind CSS v4 + Framer Motion. Statically prerendered — no
-server runtime required.
+Built with Next.js (App Router) + TypeScript + Tailwind CSS v4 + Framer
+Motion. Statically prerendered — no server runtime required.
 
-Eight pages, in **English and Bahasa Indonesia**, each with a **light and a
-dark** presentation.
+Two sites live here, and they are deliberately different things:
+
+| Route | What it is |
+| ----- | ---------- |
+| `/` | **The narrative.** One page, twelve chapters, read top to bottom. Dark, editorial, oversized type. This is the front door. |
+| `/en`, `/id` | **The corporate profile.** Eight conventional pages in English and Bahasa Indonesia, light-first with a dark counterpart. |
+
+They share the build, the fonts, the logo and the class-merging setup, and
+nothing else — separate palettes, separate type scales, separate components.
+Mixing them would have produced a compromise that served neither: a company
+profile a hospital director can scan does not want to be a scroll-driven essay,
+and an essay does not want a "Services" grid.
 
 ```bash
 npm install
@@ -37,11 +46,63 @@ without it the folder opens to a page that is complete in the markup and blank
 on screen. So the export is the whole site, legible and navigable, minus the
 motion.
 
+## The narrative at `/`
+
+The order of the page **is** the argument, and it is the reverse of a company
+profile. A profile opens with who we are and hopes the reader stays. This opens
+with something the reader already believes — that progress is uneven — shows
+what that costs in four fields, states a position, and only then names the
+company. By the time "Adhikarsa" appears on screen the reader has spent five
+screens agreeing with the premise it exists to answer.
+
+```
+01 Hero            02 The world      03 The problem     04 The belief
+05 The company     06 What we build  07 How we build    08 Technology
+09 In development  10 Principles     11 The disciplines 12 The future
+13 Begin
+```
+
+Every word is in `data/story.ts`, in reading order, so the argument can be
+checked end to end without opening a component.
+
+**Three devices carry it.**
+
+*Authored lines.* `LargeHeading` clips each line in its own box and rides it up
+from underneath, so a three-line headline arrives as three events rather than
+one fade. Each entry must be one visual line — a line that wraps is a broken
+composition, not a cosmetic nuisance — which is why the display sizes are
+`min(clamp(…vw…), …cqi)` and every chapter opener sits in a full-width
+`.measure`. Measuring them all against the same box is what makes them read as
+one system instead of nine different sizes. Prose is never passed through it;
+the four problem statements are sentences and are allowed to wrap.
+
+*Sticky staging.* The problem and process chapters pin a diagram while the text
+scrolls past. The active index comes from `StageWatcher`, which collapses the
+observation area to a thin band across the middle of the screen and lets the
+browser say which item is in it. Deriving it from scroll progress instead —
+the first attempt — put the diagram a full step ahead of its own caption.
+
+*The diagrams argue.* `FieldGlyph` draws the *shape* of each problem —
+fragmentation, one path for everyone, a closed loop, a bottleneck — and
+`PillarGlyph` redraws the same four resolved. Read in sequence they are a
+before and an after, which is more argument than the copy carries alone.
+
+**What is not claimed.** No clients, hospitals, universities, partners,
+advisors, funding, publications, user counts or named people appear anywhere.
+The initiatives are labelled *In development* with the disclaimer at the top of
+the chapter rather than in small print, and their interfaces are drawn
+structurally empty — a plausible screenshot with an invented reading would be a
+claim about a product that does not exist. The disciplines chapter names
+disciplines, not individuals, and is ready for real names the day there are
+some.
+
 ## Where to edit things
 
 | I want to change…                             | Edit                                        |
 | --------------------------------------------- | ------------------------------------------- |
 | Company name, profile fields, contact email   | `data/company.ts`                           |
+| Any word on the narrative at `/`               | `data/story.ts`                             |
+| The narrative's palette and display scale      | `app/globals.css` (the `--color-void` block) |
 | Any visible wording, in either language        | `data/dictionaries/en.ts` and `id.ts`       |
 | Which pages exist and their URLs               | `lib/constants.ts`                          |
 | Which languages exist                          | `lib/i18n.ts`                               |
@@ -75,8 +136,8 @@ the site simply never makes the claim.
 ```
 app/
   layout.tsx        root shell: <html>, fonts, the pre-paint theme script
-  page.tsx          the locale gateway at `/`
-  [locale]/         every page, once per language
+  page.tsx          the narrative — all twelve chapters composed in order
+  [locale]/         the corporate profile, once per language
     layout.tsx      navbar, footer, per-locale metadata and hreflang
     page.tsx        home
     company/ solutions/ technology/ innovation/ contact/
@@ -84,6 +145,13 @@ app/
   globals.css       the whole design system: light @theme, dark override
   sitemap.ts robots.ts opengraph-image.tsx icon.svg
 components/
+  story/       the narrative at `/`, self-contained
+    primitives/  LargeHeading, Reveal, SectionLabel, StageWatcher,
+                 MagneticButton, ChapterRail, the motion vocabulary
+    visuals/     LatticeField, SystemDrift, FieldGlyph, PillarGlyph,
+                 ProductFrame
+    sections/    one file per chapter, in reading order
+    layout/      StoryNav, StoryFooter
   brand/       LogoMark + horizontal and stacked lockups
   layout/      navbar, footer, scroll progress, page header, theme + language
                toggles, ThemeScript, structured data
@@ -99,7 +167,8 @@ components/
                CapabilityGlyph        six capability micro-diagrams
 data/
   company.ts        company facts and profile fields
-  dictionaries/     en.ts, id.ts — every visible string
+  story.ts          every word of the narrative, in reading order
+  dictionaries/     en.ts, id.ts — every visible string on the profile
 lib/           animations, i18n, routes, class utils, media-query hook
 ```
 
@@ -220,6 +289,13 @@ beside an achromatic mark. It also lifts white-on-blue contrast from 5.26:1 to
   actually in — which is also what absorbs Indonesian running longer than
   English. Without a `.measure` ancestor the `cqi` term resolves against the
   viewport, where it sits far above the clamp and is therefore inert.
+- **Reduced motion turns entrances off, not down.** Framer's
+  `reducedMotion="user"` drops the transform and keeps the opacity, so a reader
+  who asked for less motion still watched forty elements fade in — and anything
+  that never quite met the viewport threshold stayed at zero. A
+  `prefers-reduced-motion` rule now forces every `[data-reveal]` to its finished
+  state, which is also exactly what the static export does for a different
+  reason.
 - **Reduced motion is handled in two places**: `MotionConfig reducedMotion="user"`
   for Framer, and a global media query that neutralises CSS animation.
 - **`.no-js`** is stripped by an inline script before first paint. If it never

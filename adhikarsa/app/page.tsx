@@ -1,65 +1,85 @@
-import { DEFAULT_LOCALE, LOCALES } from "@/lib/i18n";
+import type { Metadata } from "next";
+import { StoryFooter } from "@/components/story/layout/StoryFooter";
+import { StoryNav } from "@/components/story/layout/StoryNav";
+import { ChapterRail } from "@/components/story/primitives/ChapterRail";
+import { BeliefSection } from "@/components/story/sections/BeliefSection";
+import { BuildProcess } from "@/components/story/sections/BuildProcess";
+import { FinalCTA } from "@/components/story/sections/FinalCTA";
+import { Hero } from "@/components/story/sections/Hero";
+import { MeetAdhikarsa } from "@/components/story/sections/MeetAdhikarsa";
+import { PeopleSection } from "@/components/story/sections/PeopleSection";
+import { Principles } from "@/components/story/sections/Principles";
+import { ProblemSection } from "@/components/story/sections/ProblemSection";
+import { ResearchSection } from "@/components/story/sections/ResearchSection";
+import { TechnologySection } from "@/components/story/sections/TechnologySection";
+import { Verticals } from "@/components/story/sections/Verticals";
+import { VisionSection } from "@/components/story/sections/VisionSection";
+import { WorldChanging } from "@/components/story/sections/WorldChanging";
+import { MotionProvider } from "@/components/layout/MotionProvider";
+import { company } from "@/data/company";
+import { story } from "@/data/story";
 
 /**
- * Locale gateway at `/`.
+ * ============================================================================
+ * ADHIKARSA — THE NARRATIVE
+ * ----------------------------------------------------------------------------
+ * One page, twelve chapters, read in order.
  *
- * Written as a real page rather than a `redirect()` because the site also ships
- * as a static export, where server redirects do not exist. Three fallbacks, in
- * order of speed:
+ * The order is the argument, and it is deliberately the reverse of a company
+ * profile. A profile opens with who we are and hopes the reader stays; this
+ * opens with something the reader already believes — that progress is uneven —
+ * establishes what that costs in four fields, states a position, and only then
+ * names the company. By the time "Adhikarsa" appears on screen the reader has
+ * spent five screens agreeing with the premise it exists to answer.
  *
- *   1. an inline script that honours a stored choice, then the browser's own
- *      language, then the default
- *   2. a `<meta http-equiv="refresh">` for when scripting is off
- *   3. a plain link, so the page is never a dead end
- *
- * Nothing is indexed here — the locale pages carry the canonical URLs.
+ * Everything is composed here so the whole story is legible in one file. The
+ * sections own their own motion; this owns the sequence.
+ * ==========================================================================
  */
 
-const SCRIPT = `
-(function () {
-  /* Opened from disk there is no server to resolve "/en/", so the export
-     variant addresses the document itself, relative to this file. */
-  var file = location.protocol === 'file:';
-  var head = file ? './' : '/';
-  var tail = file ? '/index.html' : '/';
-  try {
-    var supported = ${JSON.stringify(LOCALES)};
-    var stored = localStorage.getItem('adk-locale');
-    var picked = supported.indexOf(stored) > -1 ? stored : null;
-    if (!picked) {
-      var langs = navigator.languages || [navigator.language || ''];
-      for (var i = 0; i < langs.length && !picked; i++) {
-        var base = String(langs[i]).toLowerCase().split('-')[0];
-        if (supported.indexOf(base) > -1) picked = base;
-      }
-    }
-    location.replace(head + (picked || '${DEFAULT_LOCALE}') + tail);
-  } catch (e) {
-    location.replace(head + '${DEFAULT_LOCALE}' + tail);
-  }
-})();
-`;
-
-export const metadata = {
-  robots: { index: false, follow: true },
+export const metadata: Metadata = {
+  title: "Adhikarsa — Technology built for meaningful progress",
+  description:
+    "Adhikarsa is an Indonesian technology company building intelligent products and digital systems across healthcare, education, artificial intelligence, and enterprise technology.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: company.legalName,
+    title: "Adhikarsa — Technology built for meaningful progress",
+    description: story.hero.body,
+  },
+  robots: { index: true, follow: true },
 };
 
-export default function LocaleGateway() {
+export default function NarrativePage() {
   return (
-    <>
-      <meta httpEquiv="refresh" content={`0; url=/${DEFAULT_LOCALE}/`} />
-      {/* Static string built from a compile-time constant; no input reaches it. */}
-      <script dangerouslySetInnerHTML={{ __html: SCRIPT }} />
-      <main
-        style={{
-          minHeight: "100svh",
-          display: "grid",
-          placeItems: "center",
-          fontFamily: "system-ui, sans-serif",
-        }}
-      >
-        <a href={`/${DEFAULT_LOCALE}/`}>Adhikarsa Mahatama Teknologi</a>
-      </main>
-    </>
+    <MotionProvider>
+      {/* `narrative` is what tells the document to paint the deep ground —
+          see the `html:has()` rule in globals.css. Without it, overscroll and
+          the mobile browser chrome flash the corporate white. */}
+      <div className="narrative bg-void text-paper antialiased">
+        <ChapterRail />
+        <StoryNav />
+
+        <main id="story">
+          <Hero />
+          <WorldChanging />
+          <ProblemSection />
+          <BeliefSection />
+          <MeetAdhikarsa />
+          <Verticals />
+          <BuildProcess />
+          <TechnologySection />
+          <ResearchSection />
+          <Principles />
+          <PeopleSection />
+          <VisionSection />
+          <FinalCTA />
+        </main>
+
+        <StoryFooter />
+      </div>
+    </MotionProvider>
   );
 }

@@ -16,7 +16,11 @@ import { extendTailwindMerge } from "tailwind-merge";
 const twMerge = extendTailwindMerge({
   extend: {
     classGroups: {
-      "font-size": [{ text: ["display", "headline", "title", "lead"] }],
+      "font-size": [
+        { text: ["display", "headline", "title", "lead"] },
+        /* The narrative site's scale. Same trap, same fix. */
+        { text: ["mega", "chapter", "statement", "say"] },
+      ],
     },
   },
 });
