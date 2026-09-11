@@ -95,6 +95,14 @@ export const company = {
   contactPhone: CONTACT_PHONE,
   contactPhoneDisplay: CONTACT_PHONE_DISPLAY,
 
+  /**
+   * The contact number is reachable on WhatsApp, which in Indonesia is the
+   * channel a business enquiry actually arrives on. Set this to `false` if that
+   * stops being true and the form will simply drop the WhatsApp hand-off; the
+   * email one is always offered.
+   */
+  contactWhatsApp: true,
+
   site: {
     /**
      * Canonical origin. Read from the environment so a deploy is correct

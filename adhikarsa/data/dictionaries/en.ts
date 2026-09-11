@@ -453,8 +453,16 @@ export const en = {
         organisation: "Please tell us which organisation you're writing from.",
         topic: "Please choose a topic.",
         message: "Please describe the problem in a little more detail.",
-        generic: "Something went wrong on our side. Please try one of the direct channels below.",
-        unconfigured: "The form isn't accepting messages yet. Please use one of the direct channels below.",
+      },
+      /* Shown when the message could not be delivered automatically. It is not
+         an error screen: the message is written, and these two buttons send it. */
+      handoff: {
+        heading: "Your message is ready.",
+        topicLabel: "Topic",
+        body: "We can't send it for you from here, so pick how you'd like it to reach us — everything you wrote is already filled in.",
+        whatsapp: "Send on WhatsApp",
+        email: "Send by email",
+        back: "Back to the form",
       },
       success: {
         heading: "Message sent.",

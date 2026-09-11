@@ -451,8 +451,14 @@ export const id: Dictionary = {
         organisation: "Mohon sebutkan organisasi Anda.",
         topic: "Mohon pilih topik.",
         message: "Mohon jelaskan masalahnya sedikit lebih rinci.",
-        generic: "Terjadi kesalahan di sisi kami. Silakan gunakan salah satu kanal langsung di bawah.",
-        unconfigured: "Formulir belum menerima pesan. Silakan gunakan salah satu kanal langsung di bawah.",
+      },
+      handoff: {
+        heading: "Pesan Anda sudah siap.",
+        topicLabel: "Topik",
+        body: "Kami belum bisa mengirimkannya otomatis dari sini. Pilih cara mengirimnya \u2014 semua yang Anda tulis sudah terisi.",
+        whatsapp: "Kirim lewat WhatsApp",
+        email: "Kirim lewat email",
+        back: "Kembali ke formulir",
       },
       success: {
         heading: "Pesan terkirim.",

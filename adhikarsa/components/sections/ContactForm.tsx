@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, Check, Loader2 } from "lucide-react";
+import { ArrowRight, Check, Loader2, Send } from "lucide-react";
 import { useId, useRef, useState } from "react";
 import { Reveal } from "@/components/motion/Reveal";
 import { Section } from "@/components/ui/Section";
@@ -33,7 +33,7 @@ import { cn } from "@/lib/utils";
  */
 
 type FieldName = "name" | "email" | "organisation" | "topic" | "message";
-type Status = "idle" | "sending" | "sent" | "failed";
+type Status = "idle" | "sending" | "sent" | "handoff";
 
 const REQUIRED: FieldName[] = ["name", "email", "organisation", "topic", "message"];
 const EMAIL = /^[^\s@]+@[^\s@.]+\.[^\s@]{2,}$/;
@@ -45,7 +45,8 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
 
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Partial<Record<FieldName, string>>>({});
-  const [failure, setFailure] = useState<string | null>(null);
+  /* Kept so the hand-off can compose links from what was actually typed. */
+  const [draft, setDraft] = useState<Record<FieldName, string> | null>(null);
 
   const check = (values: Record<FieldName, string>) => {
     const found: Partial<Record<FieldName, string>> = {};
@@ -73,34 +74,34 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
     }
 
     setStatus("sending");
-    setFailure(null);
+    setDraft(values);
 
+    /* Try to deliver it automatically. If that is not possible — no mail
+       provider configured, the provider refused, the visitor is offline, or
+       this is the static export where the endpoint does not exist — the message
+       is not lost and the visitor is not told to start again somewhere else.
+       It is handed to them, already written, on a channel that works. */
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...values, website: String(data.get("website") ?? "") }),
       });
-
-      if (response.ok) {
-        setStatus("sent");
-        return;
-      }
-
-      const payload = (await response.json().catch(() => ({}))) as { code?: string };
-      setFailure(payload.code === "unconfigured" ? t.errors.unconfigured : t.errors.generic);
-      setStatus("failed");
+      setStatus(response.ok ? "sent" : "handoff");
     } catch {
-      /* Offline, blocked, or the endpoint is not there — which is exactly what
-         the static export looks like. Same honest message either way. */
-      setFailure(t.errors.generic);
-      setStatus("failed");
+      setStatus("handoff");
     }
   }
 
+  /* `AnimatePresence` unmounts the form to show the hand-off, and an
+     uncontrolled input loses its value when it remounts. Seeding from the draft
+     means "back to the form" returns the visitor to their own words rather than
+     to an empty box — which, after being told we could not send it, would be
+     the second small betrayal in a row. */
   const field = (name: FieldName) => ({
     id: `${uid}-${name}`,
     name,
+    defaultValue: draft?.[name] ?? "",
     "aria-invalid": errors[name] ? true : undefined,
     "aria-describedby": errors[name] ? `${uid}-${name}-error` : undefined,
     onChange: () => errors[name] && setErrors((e) => ({ ...e, [name]: undefined })),
@@ -131,7 +132,9 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
             <Reveal preset="riseSoft">
               <div className="card p-6 sm:p-8">
                 <AnimatePresence mode="wait" initial={false}>
-                  {status === "sent" ? (
+                  {status === "handoff" && draft ? (
+                    <Handoff key="handoff" dict={dict} draft={draft} onBack={() => setStatus("idle")} />
+                  ) : status === "sent" ? (
                     <motion.div
                       key="sent"
                       initial={{ opacity: 0, y: 12 }}
@@ -234,7 +237,6 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
                       >
                         <select
                           {...field("topic")}
-                          defaultValue=""
                           className={cn(control(errors.topic), "appearance-none bg-[right_1rem_center] bg-no-repeat pr-10")}
                           style={{
                             backgroundImage:
@@ -269,15 +271,8 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
                       {/* One live region for the whole form, so a screen reader
                           hears the outcome without hunting for it. */}
                       <p aria-live="polite" className="sr-only">
-                        {status === "sending" ? t.submitting : (failure ?? "")}
+                        {status === "sending" ? t.submitting : ""}
                       </p>
-
-                      {failure && (
-                        <p className="flex items-start gap-2.5 rounded-lg border border-red-500/30 bg-red-500/5 px-4 py-3 text-[0.8125rem] leading-relaxed text-red-600 dark:text-red-400">
-                          <span aria-hidden className="mt-1.5 size-1 shrink-0 rounded-full bg-red-500" />
-                          {failure}
-                        </p>
-                      )}
 
                       <div className="mt-1 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <button
@@ -320,6 +315,103 @@ export function ContactForm({ dict }: { dict: Dictionary }) {
         </div>
       </div>
     </Section>
+  );
+}
+
+/**
+ * The message, composed and handed over.
+ *
+ * Reached whenever automatic delivery is not available. Deliberately not styled
+ * as an error: from where the visitor is standing nothing has gone wrong — they
+ * wrote a message and here are two buttons that send it, with every field
+ * already filled in. An enquiry is never lost to a configuration gap.
+ */
+function Handoff({
+  dict,
+  draft,
+  onBack,
+}: {
+  dict: Dictionary;
+  draft: Record<FieldName, string>;
+  onBack: () => void;
+}) {
+  const t = dict.contact.form;
+  const topic =
+    t.topics.find((x) => x.value === draft.topic)?.label ?? draft.topic;
+
+  const composed = [
+    `${t.fields.name.label}: ${draft.name}`,
+    `${t.fields.organisation.label}: ${draft.organisation}`,
+    `${t.fields.email.label}: ${draft.email}`,
+    `${t.handoff.topicLabel}: ${topic}`,
+    "",
+    draft.message,
+  ].join("\n");
+
+  const subject = `${draft.organisation} — ${topic}`;
+  const mail = company.contactEmail
+    ? `mailto:${company.contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(composed)}`
+    : null;
+  const wa = company.contactWhatsApp
+    ? `https://wa.me/${company.contactPhone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(composed)}`
+    : null;
+
+  const button =
+    "inline-flex items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-[0.9375rem] font-medium transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5, ease: EASE_OUT_EXPO }}
+      className="flex flex-col items-start py-6"
+    >
+      <span className="flex size-11 items-center justify-center rounded-full bg-sky-tint text-brand">
+        <Send aria-hidden className="size-5" />
+      </span>
+
+      <h3 className="mt-6 text-title font-medium text-ink">{t.handoff.heading}</h3>
+      <p className="mt-3 max-w-sm leading-relaxed text-slate">{t.handoff.body}</p>
+
+      {/* What they wrote, so it is plainly still there. */}
+      <pre className="mt-6 max-h-44 w-full overflow-auto rounded-lg border border-rule bg-mist p-4 text-[0.8125rem] leading-relaxed whitespace-pre-wrap text-slate">
+        {composed}
+      </pre>
+
+      <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+        {wa && (
+          <a
+            href={wa}
+            target="_blank"
+            rel="noreferrer"
+            className={cn(button, "bg-brand text-on-brand hover:bg-brand-alt focus-visible:outline-brand")}
+          >
+            {t.handoff.whatsapp}
+            <ArrowRight aria-hidden className="size-4" />
+          </a>
+        )}
+        {mail && (
+          <a
+            href={mail}
+            className={cn(
+              button,
+              "border border-rule-strong text-ink hover:border-ink hover:bg-stone focus-visible:outline-brand",
+            )}
+          >
+            {t.handoff.email}
+          </a>
+        )}
+      </div>
+
+      <button
+        type="button"
+        onClick={onBack}
+        className="mt-7 rounded-full text-sm text-muted underline decoration-rule-strong underline-offset-4 transition-colors hover:text-ink"
+      >
+        {t.handoff.back}
+      </button>
+    </motion.div>
   );
 }
 
