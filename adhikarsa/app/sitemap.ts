@@ -15,23 +15,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     languages: Object.fromEntries(LOCALES.map((l) => [l, `${base}${path(l)}`])),
   });
 
-  const entries: MetadataRoute.Sitemap = [
-    /* The narrative at `/` is the front door and is not part of the locale
-       tree — it exists once, in English, and carries no alternates. */
-    {
-      url: base,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 1,
-    },
-  ];
+  const entries: MetadataRoute.Sitemap = [];
 
   for (const locale of LOCALES) {
     entries.push({
       url: `${base}${routeFor(locale, "home")}`,
       lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.9,
+      priority: 1,
       alternates: alternatesFor((l) => routeFor(l, "home")),
     });
 

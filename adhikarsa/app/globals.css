@@ -79,56 +79,6 @@
   --text-lead: clamp(1.0625rem, 1.1vw, 1.1875rem);
   --text-lead--line-height: 1.65;
 
-  /* ==========================================================================
-     ADHIKARSA — NARRATIVE SITE
-     --------------------------------------------------------------------------
-     A second, self-contained language for the storytelling site at `/`. It does
-     not participate in the light/dark swap above: the narrative is authored on
-     one deep ground the whole way down, and the few pale chapters are painted
-     explicitly rather than inherited. Kept in the same `@theme` so the two
-     systems share one type scale mechanism and one build, but the names never
-     collide — nothing here is a role the corporate site knows about.
-     ======================================================================== */
-
-  /* Ground. Three steps only; the depth comes from type and space, not from
-     stacking ever-lighter panels. */
-  --color-void: #05070a;
-  --color-void-lift: #0a0e15;
-  --color-void-raise: #10151f;
-
-  /* Warm white, so the light chapters read as paper rather than as a lamp. */
-  --color-paper: #f2f1ee;
-  --color-paper-dim: #a4a9b4;
-  --color-paper-faint: #6f7683;
-
-  /* One accent. Electric cobalt: saturated enough to signal computation,
-     dark enough that white type still sits on it. */
-  --color-cobalt: #4c6fff;
-  --color-cobalt-lift: #8098ff;   /* small text on the void: 7.2:1 */
-  --color-cobalt-deep: #16215c;
-  --color-cobalt-wash: rgba(76, 111, 255, 0.14);
-
-  --color-hairline: rgba(242, 241, 238, 0.1);
-  --color-hairline-strong: rgba(242, 241, 238, 0.24);
-
-  /* Display scale. Oversized by intent — on the widest chapters the headline
-     is the illustration, so it is allowed to reach the edges of the measure.
-     `cqi` keeps a line honest inside a narrow column (see `.measure`). */
-  --text-mega: min(clamp(2.5rem, 8.6vw, 8rem), 10cqi);
-  --text-mega--line-height: 0.94;
-  --text-mega--letter-spacing: -0.045em;
-
-  --text-chapter: min(clamp(1.875rem, 5.6vw, 5.25rem), 8.2cqi);
-  --text-chapter--line-height: 1;
-  --text-chapter--letter-spacing: -0.038em;
-
-  --text-statement: min(clamp(1.375rem, 3.4vw, 3.25rem), 6.4cqi);
-  --text-statement--line-height: 1.12;
-  --text-statement--letter-spacing: -0.028em;
-
-  --text-say: clamp(1.0625rem, 1.25vw, 1.3125rem);
-  --text-say--line-height: 1.6;
-
   --radius-card: 20px;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -326,94 +276,6 @@
 }
 
 /* ============================================================================
-   ADHIKARSA — NARRATIVE SITE UTILITIES
-   ========================================================================== */
-
-/* The narrative's measure. Wider than the corporate shell and with more air at
-   the edges, because the display type is meant to run close to them. */
-@utility field {
-  width: 100%;
-  max-width: 90rem;
-  margin-inline: auto;
-  padding-inline: 1.5rem;
-  @media (width >= 40rem) {
-    padding-inline: 2.5rem;
-  }
-  @media (width >= 80rem) {
-    padding-inline: 4rem;
-  }
-}
-
-/* Small caps label. The narrative uses these instead of headings to name a
-   chapter, so a section can open on a sentence rather than on a title. */
-@utility marker {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  line-height: 1;
-}
-
-/* Hairline rule that fades out rather than stopping. Used to separate chapters
-   without drawing a hard border across a dark page. */
-@utility seam {
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--color-hairline-strong) 22%,
-    var(--color-hairline-strong) 78%,
-    transparent
-  );
-  height: 1px;
-}
-
-/* The lattice behind the opening and the vision. A single repeating gradient,
-   masked so it never reaches the type. */
-@utility lattice {
-  background-image:
-    linear-gradient(to right, rgba(242, 241, 238, 0.055) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(242, 241, 238, 0.055) 1px, transparent 1px);
-  background-size: 5.5rem 5.5rem;
-}
-
-/* Vignette that pulls the eye to the centre of a full-bleed chapter. */
-@utility falloff {
-  mask-image: radial-gradient(115% 85% at 50% 42%, #000 24%, transparent 78%);
-}
-
-/* Type that carries the accent as a gradient rather than a flat fill. Reserved
-   for the one or two moments that need to feel lit. */
-@utility charged {
-  background: linear-gradient(
-    100deg,
-    var(--color-paper) 12%,
-    var(--color-cobalt-lift) 54%,
-    var(--color-paper) 92%
-  );
-  background-clip: text;
-  color: transparent;
-}
-
-/* The narrative is authored on one ground, and the browser should agree —
-   otherwise overscroll and the mobile URL bar flash the corporate white. */
-html:has(.narrative) {
-  background-color: var(--color-void);
-  color-scheme: dark;
-}
-
-/* The narrative paints its own ground, but `body` still carries the corporate
-   canvas underneath it. Nothing shows through today; making it match costs one
-   line and removes a class of bug that only appears at a rubber-band scroll. */
-html:has(.narrative) body {
-  background-color: var(--color-void);
-}
-
-.narrative ::selection {
-  background: rgba(76, 111, 255, 0.32);
-  color: var(--color-paper);
-}
-
-/* ============================================================================
    KEYFRAMES — transform / opacity / dash only
    ========================================================================== */
 
@@ -450,9 +312,6 @@ html:has(.narrative) body {
 .anim-breathe { animation: adk-breathe 3.6s ease-in-out infinite; }
 .anim-ripple { animation: adk-ripple 3.2s var(--ease-out-expo) infinite; }
 .anim-spin-slow { animation: adk-spin-slow 48s linear infinite; }
-/* A packet travelling a stroked path. `--flow-end` is the negative of the path
-   length, so one cycle carries the dash exactly once from end to end. */
-.anim-flow { animation: adk-flow 4.5s linear infinite; }
 .anim-grid-drift { animation: adk-grid-drift 24s linear infinite; }
 
 /* ============================================================================

@@ -199,7 +199,7 @@ export const id: Dictionary = {
         coreFocus: "Fokus Utama",
         headquarters: "Kantor Pusat",
         email: "Email",
-        website: "Situs Web",
+        contactPerson: "Narahubung",
       },
       values: {
         industry: "Teknologi & Solusi Digital",
@@ -210,7 +210,6 @@ export const id: Dictionary = {
           "Pengembangan Perangkat Lunak",
           "Integrasi Sistem",
         ],
-        headquartersNote: "Indonesia",
       },
     },
   },

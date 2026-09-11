@@ -5,27 +5,43 @@ import { TrustShelf } from "@/components/ui/TrustShelf";
 import { company } from "@/data/company";
 import type { Dictionary } from "@/data/dictionaries";
 import { ANCHORS } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
 /**
  * The company profile proper — the page a director prints.
  *
  * Fields the company has not supplied render as an explicit "to be provided"
  * slot. Inventing an address, an email or a registration number here would be
- * the single most damaging thing this site could do, so the layout is designed
- * to look deliberate while a field is still empty.
+ * the single most damaging thing this site could do, so the layout was designed
+ * to look deliberate while a field was still empty — and to need no change at
+ * all on the day the real value arrives, which is how the address, mailbox and
+ * number went in.
+ *
+ * The two actionable rows carry a link. A printed profile is the point, but a
+ * director reading it on a phone should be able to tap the number.
  */
 export function CompanyInformation({ dict }: { dict: Dictionary }) {
   const t = dict.company.profile;
 
   /* Field order is fixed; labels and the one free-text value are localised,
      while the legal name is a proper noun and never translated. */
-  const rows: { label: string; value: string | string[] | null; note?: string }[] = [
+  const rows: {
+    label: string;
+    value: string | string[] | null;
+    note?: string;
+    /** Present when the value is something you can act on. */
+    href?: string;
+  }[] = [
     { label: t.fields.company, value: company.legalName },
     { label: t.fields.industry, value: t.values.industry },
     { label: t.fields.coreFocus, value: t.values.coreFocus },
-    { label: t.fields.headquarters, value: null, note: t.values.headquartersNote },
-    { label: t.fields.email, value: null },
-    { label: t.fields.website, value: null },
+    { label: t.fields.headquarters, value: company.headquarters },
+    { label: t.fields.email, value: company.contactEmail, href: `mailto:${company.contactEmail}` },
+    {
+      label: t.fields.contactPerson,
+      value: company.contactPhoneDisplay,
+      href: `tel:${company.contactPhone}`,
+    },
   ];
 
   return (
@@ -67,7 +83,7 @@ function FieldValue({
   field,
   pending,
 }: {
-  field: { value: string | string[] | null; note?: string };
+  field: { value: string | string[] | null; note?: string; href?: string };
   pending: string;
 }) {
   if (field.value === null) {
@@ -97,9 +113,26 @@ function FieldValue({
     );
   }
 
-  return (
-    <span className="text-[0.9375rem] font-medium text-ink sm:text-base">
-      {field.value}
-    </span>
-  );
+  const text = "text-[0.9375rem] font-medium text-ink sm:text-base";
+
+  /* The address is long and must be allowed to break; a `tel:` or `mailto:`
+     must not. `break-words` on the one, `whitespace-nowrap` on neither — the
+     link styling is what marks a row as actionable. */
+  if (field.href) {
+    return (
+      <a
+        href={field.href}
+        className={cn(
+          text,
+          "underline decoration-rule-strong decoration-1 underline-offset-4",
+          "transition-colors duration-300 hover:text-brand hover:decoration-brand",
+          "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
+        )}
+      >
+        {field.value}
+      </a>
+    );
+  }
+
+  return <span className={cn(text, "break-words")}>{field.value}</span>;
 }

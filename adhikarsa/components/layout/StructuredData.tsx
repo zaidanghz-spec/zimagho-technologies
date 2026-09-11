@@ -21,7 +21,26 @@ export function StructuredData({
     url: `${company.site.url}/${locale}`,
     description: dict.meta.home.description,
     inLanguage: LOCALES,
-    address: { "@type": "PostalAddress", addressCountry: "ID" },
+    /* Now that the particulars exist, they belong here too — this is the block
+       a search engine reads to show an address and a number beside the name. */
+    email: company.contactEmail ?? undefined,
+    telephone: company.contactPhone,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Menara Cakrawala Lt. 12, Unit 05A, Jl. M.H. Thamrin No. 9",
+      addressLocality: "Menteng, Jakarta Pusat",
+      addressRegion: "DKI Jakarta",
+      postalCode: "10340",
+      addressCountry: "ID",
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "sales",
+      telephone: company.contactPhone,
+      email: company.contactEmail ?? undefined,
+      areaServed: "ID",
+      availableLanguage: ["id", "en"],
+    },
     knowsAbout: dict.company.profile.values.coreFocus,
   };
 

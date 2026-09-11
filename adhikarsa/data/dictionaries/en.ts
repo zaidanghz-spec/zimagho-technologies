@@ -201,7 +201,7 @@ export const en = {
         coreFocus: "Core Focus",
         headquarters: "Headquarters",
         email: "Email",
-        website: "Website",
+        contactPerson: "Contact Person",
       },
       values: {
         industry: "Technology & Digital Solutions",
@@ -212,7 +212,6 @@ export const en = {
           "Software Development",
           "Systems Integration",
         ],
-        headquartersNote: "Indonesia",
       },
     },
   },

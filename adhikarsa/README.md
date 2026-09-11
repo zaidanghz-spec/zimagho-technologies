@@ -4,21 +4,13 @@ Digital company profile for **PT Adhikarsa Mahatama Teknologi**: healthcare
 technology, hospital automation, artificial intelligence, enterprise software,
 systems integration, and R&D.
 
-Built with Next.js (App Router) + TypeScript + Tailwind CSS v4 + Framer
-Motion. Statically prerendered — no server runtime required.
+Light-first, corporate, editorial. Built with Next.js (App Router) +
+TypeScript + Tailwind CSS v4 + Framer Motion. Statically prerendered — no
+server runtime required.
 
-Two sites live here, and they are deliberately different things:
-
-| Route | What it is |
-| ----- | ---------- |
-| `/` | **The narrative.** One page, twelve chapters, read top to bottom. Dark, editorial, oversized type. This is the front door. |
-| `/en`, `/id` | **The corporate profile.** Eight conventional pages in English and Bahasa Indonesia, light-first with a dark counterpart. |
-
-They share the build, the fonts, the logo and the class-merging setup, and
-nothing else — separate palettes, separate type scales, separate components.
-Mixing them would have produced a compromise that served neither: a company
-profile a hospital director can scan does not want to be a scroll-driven essay,
-and an essay does not want a "Services" grid.
+Eight pages, in **English and Bahasa Indonesia**, each with a **light and a
+dark** presentation. `/` forwards to whichever language the visitor's browser
+asks for.
 
 ```bash
 npm install
@@ -46,63 +38,11 @@ without it the folder opens to a page that is complete in the markup and blank
 on screen. So the export is the whole site, legible and navigable, minus the
 motion.
 
-## The narrative at `/`
-
-The order of the page **is** the argument, and it is the reverse of a company
-profile. A profile opens with who we are and hopes the reader stays. This opens
-with something the reader already believes — that progress is uneven — shows
-what that costs in four fields, states a position, and only then names the
-company. By the time "Adhikarsa" appears on screen the reader has spent five
-screens agreeing with the premise it exists to answer.
-
-```
-01 Hero            02 The world      03 The problem     04 The belief
-05 The company     06 What we build  07 How we build    08 Technology
-09 In development  10 Principles     11 The disciplines 12 The future
-13 Begin
-```
-
-Every word is in `data/story.ts`, in reading order, so the argument can be
-checked end to end without opening a component.
-
-**Three devices carry it.**
-
-*Authored lines.* `LargeHeading` clips each line in its own box and rides it up
-from underneath, so a three-line headline arrives as three events rather than
-one fade. Each entry must be one visual line — a line that wraps is a broken
-composition, not a cosmetic nuisance — which is why the display sizes are
-`min(clamp(…vw…), …cqi)` and every chapter opener sits in a full-width
-`.measure`. Measuring them all against the same box is what makes them read as
-one system instead of nine different sizes. Prose is never passed through it;
-the four problem statements are sentences and are allowed to wrap.
-
-*Sticky staging.* The problem and process chapters pin a diagram while the text
-scrolls past. The active index comes from `StageWatcher`, which collapses the
-observation area to a thin band across the middle of the screen and lets the
-browser say which item is in it. Deriving it from scroll progress instead —
-the first attempt — put the diagram a full step ahead of its own caption.
-
-*The diagrams argue.* `FieldGlyph` draws the *shape* of each problem —
-fragmentation, one path for everyone, a closed loop, a bottleneck — and
-`PillarGlyph` redraws the same four resolved. Read in sequence they are a
-before and an after, which is more argument than the copy carries alone.
-
-**What is not claimed.** No clients, hospitals, universities, partners,
-advisors, funding, publications, user counts or named people appear anywhere.
-The initiatives are labelled *In development* with the disclaimer at the top of
-the chapter rather than in small print, and their interfaces are drawn
-structurally empty — a plausible screenshot with an invented reading would be a
-claim about a product that does not exist. The disciplines chapter names
-disciplines, not individuals, and is ready for real names the day there are
-some.
-
 ## Where to edit things
 
 | I want to change…                             | Edit                                        |
 | --------------------------------------------- | ------------------------------------------- |
 | Company name, profile fields, contact email   | `data/company.ts`                           |
-| Any word on the narrative at `/`               | `data/story.ts`                             |
-| The narrative's palette and display scale      | `app/globals.css` (the `--color-void` block) |
 | Any visible wording, in either language        | `data/dictionaries/en.ts` and `id.ts`       |
 | Which pages exist and their URLs               | `lib/constants.ts`                          |
 | Which languages exist                          | `lib/i18n.ts`                               |
@@ -112,17 +52,23 @@ some.
 | Animation timings and entrance variants        | `lib/animations.ts`                         |
 | Section layout (not its words)                 | the matching file in `components/sections/` |
 
-## ⚠ Before launch
+## Company facts
 
-Fields the company has not supplied render as an explicit **"To be provided"**
-slot in the Company Information section — never as invented data. Fill them in
-`data/company.ts` and the marking disappears:
+Every editable fact lives in `data/company.ts`, and the address, mailbox and
+number are supplied — they render in the Company Information table and again on
+the contact page, read from that one place so the two can never drift. The two
+actionable rows carry a `mailto:` and a `tel:`.
 
-- `profile[].value` for **Headquarters**, **Email** and **Website**
-- `contactEmail` — while `null`, the final CTA points at the company profile
-  and says so instead of linking a fabricated mailbox
-- `site.url` — set to the production origin so canonical URLs, the sitemap,
-  `robots.txt` and OpenGraph tags point somewhere real
+The placeholder mechanism is still in force for anything added later: a field
+whose `value` is `null` renders as an explicit **"To be provided"** slot rather
+than as invented data, and needs no layout change on the day it is filled —
+which is exactly how these three went in.
+
+`site.url` resolves in three steps, so a deploy is correct without a code
+change: an explicit `NEXT_PUBLIC_SITE_URL` wins, Vercel's own production
+hostname is used when the build runs there, and `https://adhikarsa.co.id` is the
+fallback for a local build. It drives canonical URLs, the sitemap, `robots.txt`
+and the OpenGraph tags.
 
 Nothing on this site claims a client, hospital partner, government
 relationship, testimonial, award, certification, compliance status, regulatory
@@ -131,13 +77,31 @@ was supplied. `components/ui/TrustShelf.tsx` is the single insertion point for
 verified material — populate `company.trust` and it renders; leave it empty and
 the site simply never makes the claim.
 
+## Deploying to Vercel
+
+The Next.js app is **not** at the repository root — it lives in `adhikarsa/`,
+alongside an older static site. Vercel must be told that, or it will try to
+build the wrong thing:
+
+> Project → Settings → Build and Deployment → **Root Directory** → `adhikarsa`
+
+Everything else is detected automatically. No build command, output directory or
+install command needs overriding, and `STATIC_EXPORT` must stay unset — it
+switches the build to the `file://` export and would break routing on a server.
+
+Optional environment variable:
+
+| Name | When to set it |
+| ---- | -------------- |
+| `NEXT_PUBLIC_SITE_URL` | Once a custom domain is attached, e.g. `https://adhikarsa.co.id`. Until then Vercel's own hostname is used and canonical URLs stay correct. |
+
 ## Structure
 
 ```
 app/
   layout.tsx        root shell: <html>, fonts, the pre-paint theme script
-  page.tsx          the narrative — all twelve chapters composed in order
-  [locale]/         the corporate profile, once per language
+  page.tsx          the locale gateway at `/`
+  [locale]/         every page, once per language
     layout.tsx      navbar, footer, per-locale metadata and hreflang
     page.tsx        home
     company/ solutions/ technology/ innovation/ contact/
@@ -145,13 +109,6 @@ app/
   globals.css       the whole design system: light @theme, dark override
   sitemap.ts robots.ts opengraph-image.tsx icon.svg
 components/
-  story/       the narrative at `/`, self-contained
-    primitives/  LargeHeading, Reveal, SectionLabel, StageWatcher,
-                 MagneticButton, ChapterRail, the motion vocabulary
-    visuals/     LatticeField, SystemDrift, FieldGlyph, PillarGlyph,
-                 ProductFrame
-    sections/    one file per chapter, in reading order
-    layout/      StoryNav, StoryFooter
   brand/       LogoMark + horizontal and stacked lockups
   layout/      navbar, footer, scroll progress, page header, theme + language
                toggles, ThemeScript, structured data
@@ -167,8 +124,7 @@ components/
                CapabilityGlyph        six capability micro-diagrams
 data/
   company.ts        company facts and profile fields
-  story.ts          every word of the narrative, in reading order
-  dictionaries/     en.ts, id.ts — every visible string on the profile
+  dictionaries/     en.ts, id.ts — every visible string
 lib/           animations, i18n, routes, class utils, media-query hook
 ```
 

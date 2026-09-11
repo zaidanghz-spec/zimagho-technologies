@@ -7,19 +7,28 @@ import type { Dictionary } from "@/data/dictionaries";
 /**
  * Contact particulars, on the contact page only.
  *
- * Everything the company has not supplied renders as a marked slot, exactly as
- * on the profile — the same rule applies here, and this is the page where the
- * temptation to invent an address would be strongest.
+ * The same four rows as the company profile, read from the same source, so the
+ * two can never drift. Anything still unsupplied would render as a marked slot
+ * exactly as it does there — the mechanism stays in place even though every
+ * row is now filled.
  */
 export function ContactDetails({ dict }: { dict: Dictionary }) {
   const t = dict.contact;
   const profile = dict.company.profile;
 
-  const rows: { label: string; value: string | null }[] = [
+  const rows: { label: string; value: string | null; href?: string }[] = [
     { label: profile.fields.company, value: company.legalName },
-    { label: profile.fields.headquarters, value: null },
-    { label: profile.fields.email, value: company.contactEmail },
-    { label: profile.fields.website, value: null },
+    { label: profile.fields.headquarters, value: company.headquarters },
+    {
+      label: profile.fields.email,
+      value: company.contactEmail,
+      href: company.contactEmail ? `mailto:${company.contactEmail}` : undefined,
+    },
+    {
+      label: profile.fields.contactPerson,
+      value: company.contactPhoneDisplay,
+      href: `tel:${company.contactPhone}`,
+    },
   ];
 
   return (
@@ -46,8 +55,15 @@ export function ContactDetails({ dict }: { dict: Dictionary }) {
                       {row.label}
                     </dt>
                     <dd className="min-w-0">
-                      {row.value ? (
-                        <span className="text-[0.9375rem] font-medium text-ink">
+                      {row.value && row.href ? (
+                        <a
+                          href={row.href}
+                          className="text-[0.9375rem] font-medium text-ink underline decoration-rule-strong decoration-1 underline-offset-4 transition-colors duration-300 hover:text-brand hover:decoration-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+                        >
+                          {row.value}
+                        </a>
+                      ) : row.value ? (
+                        <span className="text-[0.9375rem] font-medium break-words text-ink">
                           {row.value}
                         </span>
                       ) : (
