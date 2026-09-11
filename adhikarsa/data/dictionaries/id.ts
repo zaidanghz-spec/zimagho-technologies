@@ -417,6 +417,57 @@ export const id: Dictionary = {
     detailsHeading: "Cara menghubungi kami",
     detailsBody:
       "Kami bekerja bersama rumah sakit, organisasi kesehatan, dan institusi yang sedang menjajaki otomasi, AI, integrasi sistem, atau pengembangan teknologi khusus.",
+    form: {
+      eyebrow: "Mulai percakapan",
+      heading: ["Ceritakan masalah", "yang ingin diselesaikan."],
+      intro:
+        "Semakin spesifik masalahnya, semakin berguna balasan pertama kami. Beberapa baris sudah cukup.",
+      fields: {
+        name: { label: "Nama", placeholder: "Nama lengkap Anda" },
+        email: { label: "Email kerja", placeholder: "nama@organisasi.id" },
+        organisation: { label: "Organisasi", placeholder: "Rumah sakit, institusi, atau perusahaan" },
+        topic: { label: "Mengenai apa?", placeholder: "Pilih topik" },
+        message: {
+          label: "Apa yang ingin Anda selesaikan?",
+          placeholder:
+            "Alur kerja, sistem, atau keputusan yang ingin diperbaiki \u2014 dan apa yang membuatnya sulit saat ini.",
+        },
+      },
+      topics: [
+        { value: "healthcare", label: "Teknologi kesehatan" },
+        { value: "automation", label: "Otomasi rumah sakit" },
+        { value: "ai", label: "Kecerdasan buatan" },
+        { value: "integration", label: "Integrasi sistem" },
+        { value: "custom", label: "Pengembangan perangkat lunak khusus" },
+        { value: "research", label: "Kolaborasi riset" },
+        { value: "other", label: "Lainnya" },
+      ],
+      optional: "opsional",
+      submit: "Kirim pesan",
+      submitting: "Mengirim\u2026",
+      errors: {
+        name: "Mohon isi nama Anda.",
+        email: "Mohon masukkan alamat email yang valid.",
+        organisation: "Mohon sebutkan organisasi Anda.",
+        topic: "Mohon pilih topik.",
+        message: "Mohon jelaskan masalahnya sedikit lebih rinci.",
+        generic: "Terjadi kesalahan di sisi kami. Silakan gunakan salah satu kanal langsung di bawah.",
+        unconfigured: "Formulir belum menerima pesan. Silakan gunakan salah satu kanal langsung di bawah.",
+      },
+      success: {
+        heading: "Pesan terkirim.",
+        body: "Terima kasih. Kami membaca setiap pesan dan akan membalas ke alamat yang Anda tulis.",
+        again: "Kirim pesan lain",
+      },
+      direct: {
+        heading: "Atau hubungi langsung",
+        emailLabel: "Email",
+        phoneLabel: "Narahubung",
+        addressLabel: "Kantor",
+      },
+      privacy:
+        "Data yang Anda kirim hanya kami gunakan untuk membalas Anda. Tidak dibagikan kepada pihak lain.",
+    },
   },
 
   footer: {

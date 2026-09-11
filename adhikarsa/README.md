@@ -89,11 +89,44 @@ Everything else is detected automatically. No build command, output directory or
 install command needs overriding, and `STATIC_EXPORT` must stay unset — it
 switches the build to the `file://` export and would break routing on a server.
 
-Optional environment variable:
+### Environment variables
 
-| Name | When to set it |
-| ---- | -------------- |
-| `NEXT_PUBLIC_SITE_URL` | Once a custom domain is attached, e.g. `https://adhikarsa.co.id`. Until then Vercel's own hostname is used and canonical URLs stay correct. |
+| Name | Required | What it does |
+| ---- | -------- | ------------ |
+| `RESEND_API_KEY` | for the contact form | API key from [resend.com](https://resend.com). Without it the form refuses honestly and shows the direct channels instead of pretending to send. |
+| `CONTACT_TO_EMAIL` | no | Where enquiries land. Defaults to `company.contactEmail`. |
+| `CONTACT_FROM_EMAIL` | no | The `From:` header, e.g. `Adhikarsa <hello@adhikarsa.co.id>`. Defaults to Resend's shared testing sender, which works immediately but is not a good look in production — set this once the domain is verified with Resend. |
+| `NEXT_PUBLIC_SITE_URL` | no | Once a custom domain is attached, e.g. `https://adhikarsa.co.id`. Until then Vercel's own hostname is used and canonical URLs stay correct. |
+
+## The contact form
+
+`POST /api/contact` → validates → forwards to the company mailbox via Resend's
+HTTP API. No SDK: one `fetch`, no dependency to keep current.
+
+It is a route handler rather than a Server Action for one practical reason — a
+Server Action makes `npm run export` fail outright, while a handler can simply
+be parked by the export script alongside `robots` and `sitemap`.
+
+Four things worth knowing:
+
+- **Validation is repeated, not shared.** The browser copy exists to give fast
+  feedback; the copy in the route handler is the one that decides, because
+  anything can POST to a public URL.
+- **A failure is never dressed up as a success.** If `RESEND_API_KEY` is
+  missing, or the provider refuses, the form says exactly that and points at the
+  mailbox and the phone number. It never shows a thank-you for a message nobody
+  received.
+- **The direct channels never go away.** They sit beside the form at every
+  state, success included. A form is a promise to reply later; the mailbox and
+  the number work now.
+- **The flood guard is a speed bump.** The in-memory map is per-instance and
+  resets on a cold start, so it stops a script hammering one warm instance and
+  nothing more. Configure Vercel's Firewall before advertising the form
+  anywhere. A honeypot field catches the naive bots and is dropped with a `200`,
+  so they learn nothing.
+
+Parked during `npm run export`, because a folder you open from disk has no
+server. The form still renders there and falls back to the direct channels.
 
 ## Structure
 

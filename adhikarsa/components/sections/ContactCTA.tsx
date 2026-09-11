@@ -29,6 +29,12 @@ export function ContactCTA({
   const t = dict.contact;
   const mailto = company.contactEmail ? `mailto:${company.contactEmail}` : null;
 
+  /* The primary action opens the form, not the visitor's mail client. A mailto
+     assumes a configured desktop client, which a director on a hospital browser
+     very often does not have — and it loses the enquiry entirely when it fails.
+     The mailbox is still one tap away, beside the form and in the profile. */
+  const enquiry = standalone ? "#enquiry" : `${routeFor(locale, "contact")}#enquiry`;
+
   return (
     <section className="relative scroll-mt-24 overflow-hidden bg-navy">
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -73,7 +79,7 @@ export function ContactCTA({
           <Reveal preset="rise" delay={0.22}>
             <div className="mt-10 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
               <Button
-                href={mailto ?? routeFor(locale, "company")}
+                href={enquiry}
                 variant="white"
                 arrow
                 wrapperClassName="w-full sm:w-auto"

@@ -419,6 +419,59 @@ export const en = {
     detailsHeading: "How to reach us",
     detailsBody:
       "We work with hospitals, healthcare organizations, and institutions exploring automation, AI, system integration, or custom technology development.",
+    form: {
+      eyebrow: "Start a conversation",
+      heading: ["Tell us what you're", "trying to solve."],
+      intro:
+        "The more specific the problem, the more useful our first reply. A few lines is enough.",
+      fields: {
+        name: { label: "Name", placeholder: "Your full name" },
+        email: { label: "Work email", placeholder: "name@organisation.id" },
+        organisation: { label: "Organisation", placeholder: "Hospital, institution, or company" },
+        topic: { label: "What is this about?", placeholder: "Select a topic" },
+        message: {
+          label: "What are you trying to solve?",
+          placeholder:
+            "The workflow, the system, or the decision you want to improve — and what makes it difficult today.",
+        },
+      },
+      topics: [
+        { value: "healthcare", label: "Healthcare technology" },
+        { value: "automation", label: "Hospital automation" },
+        { value: "ai", label: "Artificial intelligence" },
+        { value: "integration", label: "Systems integration" },
+        { value: "custom", label: "Custom software development" },
+        { value: "research", label: "Research collaboration" },
+        { value: "other", label: "Something else" },
+      ],
+      optional: "optional",
+      submit: "Send message",
+      submitting: "Sending\u2026",
+      errors: {
+        name: "Please enter your name.",
+        email: "Please enter a valid email address.",
+        organisation: "Please tell us which organisation you're writing from.",
+        topic: "Please choose a topic.",
+        message: "Please describe the problem in a little more detail.",
+        generic: "Something went wrong on our side. Please try one of the direct channels below.",
+        unconfigured: "The form isn't accepting messages yet. Please use one of the direct channels below.",
+      },
+      success: {
+        heading: "Message sent.",
+        body: "Thank you. We read every message ourselves and will reply to the address you gave.",
+        again: "Send another message",
+      },
+      /* Always visible beside the form. A form is a promise to reply; these
+         are the routes that work immediately. */
+      direct: {
+        heading: "Or reach us directly",
+        emailLabel: "Email",
+        phoneLabel: "Contact person",
+        addressLabel: "Office",
+      },
+      privacy:
+        "We use what you send only to reply to you. Nothing is shared with anyone else.",
+    },
   },
 
   footer: {

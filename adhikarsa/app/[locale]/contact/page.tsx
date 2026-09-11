@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ContactCTA } from "@/components/sections/ContactCTA";
 import { ContactDetails } from "@/components/sections/ContactDetails";
+import { ContactForm } from "@/components/sections/ContactForm";
 import { getDictionary } from "@/data/dictionaries";
 import { LOCALES, isLocale, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
@@ -34,6 +35,7 @@ export default async function ContactPage({
       {/* The band leads here rather than closing the page, so the invitation is
           the first thing on the screen instead of the last. */}
       <ContactCTA locale={locale} dict={dict} standalone />
+      <ContactForm dict={dict} />
       <ContactDetails dict={dict} />
     </main>
   );

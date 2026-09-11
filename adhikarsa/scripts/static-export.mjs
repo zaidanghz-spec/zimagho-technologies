@@ -11,6 +11,7 @@
 import { execFileSync } from "node:child_process";
 import {
   existsSync,
+  mkdirSync,
   readFileSync,
   readdirSync,
   renameSync,
@@ -23,15 +24,28 @@ import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-const PARKED = ["opengraph-image.tsx", "robots.ts", "sitemap.ts"].map((f) => ({
+/* Routes a static export cannot produce, moved aside for the duration of the
+   build and put straight back afterwards — including when the build fails.
+   `api` is the enquiry endpoint: there is no server in a folder you open from
+   disk, and the form already falls back to the direct channels when the POST
+   does not land.
+
+   They are parked *outside* `app/`, not renamed in place. Suffixing a file is
+   enough to stop Next recognising it, but a directory called `api.parked` is
+   still a perfectly good route segment — and the handler inside it still fails
+   the export, from a URL nobody asked for. */
+const PARK_DIR = join(root, ".export-parked");
+
+const PARKED = ["opengraph-image.tsx", "robots.ts", "sitemap.ts", "api"].map((f) => ({
   live: join(root, "app", f),
-  aside: join(root, "app", `${f}.parked`),
+  aside: join(PARK_DIR, f),
 }));
 
 const restore = () => {
   for (const { live, aside } of PARKED) {
     if (existsSync(aside)) renameSync(aside, live);
   }
+  rmSync(PARK_DIR, { recursive: true, force: true });
 };
 
 process.on("exit", restore);
@@ -39,6 +53,7 @@ process.on("SIGINT", () => process.exit(130));
 
 try {
   rmSync(join(root, "out"), { recursive: true, force: true });
+  mkdirSync(PARK_DIR, { recursive: true });
   for (const { live, aside } of PARKED) {
     if (existsSync(live)) renameSync(live, aside);
   }
